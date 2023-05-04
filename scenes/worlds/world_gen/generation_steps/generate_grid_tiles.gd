@@ -32,15 +32,13 @@ func _execute_step(data : WorldData, gen_data : Dictionary, generation_seed : in
 
 func select_floor_tiles(data : WorldData, pillar_rooms : Array):
 	for i in data.cell_count:
-		if data.get_cell_type(i) != data.CellType.EMPTY:
+		var is_pillar_room = data.get_cell_meta(i, data.CellMetaKeys.META_PILLAR_ROOM, false)
+		if data.get_cell_type(i) != data.CellType.EMPTY and not is_pillar_room:
 			if data.get_cell_type(i) == data.CellType.ROOM:
 				data.set_cell_surfacetype(i, data.SurfaceType.STONE)
 			elif data.get_cell_type(i) == data.CellType.CORRIDOR:
 				data.set_cell_surfacetype(i, data.SurfaceType.CARPET)
 			data.set_ground_tile_index(i, floor_tile)
-			var is_pillar_room = data.get_cell_meta(i, data.CellMetaKeys.META_PILLAR_ROOM, false)
-			if not is_pillar_room:
-				data.set_ground_tile_index(i, floor_tile)
 	for _room in pillar_rooms:
 		var room : Rect2 = _room as Rect2
 		print(room)
@@ -70,7 +68,7 @@ func select_wall_tiles(data : WorldData):
 			continue
 		var is_pillar_room = data.get_cell_meta(i, data.CellMetaKeys.META_PILLAR_ROOM, false)
 		if not is_pillar_room:
-			for dir in data.Direction.DIRECTION_MAX:
+			for dir in data.Direction.size():
 				var neighbour = data.get_neighbour_cell(i, dir)
 				var neighbour_is_pillar_room = data.get_cell_meta(neighbour, data.CellMetaKeys.META_PILLAR_ROOM, false)
 				match data.get_wall_type(i, dir):

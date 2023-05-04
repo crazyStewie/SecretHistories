@@ -449,10 +449,6 @@ TestSettings="*res://globals/settings/test_settings.gd"
 LoadScreen="*res://globals/load_screen.gd"
 ChangeScene="*res://globals/change_scene.gd"
 
-[display]
-
-window/size/fullscreen=true
-
 [editor]
 
 description="An entirely forgettable game"
@@ -694,6 +690,11 @@ ADS={
 "events": [ Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"button_mask":0,"position":Vector2( 0, 0 ),"global_position":Vector2( 0, 0 ),"factor":1.0,"button_index":2,"pressed":false,"doubleclick":false,"script":null)
  ]
 }
+debug_light={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"physical_scancode":76,"unicode":0,"echo":false,"script":null)
+ ]
+}
 
 [layer_names]
 
@@ -722,4 +723,4 @@ common/physics_interpolation=true
 
 quality/directional_shadow/size=8192
 environment/default_clear_color=Color( 0, 0, 0, 1 )
-environment/default_environment="res://default_env.tres"
+environment/default_environment="res://resources/world/world_environment.tres"

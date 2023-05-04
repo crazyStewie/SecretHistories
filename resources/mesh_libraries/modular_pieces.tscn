@@ -687,7 +687,6 @@ shape = SubResource( 47 )
 
 [node name="Wall_3x3_Doorway" type="MeshInstance" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.76, 0, 0.74 )
-visible = false
 mesh = SubResource( 33 )
 
 [node name="StaticBody4" type="StaticBody" parent="Wall_3x3_Doorway"]
@@ -748,6 +747,7 @@ shape = SubResource( 69 )
 
 [node name="SM_Arched_Ceiling" type="MeshInstance" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.75, 2.626, 0.75 )
+visible = false
 mesh = SubResource( 42 )
 
 [node name="StaticBody" type="StaticBody" parent="SM_Arched_Ceiling"]

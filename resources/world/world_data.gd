@@ -6,7 +6,6 @@ enum Direction {
 	EAST,
 	SOUTH,
 	WEST,
-	DIRECTION_MAX,
 }
 
 const ROTATE_RIGHT = [
@@ -442,6 +441,13 @@ func set_wall_type(cell_index : int, direction : int, value : int):
 	if idx >= 0:
 		wall_type[idx] = value
 
+func get_wall_door(cell_index : int, direction : int):
+	var idx = _get_wall_index(cell_index, direction)
+	return doors.get(idx)
+
+func set_wall_door(cell_index : int, direction : int, door : Node):
+	var idx = _get_wall_index(cell_index, direction)
+	doors[idx] = door
 
 func get_wall_meta(cell_index : int, direction : int):
 	var idx = _get_wall_index(cell_index, direction)

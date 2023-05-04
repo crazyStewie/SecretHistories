@@ -70,7 +70,7 @@ func update_navigation():
 			while not queue.empty():
 				var current = queue.keys()[0]
 				rooms[current] = current_room
-				for dir in WorldData.Direction.DIRECTION_MAX:
+				for dir in WorldData.Direction.size():
 					var cell = data.get_neighbour_cell(current, dir)
 					var wall_type = data.get_wall_type(current, dir)
 					if  ( not queue.has(cell) ) and rooms[cell] == 0 and wall_type == data.EdgeType.EMPTY:
@@ -182,7 +182,7 @@ func gen_pillar_navmesh(cell: int):
 
 func gen_door_navmesh(cell : int, direction : int) -> PoolVector2Array:
 	var vec_direction = PoolVector2Array()
-	vec_direction.resize(WorldData.Direction.DIRECTION_MAX)
+	vec_direction.resize(WorldData.Direction.size())
 	vec_direction[WorldData.Direction.NORTH] = Vector2(0.0, -1.0)
 	vec_direction[WorldData.Direction.SOUTH] = Vector2(0.0,  1.0)
 	vec_direction[WorldData.Direction.EAST] = Vector2( 1.0, 0.0)
@@ -285,7 +285,7 @@ func gen_door_navmesh(cell : int, direction : int) -> PoolVector2Array:
 
 func get_contour_polygon(start_cell : int, start_direction : int) -> PoolVector2Array:
 	var vec_direction = PoolVector2Array()
-	vec_direction.resize(WorldData.Direction.DIRECTION_MAX)
+	vec_direction.resize(WorldData.Direction.size())
 	vec_direction[WorldData.Direction.NORTH] = Vector2(0.0, -1.0)
 	vec_direction[WorldData.Direction.SOUTH] = Vector2(0.0,  1.0)
 	vec_direction[WorldData.Direction.EAST] = Vector2( 1.0, 0.0)
