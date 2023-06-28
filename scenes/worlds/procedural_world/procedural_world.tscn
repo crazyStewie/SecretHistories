@@ -44,10 +44,7 @@ directional_shadow_normal_bias = 0.2
 [node name="Navigation" parent="." index="4"]
 preview_material = SubResource( 3 )
 
-[node name="BaseDoor" parent="." index="5" instance=ExtResource( 24 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5, 0, 27 )
-
-[node name="GenerationManager" parent="." index="6"]
+[node name="GenerationManager" parent="." index="5"]
 world_size_x = 20
 world_size_z = 20
 
@@ -90,6 +87,9 @@ pillar_tile = 16
 
 [node name="GenerateDoors" type="Node" parent="GenerationManager" index="8"]
 script = ExtResource( 23 )
+door_dict = {
+14: ExtResource( 24 )
+}
 
 [node name="GenerateRoomPurposes" type="Node" parent="GenerationManager" index="9"]
 script = ExtResource( 6 )
@@ -121,10 +121,10 @@ _density_by_type = {
 3: 0
 }
 
-[node name="ItemSpawner" type="Node" parent="." index="7"]
+[node name="ItemSpawner" type="Node" parent="." index="6"]
 script = ExtResource( 16 )
 
-[node name="CharacterSpawner" type="Node" parent="." index="8"]
+[node name="CharacterSpawner" type="Node" parent="." index="7"]
 script = ExtResource( 9 )
 
 [connection signal="generation_finished" from="." to="ItemSpawner" method="_on_ProceduralWorld_generation_finished"]
