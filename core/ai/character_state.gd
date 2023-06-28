@@ -2,13 +2,13 @@ class_name CharacterState
 extends Reference
 
 
+var character
+
 var move_direction : Vector3 = Vector3.ZERO setget set_move_direction
 var face_direction : Vector3 = Vector3.FORWARD setget set_face_direction
 var target_position : Vector3 = Vector3.ZERO setget set_target_position
 var path : Array = Array() setget ,get_path
 var interaction_target : Node = null
-
-var character
 
 var path_needs_update : bool = false
 
@@ -26,7 +26,7 @@ func set_face_direction(value : Vector3):
 
 func set_move_direction(value : Vector3):
 	value.y = 0.0
-	move_direction = value.normalized()*min(value.length(), 1.0)
+	move_direction = value.normalized() * min(value.length(), 1.0)
 
 
 func get_path():

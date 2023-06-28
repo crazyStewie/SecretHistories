@@ -1,5 +1,5 @@
-extends EquipmentItem
 class_name MeleeItem
+extends EquipmentItem
 
 
 enum WeaponType {
@@ -12,9 +12,19 @@ enum WeaponType {
 	POLEARM,
 	COUNT
 }
-
 export(WeaponType) var weapon_type : int = 0
-export var melee_damage = 0
+
+# primary and secondary here refer to primary use (L-Click) and secondary use (R-Click)
+export(AttackTypes.Types) var primary_damage_type1 : int = 0
+export var primary_damage1 = 0
+export(AttackTypes.Types) var primary_damage_type2 : int = 0
+export var primary_damage2 = 0
+export(AttackTypes.Types) var secondary_damage_type1 : int = 0
+export var secondary_damage1 = 0
+export(AttackTypes.Types) var secondary_damage_type2 : int = 0
+export var secondary_damage2 = 0
+
+onready var melee_hitbox = $Hitbox as Area
 export var cooldown = 0.01
 
 export var throw_logic : bool
@@ -26,9 +36,6 @@ export var normal_pos_path : NodePath
 onready var normal_pos = get_node(normal_pos_path)
 export var throw_pos_path : NodePath
 onready var throw_pos = get_node(throw_pos_path)
-
-export(AttackTypes.Types) var melee_damage_type : int = 0
-onready var melee_hitbox = $Hitbox as Area
 
 var can_hit = false
 var on_cooldown = false
@@ -54,7 +61,6 @@ func apply_throw_logic(impulse):
 
 # Should be: Left-Click thrust, Right-Click cut, when nothing else, guard. Each attack has a recovery animation, but technically a thrust from one side should be able to recover to any of the guards
 func attack_thrust():
-	character = get_parent().get_parent()
 	var melee_anim
 	if weapon_type == WeaponType.COMPLEX_HILT_ONE_HAND:
 		melee_anim = owner_character.find_node("SabreTechniques")
@@ -63,7 +69,7 @@ func attack_thrust():
 			melee_anim.play("ThrustFromTierce")
 			$Sounds/Thrust.play()
 			yield(melee_anim, "animation_finished")
-			character.stamina -= 50
+			owner_character.stamina -= 50
 			can_hit = false
 			melee_anim.queue("RecoveryThrustToTierce")
 	if weapon_type == WeaponType.POLEARM:
@@ -79,7 +85,6 @@ func attack_thrust():
 
 
 func attack_cut():
-	character = get_parent().get_parent()
 	var melee_anim
 	if weapon_type == 3:
 		melee_anim = owner_character.find_node("SabreTechniques")
@@ -88,7 +93,7 @@ func attack_cut():
 			melee_anim.play("Swing1FromTierce")
 			$Sounds/Cut.play()
 			yield(melee_anim, "animation_finished")
-			character.stamina -= 50
+			owner_character.stamina -= 50
 			can_hit = false
 			melee_anim.queue("Recovery1ToTierce")
 	if weapon_type == 6:
@@ -126,20 +131,33 @@ func _use_secondary():
 # currently if changed away from and changed back to melee weapon, first swing does nothing
 #
 
-#make sure that this is always connected
+
+# Make sure that this is always connected from each individual weapon's scene
 func _on_CooldownTimer_timeout() -> void:
 	on_cooldown = false
 
 
 func _on_Hitbox_hit(other):
 	if can_hit and other.owner != owner_character and other.owner.has_method("damage"):
-		other.owner.damage(melee_damage, melee_damage_type, other)
+		other.owner.damage(primary_damage1, primary_damage_type1, other)
+		other.owner.damage(primary_damage2, primary_damage_type2, other)
+		other.owner.damage(secondary_damage1, secondary_damage_type1, other)
+		other.owner.damage(secondary_damage1, secondary_damage_type2, other)
 
 
 func _on_Hitbox_body_entered(body):
-	if melee_damage_type == 0:
-		melee_damage / 2
-	else:
-		melee_damage = melee_damage
+	if primary_damage_type1 == 0:
+		primary_damage1 / 2
+	elif primary_damage_type2 == 0:
+		primary_damage2 / 2
+	elif secondary_damage_type1 == 0:
+		secondary_damage1 / 2
+	elif secondary_damage_type2 == 0:
+		secondary_damage2 / 2
+	
+	# This pushes the hit object if it's a RigidBody
 	if body is RigidBody and can_hit == true:
-		body.apply_central_impulse(-character.global_transform.basis.z * melee_damage)
+		body.apply_central_impulse(-character.global_transform.basis.z * primary_damage1)
+		body.apply_central_impulse(-character.global_transform.basis.z * primary_damage2)
+		body.apply_central_impulse(-character.global_transform.basis.z * secondary_damage1)
+		body.apply_central_impulse(-character.global_transform.basis.z * secondary_damage2)

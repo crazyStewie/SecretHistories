@@ -18,7 +18,7 @@ func _execute_step(data : WorldData, gen_data : Dictionary, generation_seed : in
 	pass
 
 
-func get_cell_mask(data : WorldData, cells : Array, value : int) -> int:
+func get_cell_mask(data : WorldData, cells : Array, value: int) -> int:
 	var mask = 0b0000
 	mask = mask | 0b0001*int(data.get_cell_type(cells[0]) == value)
 	mask = mask | 0b0010*int(data.get_cell_type(cells[1]) == value)
@@ -114,7 +114,7 @@ func generate_double_corridor(data : WorldData, astar : AStar2D, a : int, b : in
 		# room mask as 3210 (clockwise order from lower bit)
 		var rooms = get_cell_mask(data, cells, data.CellType.ROOM)
 		
-		var is_edge = false
+		var is_edge = false   # Yellow warning in editor; var never used
 		var is_room = false
 		match rooms:
 			0b0000:

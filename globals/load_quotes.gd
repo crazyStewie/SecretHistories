@@ -1,8 +1,8 @@
 extends Node
 
 
-onready var file1 = 'res://resources/list1.txt' # text files on 'resources' folder
-onready var file2 = 'res://resources/list2.txt' # creepier list for Acts 3+
+onready var file1 = 'res://resources/text/loadscreen_quotes/list1.txt' # text files on 'resources' folder
+onready var file2 = 'res://resources/text/loadscreen_quotes/list2.txt' # creepier list for Acts 3+
 
 var list1 : PoolStringArray
 var list2 : PoolStringArray
@@ -170,6 +170,16 @@ func check_word():
 					keys += " or "
 				keys += OS.get_scancode_string(actionKey.scancode)
 		temp = temp.replace("[Binoculars key]", keys)
+		return true
+
+	elif "[Change look key]" in temp:
+		keys = ""
+		for actionKey in InputMap.get_action_list("change_screen_filter"):
+			if actionKey is InputEventKey:
+				if not keys.empty():
+					keys += " or "
+				keys += OS.get_scancode_string(actionKey.scancode)
+		temp = temp.replace("[Change look key]", keys)
 		return true
 
 	elif "[" in temp:

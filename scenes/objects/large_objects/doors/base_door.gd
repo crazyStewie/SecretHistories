@@ -1,11 +1,12 @@
 extends Spatial
 
+
+var hinge_joint : RID
+
 onready var door_body = $"%DoorBody"
 onready var doorway_gaps_filler = $"%DoorwayGapsFiller"
 onready var door_hinge = $DoorHingeZAxis
 
-
-var hinge_joint : RID
 
 func _ready():
 	door_body.add_collision_exception_with(doorway_gaps_filler)

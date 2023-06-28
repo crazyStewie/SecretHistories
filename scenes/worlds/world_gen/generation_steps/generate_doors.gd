@@ -4,6 +4,7 @@ extends GenerationStep
 export var door_dict : Dictionary
 export var door_probability = 0.9
 
+
 func _execute_step(data : WorldData, gen_data : Dictionary, generation_seed : int):
 	var random = RandomNumberGenerator.new()
 	random.seed = generation_seed

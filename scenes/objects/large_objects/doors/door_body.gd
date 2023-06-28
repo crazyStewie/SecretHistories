@@ -32,6 +32,18 @@ func __integrate_forces(state):
 	var target_angle = clamp(angle, deg2rad(min_angle), deg2rad(max_angle))
 	var angle_diff = wrapf(target_angle - angle, -PI, PI)
 	
+	if (state.angular_velocity.abs().length() > 0.03):
+		sound_vol = state.angular_velocity.abs().length() 
+		if sound_vol < 1.5:
+			sound_vol = -(2 / sound_vol)
+			
+		$AudioStreamPlayer3D.unit_db = clamp(sound_vol, 00.0, 40.0)
+		
+		if not $AudioStreamPlayer3D.playing:
+			$AudioStreamPlayer3D.play()
+	else:
+		$AudioStreamPlayer3D.stop()
+	
 	var torque_constraint = Vector3.UP*angle_diff/(state.inverse_inertia*state.step)
 	state.apply_torque_impulse(torque_constraint)
 	last_torque_constraint = torque_constraint
