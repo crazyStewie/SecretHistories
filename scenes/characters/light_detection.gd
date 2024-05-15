@@ -87,7 +87,7 @@ func _modify_by_speed():
 
 
 func _modify_by_state():
-	if owner.state == owner.State.STATE_CROUCHING:
+	if owner.movement_state == owner.MovementState.STATE_CROUCHING:
 		# Okay, you're crouching without a lit light-source in hand; that's cool, you're less visible
 		light_level_top *= 0.7   # (1 - pow(1 - level, 5))   # Previous method led to being invisible while crouching next to candle
 	

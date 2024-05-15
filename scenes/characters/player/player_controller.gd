@@ -153,7 +153,7 @@ func _physics_process(delta : float):
 	current_control_mode.update(delta)   # Added delta when doing programming recoil
 	movement_basis = current_control_mode.get_movement_basis()
 	interaction_target = current_control_mode.get_interaction_target()
-	character.character_state.interaction_target = interaction_target
+	character.state.interaction_target = interaction_target
 	interaction_handled = false
 	throw_item = null
 	current_grab_object = current_control_mode.get_grab_target()
@@ -229,7 +229,7 @@ func _walk(delta) -> void:
 	var move_dir = Vector3()
 	if !character.kick_timer.is_stopped():   # So you can't move while kicking
 		if character.grounded:   # So you can do jumpkicks
-			character.character_state.move_direction = Vector3.ZERO
+			character.state.move_direction = Vector3.ZERO
 		return
 	
 	if Input.is_action_just_pressed("movement|move_right"):
@@ -247,7 +247,7 @@ func _walk(delta) -> void:
 	
 	move_dir.x = (Input.get_action_strength("movement|move_right") - Input.get_action_strength("movement|move_left"))
 	move_dir.z = (Input.get_action_strength("movement|move_down") - Input.get_action_strength("movement|move_up"))
-	character.character_state.move_direction = move_dir.normalized()
+	character.state.move_direction = move_dir.normalized()
 	
 	# This logic has the player kick if they hit sprint and release it without moving
 	if Input.is_action_pressed("player|sprint"):
@@ -283,7 +283,7 @@ func _walk(delta) -> void:
 	if Input.is_action_just_pressed("player|jump"):
 		owner.do_jump = true
 	
-	if current_control_mode.has_method("head_bob") and head_bob_enabled and owner.grounded and owner.state == owner.State.STATE_WALKING:
+	if current_control_mode.has_method("head_bob") and head_bob_enabled and owner.grounded and owner.movement_state == owner.MovementState.STATE_WALKING:
 		current_control_mode.head_bob(delta)
 
 
@@ -319,7 +319,7 @@ func _crouch() -> void:
 				return
 				
 			owner.do_crouch = true
-			owner.state = owner.State.STATE_CROUCHING
+			owner.movement_state = owner.MovementState.STATE_CROUCHING
 			
 			if current_control_mode.has_method("crouch_cam"):
 				current_control_mode.crouch_cam()
@@ -334,7 +334,7 @@ func _crouch() -> void:
 		if Input.is_action_just_pressed("player|crouch"):
 			owner.do_crouch = !owner.do_crouch
 			if owner.do_crouch:
-				owner.state = owner.State.STATE_CROUCHING
+				owner.movement_state = owner.MovementState.STATE_CROUCHING
 		if owner.do_crouch:
 			if current_control_mode.has_method("crouch_cam"):
 				current_control_mode.crouch_cam()

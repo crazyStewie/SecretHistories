@@ -12,7 +12,7 @@ var chasing : bool = false: set = set_chasing
 
 func _process(delta):
 	self.update_target()
-	self.character.character_state.move_direction = target_position - self.global_transform.origin
+	self.character.state.move_direction = target_position - self.global_transform.origin
 
 
 func update_target():

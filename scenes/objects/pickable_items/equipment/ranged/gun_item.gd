@@ -74,11 +74,11 @@ func _physics_process(delta):
 	super._physics_process(delta)
 	if Engine.is_editor_hint() or item_state != GlobalConsts.ItemState.EQUIPPED:
 		return
-	if (not is_instance_valid(owner_character)) or (not "character_state" in owner_character):
+	if (not is_instance_valid(owner_character)) or (not "state" in owner_character):
 		return
 	if owner_character.is_in_group("PLAYER"):
 		return
-	var owner_state : CharacterState = owner_character.character_state as CharacterState
+	var owner_state : CharacterState = owner_character.state as CharacterState
 	if not is_instance_valid(owner_state):
 		return
 	var target = owner_state.target

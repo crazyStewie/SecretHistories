@@ -22,7 +22,7 @@ func _ready() -> void:
 
 func run_tick():
 	emit_signal("pre_tick")
-	tick(character.character_state)
+	tick(character.state)
 	emit_signal("post_tick")
 
 

@@ -3,7 +3,7 @@ extends MeshInstance3D
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	var state = owner.character_state as CharacterState
+	var state = owner.state as CharacterState
 	if is_instance_valid(state):
 #		var path = state.path
 #		if not path.empty():

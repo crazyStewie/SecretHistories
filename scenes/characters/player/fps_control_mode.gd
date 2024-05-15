@@ -76,9 +76,9 @@ func _notification(what):
 
 func _input(event):
 	if event is InputEventMouseMotion:
-		if (owner.state == owner.State.STATE_CLAMBERING_LEDGE
-			or owner.state == owner.State.STATE_CLAMBERING_RISE
-			or owner.state == owner.State.STATE_CLAMBERING_VENT):
+		if (owner.movement_state == owner.MovementState.STATE_CLAMBERING_LEDGE
+			or owner.movement_state == owner.MovementState.STATE_CLAMBERING_RISE
+			or owner.movement_state == owner.MovementState.STATE_CLAMBERING_VENT):
 			return
 #
 #		var m = 1.0
@@ -95,7 +95,7 @@ func _input(event):
 		pitch_yaw.y = wrapf(pitch_yaw.y, -PI, PI)
 		
 		
-	#		if owner.state != owner.State.STATE_CRAWLING:
+	#		if owner.movement_state != owner.MovementState.STATE_CRAWLING:
 	#			_camera.rotation_degrees.x -= event.relative.y * InputSettings.setting_mouse_sensitivity * m
 	#			_camera.rotation_degrees.x = clamp(_camera.rotation_degrees.x, -90, 90)
 	_camera._camera_rotation_reset = _camera.rotation_degrees

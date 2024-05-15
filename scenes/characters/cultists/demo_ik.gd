@@ -68,9 +68,9 @@ func handle_demo_ik_state():
 			always_on_skeleton_ik.interpolation =- 0.011
 		DemoState.ATTRACT_MODE:
 			# Attract cultists to player's position
-			(owner as Character).character_state.target_position = GameManager.game.player.global_position
+			(owner as Character).state.target_position = GameManager.game.player.global_position
 		DemoState.STOPPED:
-			(owner as Character).character_state.move_direction = Vector3.ZERO
+			(owner as Character).state.move_direction = Vector3.ZERO
 			if is_instance_valid(bt_root):
 				# this no longer freezes cultists after recent Jan2024 rework of AI
 				bt_root.set_process(false)

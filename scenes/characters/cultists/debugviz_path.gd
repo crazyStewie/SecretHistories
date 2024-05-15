@@ -8,7 +8,7 @@ func _process(delta):
 	if not is_visible_in_tree() or not is_instance_valid(im_mesh):
 		return
 	im_mesh.clear()
-	var state = owner.character_state as CharacterState
+	var state = owner.state as CharacterState
 	if is_instance_valid(state):
 		var path = state.path
 		if not path.is_empty():
