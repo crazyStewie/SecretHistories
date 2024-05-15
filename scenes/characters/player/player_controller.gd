@@ -692,12 +692,12 @@ func update_throw_state(throw_item : EquipmentItem, delta : float):
 			PhysicsServer3D.body_test_motion(throw_item.get_rid(), motion_params, result)
 			throw_item.collision_layer = layers
 			throw_item.collision_mask = mask
-			if result.motion.length() > 0.1:
+			if result.get_travel().length() > 0.1:
 				if throw_item_hand == ItemSelection.ITEM_MAINHAND:
 					character.inventory.drop_mainhand_item()
 				else:
 					character.inventory.drop_offhand_item()
-				throw_item.call_deferred("global_translate", result.motion)
+				throw_item.call_deferred("global_translate", result.get_travel())
 	
 	# Always test Left-Clicking twice with a bomb in main hand after changing anything here. Bomb throws are an edge case of throw as they don't have to happen with the usual throw keys.
 	elif throw_state == ThrowState.SHOULD_THROW:
