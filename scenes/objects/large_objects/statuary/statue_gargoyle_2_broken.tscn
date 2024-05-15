@@ -1,6 +1,7 @@
-[gd_scene load_steps=44 format=3 uid="uid://jv0nu4w6ag33"]
+[gd_scene load_steps=45 format=3 uid="uid://jv0nu4w6ag33"]
 
 [ext_resource type="Material" path="res://resources/models/large_objects/statues/gargoyle2/M_Gargoyle2_001.material" id="1"]
+[ext_resource type="Script" path="res://scenes/objects/large_objects/large_object.gd" id="1_1dyij"]
 [ext_resource type="Texture2D" uid="uid://bdr3of1p4vqiw" path="res://resources/models/large_objects/statues/gargoyle2/sm_gargoyle_broken_T_Gargoyle2_Base_color.png" id="1_yxisn"]
 [ext_resource type="Material" path="res://resources/models/large_objects/statues/gargoyle2/Material_004.material" id="2"]
 [ext_resource type="Texture2D" uid="uid://clrjev1n7rmo3" path="res://resources/models/large_objects/statues/gargoyle2/sm_gargoyle_broken_T_Gargoyle2_Roughness.png" id="2_7fk58"]
@@ -427,10 +428,11 @@ shadow_mesh = SubResource("ArrayMesh_3koer")
 [sub_resource type="ConvexPolygonShape3D" id="31"]
 points = PackedVector3Array(-0.600276, 0.0526521, -0.364446, 0.555986, 0.040095, 0.251377, 0.552232, 0.040176, 0.213384, 0.326343, 0.336564, 0.911875, -0.3831, 0.19458, -0.687649, 0.0619465, -0.212528, 0.0427184, -0.559065, 0.0277492, 0.113564, 0.0647269, -0.0838863, -0.495048, -0.550712, 0.22042, -0.210412, 0.261858, 0.284883, 0.989314, 0.210177, 0.0655433, -0.429629, -0.256409, -0.169117, -0.317272, -0.444809, -0.0800278, 0.127113, 0.230647, -0.0677155, 0.428427, 0.434525, -0.107747, -0.034169, -0.387112, 0.00238579, -0.629475, 0.485898, 0.0527063, 0.547637, 0.416667, 0.284883, 0.744229, 0.274779, 0.336564, 1.01535, -0.592775, -0.0340931, -0.134322, 0.481269, 0.0526507, -0.0298319, 0.172111, -0.178226, 0.199732, 0.437409, -0.0466165, -0.184185, -0.548071, 0.0401346, -0.55022, 0.0146256, -0.217941, -0.0949584, -0.460387, 0.207417, -0.597275, 0.0907416, -0.00997381, -0.538842, -0.563632, 0.207417, -0.158842, 0.510535, -0.0339739, 0.287341, 0.237339, -0.120293, -0.306092, 0.144002, -0.0898766, 0.377212, -0.215427, -0.16453, 0.0546665, 0.313422, 0.284883, 1.00225, -0.600805, 0.153317, -0.314459, 0.404449, 0.0161518, 0.553568, 0.519795, 0.155902, 0.512078, -0.537735, -0.0699812, 0.00367988, -0.349876, 0.0652506, -0.681189, 0.252686, -0.0222579, -0.423442, -0.42966, -0.070741, -0.429461, -0.609177, 0.00278434, -0.0488937, 0.527867, -0.0223235, 0.0509815, -0.367299, -0.0780322, 0.174954, 0.100222, -0.216841, 0.0040076, -0.345879, -0.0468294, -0.570904, -0.169995, -0.193548, -0.255141, 0.454485, 0.190707, 0.727982, -0.562401, 0.102934, -0.540006, -0.537023, 0.0158987, 0.138783, 0.09617, -0.184532, 0.174911, 0.45831, -0.0950876, 0.101957, -0.0222511, -0.0718508, -0.534382, 0.545636, 0.0913839, 0.266992, 0.385264, -0.120169, -0.120632, 0.113911, -0.108052, -0.430471, 0.140742, 0.0276546, -0.513143, 0.300619, 0.246205, 0.950678, 0.287699, 0.336564, 0.911875, -0.421861, 0.207417, -0.649013, -0.357377, 0.19458, -0.661948, 0.363831, -0.00950513, -0.29711, -0.132285, -0.204106, -0.166821, 0.452013, -0.0202419, 0.418997, 0.518663, 0.0778997, 0.503192)
 
-[node name="StatueGargoyle2" type="Node3D" groups=["CLAMBERABLE"]]
+[node name="StatueGargoyle2Broken" type="Node3D" groups=["CLAMBERABLE"]]
 
-[node name="StaticBody3D" type="StaticBody3D" parent="."]
+[node name="StaticBody3D" type="RigidBody3D" parent="."]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0.741729, 0)
+script = ExtResource("1_1dyij")
 
 [node name="SM_gargoyle002" type="MeshInstance3D" parent="StaticBody3D"]
 mesh = SubResource("ArrayMesh_2ibsv")

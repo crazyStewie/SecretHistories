@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://bbo2s88mdeaxe"]
+
+[ext_resource type="Script" path="res://scenes/effects/drop_sound_controller.gd" id="1_3kmy6"]
+
+[node name="Node3D" type="AudioStreamPlayer3D"]
+script = ExtResource("1_3kmy6")
+
+[connection signal="finished" from="." to="." method="_on_Spatial_finished"]

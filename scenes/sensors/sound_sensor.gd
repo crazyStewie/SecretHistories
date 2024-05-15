@@ -19,7 +19,7 @@ func _ready() -> void:
 
 
 func on_body_entered(body: Node3D) -> void:
-	if !(body is Character or body is PickableItem or body is LargeObjectDropSound): return
+	if !(body is Character or body is PickableItem or body is LargeObject): return
 	if !sound_sources.has(body): sound_sources.append(body)
 
 
@@ -44,7 +44,7 @@ func check_for_sounds() -> bool:   # changed to bool during migration
 
 
 func get_interest_level(source: Node3D) -> int:
-	if !(source is Character or source is PickableItem or source is LargeObjectDropSound): return 0
+	if !(source is Character or source is PickableItem or source is LargeObject): return 0
 	if !source.noise_level: return 0
 	
 	var interest := source.noise_level as int

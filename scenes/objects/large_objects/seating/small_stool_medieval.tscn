@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://cbcfg7fohsc0r"]
+[gd_scene load_steps=5 format=3 uid="uid://cbcfg7fohsc0r"]
 
 [ext_resource type="Material" path="res://resources/models/large_objects/seating/trn_SmallStool.material" id="1"]
+[ext_resource type="Script" path="res://scenes/objects/large_objects/large_object.gd" id="1_oe8e7"]
 
 [sub_resource type="ArrayMesh" id="1"]
 _surfaces = [{
@@ -24,6 +25,7 @@ points = PackedVector3Array(0.386103, 0.182284, 0.544353, -0.399284, -0.204182, 
 [node name="SmallStoolMedieval" type="RigidBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.033008, 0)
 collision_layer = 513
+script = ExtResource("1_oe8e7")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, -0.351385, 0)
@@ -38,5 +40,3 @@ shape = SubResource("ConvexPolygonShape3D_dq8ub")
 [node name="Durability" type="Timer" parent="."]
 wait_time = 300.0
 one_shot = true
-
-[connection signal="timeout" from="Durability" to="." method="_on_Durability_timeout"]

@@ -1,5 +1,6 @@
-[gd_scene load_steps=8 format=3 uid="uid://dwr1m0bxg3n4q"]
+[gd_scene load_steps=9 format=3 uid="uid://dwr1m0bxg3n4q"]
 
+[ext_resource type="Script" path="res://scenes/objects/large_objects/large_object.gd" id="1_4det5"]
 [ext_resource type="Texture2D" uid="uid://deom27spqvgov" path="res://resources/models/large_objects/statues/gargoyle2/Gargoyle2_T_Gargoyle2_Base_color.png" id="1_ddibe"]
 [ext_resource type="Texture2D" uid="uid://ctv8v0p22pyvf" path="res://resources/models/large_objects/statues/gargoyle2/Gargoyle2_T_Gargoyle2_Roughness.png" id="2_1k2bm"]
 [ext_resource type="Texture2D" uid="uid://cin1337xe3u8r" path="res://resources/models/large_objects/statues/gargoyle2/Gargoyle2_T_Gargoyle2_Normal_OpenGL.png" id="3_oigw2"]
@@ -54,6 +55,7 @@ points = PackedVector3Array(-0.685194, -0.451418, -0.427048, 0.557505, 1.11007, 
 
 [node name="StatueGargoyle2" type="StaticBody3D" groups=["CLAMBERABLE"]]
 collision_layer = 512
+script = ExtResource("1_4det5")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0.787588, 8.01446e-05)

@@ -74,9 +74,8 @@ _data = {
 [sub_resource type="BoxShape3D" id="2"]
 size = Vector3(0.314656, 0.472528, 0.320404)
 
-[node name="CandleSconce" type="RigidBody3D"]
+[node name="CandleSconce" type="StaticBody3D"]
 collision_layer = 513
-mass = 2.0
 script = ExtResource("3")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]

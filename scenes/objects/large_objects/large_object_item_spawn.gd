@@ -24,7 +24,7 @@ func _ready():
 				
 			if new_item is ShardOfTheComet and GameManager.game.shard_has_spawned == false:
 				GameManager.game.shard_has_spawned = true
-			elif new_item is ShardOfTheComet and GameManager.game.shard_has_spawned:
+			elif new_item is ShardOfTheComet and GameManager.game.shard_has_spawned:   # there should be only one
 				new_item.queue_free()
 				return
 			

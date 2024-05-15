@@ -1,4 +1,4 @@
-extends "res://scenes/objects/large_objects/large_object_drop_sound.gd"
+extends LargeObject
 
 # eventually this is a tool/container-style item or large object that can be reloaded with candles which are disposable...not that you'd ever care to do that
 
