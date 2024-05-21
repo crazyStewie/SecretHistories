@@ -136,6 +136,8 @@ var changed_to_reduce_color = false   # Have we changed to reduce color filter o
 
 @onready var noise_timer = $"../Audio/NoiseTimer"   # Because instant noises sometimes aren't detected
 
+var _placing_blueprint: RigidBody3D = null # A copy of the player's item that he is trying to drop
+
 
 func _ready():
 	owner.is_to_move = false
@@ -667,13 +669,13 @@ func empty_slot():
 		character.inventory.hotbar[10] = empty_hand
 
 
-var _placing_blueprint: RigidBody3D = null
 func update_throw_state(throw_item : EquipmentItem, delta : float):
 	
 	if throw_state == ThrowState.PRESSING:
 		# Shows the object blueprint in the world 
 		throw_item = character.inventory.get_mainhand_item() if throw_item_hand == ItemSelection.ITEM_MAINHAND else character.inventory.get_offhand_item()
 		throw_item.set_item_state(GlobalConsts.ItemState.DROPPED)
+		
 		if _placing_blueprint == null:
 			_placing_blueprint = throw_item.duplicate()
 			var _placing_blueprint_mesh: MeshInstance3D = _placing_blueprint.get_node("MeshInstance3D")
@@ -728,8 +730,10 @@ func update_throw_state(throw_item : EquipmentItem, delta : float):
 	
 	# Always test Left-Clicking twice with a bomb in main hand after changing anything here. Bomb throws are an edge case of throw as they don't have to happen with the usual throw keys.
 	elif throw_state == ThrowState.SHOULD_THROW:
-		_placing_blueprint.queue_free()
-		_placing_blueprint = null
+		if _placing_blueprint:
+			_placing_blueprint.queue_free()
+			_placing_blueprint = null
+			
 		print("Should throw")
 		if throw_item:   # This is a lit bomb that has already set itself as throw_item
 			if throw_item == character.inventory.get_mainhand_item():
