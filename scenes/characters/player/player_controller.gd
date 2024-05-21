@@ -136,6 +136,8 @@ var changed_to_reduce_color = false   # Have we changed to reduce color filter o
 
 @onready var noise_timer = $"../Audio/NoiseTimer"   # Because instant noises sometimes aren't detected
 
+var _placing_blueprint: RigidBody3D = null # A copy of the player's item that he is trying to drop
+
 
 func _ready():
 	owner.is_to_move = false
@@ -668,8 +670,35 @@ func empty_slot():
 
 
 func update_throw_state(throw_item : EquipmentItem, delta : float):
+	
+	if throw_state == ThrowState.PRESSING:
+		# Shows the object blueprint in the world 
+		throw_item = character.inventory.get_mainhand_item() if throw_item_hand == ItemSelection.ITEM_MAINHAND else character.inventory.get_offhand_item()
+		throw_item.set_item_state(GlobalConsts.ItemState.DROPPED)
+		
+		if _placing_blueprint == null:
+			_placing_blueprint = throw_item.duplicate()
+			var _placing_blueprint_mesh: MeshInstance3D = _placing_blueprint.get_node("MeshInstance3D")
+			var shader: ShaderMaterial = load("res://resources/shaders/blueprints/blueprint.tres")
+			_placing_blueprint_mesh.set_surface_override_material(0, shader)
+		
+		if _placing_blueprint:
+			_placing_blueprint.set_collision_layer_value(1, false)
+			_placing_blueprint.set_collision_layer_value(4, false)
+			_placing_blueprint.set_collision_layer_value(10, false)
+			_placing_blueprint.set_collision_layer_value(7, false)
+			
+			for child in _placing_blueprint.get_children():
+				_remove_all_interactivity(child)
+			
+			get_tree().get_root().add_child(_placing_blueprint)
+			_placing_blueprint.global_position = current_control_mode.get_target_placement_position()
+			_placing_blueprint.rotation_degrees = Vector3(0,90,0)
+	
 	# Place item upright on pointed-at surface or, if no surface in range, simply drop in front of player
 	if throw_state == ThrowState.SHOULD_PLACE:
+		_placing_blueprint.queue_free()
+		_placing_blueprint = null
 		print("Should place rather than throw item")
 		throw_item = character.inventory.get_mainhand_item() if throw_item_hand == ItemSelection.ITEM_MAINHAND else character.inventory.get_offhand_item()
 		throw_item.set_item_state(GlobalConsts.ItemState.DROPPED)
@@ -701,6 +730,10 @@ func update_throw_state(throw_item : EquipmentItem, delta : float):
 	
 	# Always test Left-Clicking twice with a bomb in main hand after changing anything here. Bomb throws are an edge case of throw as they don't have to happen with the usual throw keys.
 	elif throw_state == ThrowState.SHOULD_THROW:
+		if _placing_blueprint:
+			_placing_blueprint.queue_free()
+			_placing_blueprint = null
+			
 		print("Should throw")
 		if throw_item:   # This is a lit bomb that has already set itself as throw_item
 			if throw_item == character.inventory.get_mainhand_item():
@@ -886,6 +919,22 @@ func _cheats():
 			owner._collider.disabled = false
 			owner._crouch_collider.disabled = true
 			print("CHEAT: noclip disabled")
+
+
+func _remove_all_interactivity(node) -> void:
+	if node is RigidBody2D or node is StaticBody3D or node is Area3D:
+		node.set_collision_layer_value(1, false)
+		node.set_collision_layer_value(4, false)
+		node.set_collision_layer_value(10, false)
+		node.set_collision_layer_value(7, false)
+	
+	for child in node.get_children():
+		if child is RigidBody2D or child is StaticBody3D or child is Area3D:
+			child.set_collision_layer_value(1, false)
+			child.set_collision_layer_value(4, false)
+			child.set_collision_layer_value(10, false)
+			child.set_collision_layer_value(7, false)
+		_remove_all_interactivity(child)
 
 
 func _on_Player_player_landed():

@@ -189,6 +189,9 @@ func get_target_placement_position() -> Vector3:
 func get_aim_direction() -> Vector3:
 	return -_camera.global_transform.basis.z
 
+func get_aimcast_collision_normal() -> Vector3:
+	return aimcast.get_collision_normal()
+
 
 func get_grab_target() -> RigidBody3D:
 	return grabcast.get_collider() as RigidBody3D
