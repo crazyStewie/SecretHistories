@@ -674,6 +674,7 @@ func update_throw_state(throw_item : EquipmentItem, delta : float):
 		# Shows the object blueprint in the world 
 		throw_item = character.inventory.get_mainhand_item() if throw_item_hand == ItemSelection.ITEM_MAINHAND else character.inventory.get_offhand_item()
 		throw_item.set_item_state(GlobalConsts.ItemState.DROPPED)
+		
 		if _placing_blueprint == null:
 			_placing_blueprint = throw_item.duplicate()
 			var _placing_blueprint_mesh: MeshInstance3D = _placing_blueprint.get_node("MeshInstance3D")
@@ -681,17 +682,28 @@ func update_throw_state(throw_item : EquipmentItem, delta : float):
 			_placing_blueprint_mesh.set_surface_override_material(0, shader)
 		
 		if _placing_blueprint:
-			_placing_blueprint.set_collision_layer_value(1, false)
-			_placing_blueprint.set_collision_layer_value(4, false)
-			_placing_blueprint.set_collision_layer_value(10, false)
-			_placing_blueprint.set_collision_layer_value(7, false)
-			
+			current_control_mode.aimcast.add_exception(_placing_blueprint)
 			for child in _placing_blueprint.get_children():
-				_remove_all_interactivity(child)
+				if child is RigidBody3D or child is Area3D or child is StaticBody3D:
+					current_control_mode.aimcast.add_exception(child)
 			
-			get_tree().get_root().add_child(_placing_blueprint)
-			_placing_blueprint.global_position = current_control_mode.get_target_placement_position()
-			_placing_blueprint.rotation_degrees = Vector3(0,90,0)
+			var origin : Vector3 = owner.drop_position_node.global_transform.origin
+			var end : Vector3 = current_control_mode.get_target_placement_position()
+			var dir : Vector3 = end - origin
+			dir = dir.normalized() * min(dir.length(), max_placement_distance)
+			
+			var motion_params = PhysicsTestMotionParameters3D.new()
+			motion_params.from = owner.drop_position_node.global_transform
+			motion_params.motion = dir
+			
+			var result = PhysicsTestMotionResult3D.new()
+			var collision_happened: bool = PhysicsServer3D.body_test_motion(_placing_blueprint.get_rid(), motion_params, result)
+			
+			if _placing_blueprint.get_parent() == null:
+				owner.add_child(_placing_blueprint)
+			var new_position: Vector3 = origin + result.get_travel()
+			_placing_blueprint.global_transform.origin = new_position
+			_placing_blueprint.rotation = Vector3(0, 90, 0)
 	
 	# Place item upright on pointed-at surface or, if no surface in range, simply drop in front of player
 	if throw_state == ThrowState.SHOULD_PLACE:
@@ -915,22 +927,6 @@ func _cheats():
 			owner._collider.disabled = false
 			owner._crouch_collider.disabled = true
 			print("CHEAT: noclip disabled")
-
-
-func _remove_all_interactivity(node) -> void:
-	if node is RigidBody2D or node is StaticBody3D or node is Area3D:
-		node.set_collision_layer_value(1, false)
-		node.set_collision_layer_value(4, false)
-		node.set_collision_layer_value(10, false)
-		node.set_collision_layer_value(7, false)
-	
-	for child in node.get_children():
-		if child is RigidBody2D or child is StaticBody3D or child is Area3D:
-			child.set_collision_layer_value(1, false)
-			child.set_collision_layer_value(4, false)
-			child.set_collision_layer_value(10, false)
-			child.set_collision_layer_value(7, false)
-		_remove_all_interactivity(child)
 
 
 func _on_Player_player_landed():
