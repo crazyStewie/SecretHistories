@@ -703,7 +703,7 @@ func update_throw_state(throw_item : EquipmentItem, delta : float):
 				owner.add_child(_placing_blueprint)
 			var new_position: Vector3 = origin + result.get_travel()
 			_placing_blueprint.global_transform.origin = new_position
-			_placing_blueprint.rotation = Vector3(0, 90, 0)
+			_placing_blueprint.rotation = owner.drop_position_node.rotation
 	
 	# Place item upright on pointed-at surface or, if no surface in range, simply drop in front of player
 	if throw_state == ThrowState.SHOULD_PLACE:
