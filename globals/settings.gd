@@ -1,7 +1,9 @@
 class_name SettingsClass
 extends Node
 
-
+##If this is a singleton (autoloaded node), why is it also on a node inside a scene?
+#TODO: unify settings, possibly rework how they are in memory/file to something 
+#	less or not at all error prone. Current version will give corrupted data for some settings
 signal setting_added(setting_name)
 signal setting_removed(setting_name)
 signal setting_changed(setting_name, old_value, new_value)

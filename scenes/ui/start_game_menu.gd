@@ -10,7 +10,8 @@ func _ready() -> void:
 	game = GAME_SCENE.instantiate()
 	%StartGameSettings.attach_settings(game.get_node("%LocalSettings"))
 	%SettingsUI.attach_settings(game.get_node("%LocalSettings"), false)
-	BackgroundMusic.volume_db = -10
+	var tween = get_tree().create_tween()
+	tween.tween_property(BackgroundMusic, "volume_db", -10, 0.3)
 
 
 func _input(event):
@@ -45,7 +46,13 @@ func _on_Timer_timeout():
 func _on_GameIntro_intro_done():
 	GameManager.is_player_dead = false
 	GameManager.act = 1
-	LoadScene.change_scene_to_file(game)
+	
+	##NOT IDEAL, manually adding/removing things like this,
+	# but changes to the changed scene and deletes current one.
+	# to be fixed with the settings unification
+	get_tree().root.add_child(game)
+	await get_tree().create_timer(0.5).timeout
+	get_tree().call_deferred("unload_current_scene")
 
 
 func _on_ReturnButton_pressed() -> void:

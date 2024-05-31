@@ -1,10 +1,21 @@
 class_name CharacterAudio
 extends Node3D
 
-
+# TODO: Overhaul the entire system so as not to have multiple objects with the same streams in-memory, 
+#       support multiple materials (ie for walking).
+#       Also, save the Audio node with the child nodes as a scene, so as to avoid the possibility 
+#       of human error when creating new characters
 # TODO: Eventually get working or ensure working different footstep sounds
-@onready var _footstep_sounds : Array = _stone_footstep_sounds   # Unsure if onready needed
-var _stone_footstep_sounds : Array = []
+@onready var _footstep_sounds : Array = _stone_footstep_sounds   # Unsure if onready needed ##Does not help to assign it an empty array
+# TODO: Either line 4, or have static links to files, like line 11-18
+var _stone_footstep_sounds : Array = [
+	preload("res://resources/sounds/footsteps/stone_footsteps/footstep_1.wav"),
+	preload("res://resources/sounds/footsteps/stone_footsteps/footstep_2.wav"),
+	preload("res://resources/sounds/footsteps/stone_footsteps/footstep_3.wav"),
+	preload("res://resources/sounds/footsteps/stone_footsteps/footstep_4.wav"),
+	preload("res://resources/sounds/footsteps/stone_footsteps/footstep_5.wav"),
+	preload("res://resources/sounds/footsteps/stone_footsteps/footstep_6.wav")
+	]
 var _wood_footstep_sounds : Array = []
 var _carpet_footstep_sounds : Array = []
 var _water_footstep_sounds : Array = []
@@ -70,7 +81,7 @@ var last_speech_type   # Tracked to avoid interrupting self to say same type of 
 
 func _ready():
 	# Movement audio	
-	load_sounds("resources/sounds/footsteps/stone_footsteps", 3)
+	#load_sounds("resources/sounds/footsteps/stone_footsteps", 3)
 	#load_sounds("resources/sounds/footsteps/wood_footsteps", 4)
 	#load_sounds("resources/sounds/footsteps/water_footsteps", 5)
 	load_sounds("resources/sounds/footsteps/gravel_footsteps", 6)
@@ -97,9 +108,10 @@ func load_sounds(sound_dir, type : int) -> void:
 	if sound_dir.ends_with("/"):
 		sound_dir.erase(sound_dir.length() - 1, 1)
 
-	if sound_dir.begins_with("res://"):
+	if !sound_dir.begins_with("res://"):
 		sound_dir = "res://" + sound_dir
-
+	
+	
 	var snd_dir = DirAccess.open(sound_dir)
 	
 	if not is_instance_valid(snd_dir):
@@ -439,12 +451,21 @@ func _on_BT_Reload_Gun_character_reloaded():
 # Movement
 
 func play_footstep_sound(rate : float = 0.0, pitch : float = 1.0, volume : float = 0.0):
+	if(movement_audio.playing):
+		return
 	movement_audio.volume_db = rate
 	movement_audio.pitch_scale = pitch
-	movement_audio.volume_db = volume
-	if _footstep_sounds.size() > 0:
-		_footstep_sounds.shuffle()
-		movement_audio.stream = _footstep_sounds.front()
+	## Why is there a volume AND a rate? TODO: fix during overhaul
+	#movement_audio.volume_db = volume
+	## During the overhaul, have a proper way to give the material and 
+	#  select the audio stream array with a match statement
+	#if _footstep_sounds.size() > 0:
+		#_footstep_sounds.shuffle()
+		#movement_audio.stream = _footstep_sounds.front()
+		#movement_audio.play()
+	if _stone_footstep_sounds.size() > 0:
+		_stone_footstep_sounds.shuffle()
+		movement_audio.stream = _stone_footstep_sounds.front()
 		movement_audio.play()
 
 
