@@ -17,7 +17,7 @@ func _enter_tree():
 
 
 func _integrate_forces(state):
-	if !is_instance_valid(LoadScene.loadscreen):   # If it's at least a few seconds after level load
+	if !LoadScene.loading:   # If it's at least a few seconds after level load
 		if state.get_contact_count() > 0:
 			if state.get_contact_count() > oldCount and state.linear_velocity.length() > 0.4:
 				play_drop_sound(state.linear_velocity.length(), false)

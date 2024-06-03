@@ -29,6 +29,7 @@ var item_drop_pitch_level = 10
 
 var has_thrown = false
 #var deceleration_factor = 0.9
+var can_play_sound : bool = false
 
 var initial_linear_velocity
 var is_soundplayer_ready = false
@@ -42,6 +43,8 @@ var is_soundplayer_ready = false
 
 
 func _enter_tree():
+	await get_tree().create_timer(2).timeout
+	can_play_sound = true
 	if not audio_player:
 		var drop_sound = AudioStreamPlayer3D.new()
 		drop_sound.name = "DropSound"
@@ -93,7 +96,7 @@ func play_throw_sound():
 
 
 func play_drop_sound(body):
-	if !is_instance_valid(LoadScene.loadscreen):   # If it's at least a few seconds after level load
+	if (!LoadScene.loading and can_play_sound):   # If it's at least a few seconds after level load
 		if self.item_drop_sound and self.audio_player and self.linear_velocity.length() > 0.2 and self.is_soundplayer_ready:
 			self.audio_player.stream = self.item_drop_sound
 			

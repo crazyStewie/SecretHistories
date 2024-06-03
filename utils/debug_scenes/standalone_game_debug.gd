@@ -37,7 +37,7 @@ func _ready() -> void:
 		get_window().mode = Window.MODE_EXCLUSIVE_FULLSCREEN if (false) else Window.MODE_WINDOWED
 		get_window().size = _window_size
 		get_window().position = _window_position
-		LoadScene.setup_loadscreen()
+		#LoadScene.setup_loadscreen()
 		# warning-ignore:return_value_discarded
 		LoadScene.connect("loading_screen_removed", Callable(self, "_on_LoadScene_loading_screen_removed"))
 		GameManager.is_player_dead = false
