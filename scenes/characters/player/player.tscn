@@ -672,9 +672,9 @@ RMB (held) - grab & drag things around
 Number row & mouse-wheel - cycle main-hand item
 Scroll-wheel Click - throw main-hand item
 
-LAlt & E - use off-hand item
-Q (tap) - cycle off-hand items
-Q (held & released) - swap hands
+LAlt - use off-hand item
+TAB (tap) - cycle off-hand items
+TAB (held & released) - swap hands
 T or G - throw off-hand item
 
 R (tap) - reload (can't with item in offhand)
