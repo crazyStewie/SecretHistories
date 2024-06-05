@@ -23,6 +23,7 @@ const ON_GRAB_MAX_SPEED : float = 0.1
 # By default, Right corresponds to +X, Left to -X, Up to -Z and Down to +Z
 var movement_basis : Basis = Basis.IDENTITY
 var interaction_target : Node = null
+var last_interaction_target : Node = null
 var target_placement_position : Vector3 = Vector3.ZERO
 
 #export var _grabcast : NodePath
@@ -165,6 +166,7 @@ func _physics_process(delta : float):
 	_crouch()
 	handle_grab(delta)
 	_handle_inventory_and_grab_input(delta)
+	nightvision()
 	handle_screen_filters()
 	handle_binocs()
 	next_item()
@@ -346,9 +348,13 @@ func handle_grab(delta : float):
 	if wants_to_drop == false:
 		if wanna_grab and not is_grabbing:
 			
-			var object = current_control_mode.get_grab_target()
+			#var object = current_control_mode.get_grab_target()
+			var object = null
+			if is_instance_valid(last_interaction_target):
+				object = last_interaction_target
+				print(object)
 			
-			if object:
+			if object is PickableItem:
 				var grab_position = current_control_mode.get_grab_global_position()
 				grab_relative_object_position = object.to_local(grab_position)
 				grab_distance = _camera.global_transform.origin.distance_to(grab_position)
@@ -500,9 +506,9 @@ func _handle_inventory_and_grab_input(delta : float):
 						if owner.noise_level < 8:
 							owner.noise_level = 8
 					throw_state = ThrowState.IDLE
-
+	
 		if Input.is_action_just_pressed("playerhand|main_use_secondary"):
-			if character.inventory.get_mainhand_item() and !interaction_target is PickableItem and !interaction_target is Interactable:   # TODO: replace this with double-tap use_primary
+			if character.inventory.get_mainhand_item() and !interaction_target is PickableItem and !interaction_target is Interactable: 
 				character.inventory.get_mainhand_item().use_secondary()
 				if character.inventory.get_mainhand_item() is MeleeItem:
 					%AnimationTree.set("parameters/MeleeSpeed/scale", character.inventory.get_mainhand_item().melee_attack_speed)
@@ -511,7 +517,7 @@ func _handle_inventory_and_grab_input(delta : float):
 					if owner.noise_level < 8:
 						owner.noise_level = 10
 				throw_state = ThrowState.IDLE
-
+	
 	# Start timer to check if want to reload or unload
 	if Input.is_action_just_pressed("player|reload"):
 		if character.inventory.get_mainhand_item():
@@ -551,11 +557,14 @@ func _handle_inventory_and_grab_input(delta : float):
 		wanna_grab = true
 	else:
 		wanna_grab = false
+	if Input.is_action_just_pressed("player|interact"): 
+		if interaction_target and is_grabbing == false:
+			last_interaction_target = interaction_target
 	if Input.is_action_pressed("player|interact"):   # TODO: when RigidBody doors are back, reinclude:  or Input.is_action_pressed("playerhand|main_use_secondary"):
 #		# TODO: if on_fire: put out fire
 #		# TODO: elif in_close_eyes_area: close eyes
 #		# TODO: elif in_hold_breath_area: hold breath
-		if interaction_target and is_grabbing == false:
+		if last_interaction_target and is_grabbing == false: # TODO: Make it so even if no longer pointing at item, if holding interact, if object still nearby, grab pointed at object
 			grab_press_length += delta
 			if grab_press_length >= 0.2:
 				wanna_grab = true
@@ -593,6 +602,7 @@ func _handle_inventory_and_grab_input(delta : float):
 		grab_press_length = 0.0
 		if is_grabbing == true:
 			is_grabbing = false
+			last_interaction_target = null
 			print("Grab broken by letting go of grab key")
 			if grab_object is PickableItem:   # So no plain RigidBodies or large objects
 				grab_object.set_item_state(GlobalConsts.ItemState.DAMAGING)    # This allows dropped items to hit cultists
@@ -600,44 +610,17 @@ func _handle_inventory_and_grab_input(delta : float):
 			interaction_handled = true
 		camera_movement_resistance = 1.0   # In case of a grab-throw, make sure the camera turning still isn't slowed
 		if !(wanna_grab or is_grabbing or interaction_handled):
-			if interaction_target != null:
-				if interaction_target is PickableItem:   # and character.inventory.current_mainhand_slot != 10:
-					character.inventory.add_item(interaction_target)
-					interaction_target = null
-				elif interaction_target is Interactable:
-					interaction_target.interact(owner)
+			if last_interaction_target != null:
+				if last_interaction_target is PickableItem:   # and character.inventory.current_mainhand_slot != 10:
+					character.inventory.add_item(last_interaction_target)
+					last_interaction_target = null
+				elif last_interaction_target is Interactable:
+					last_interaction_target.interact(owner)
 		if GameSettings.ads_hold_enabled:   # ADS hold mode
 			if character.player_animations.is_on_ads:
 				character.player_animations.end_ads()
 		ads_handled = false   # Gets it ready for next press
-		
-	if Input.is_action_just_released("ablty|nightvision_darksight"):
-		if character.inventory.belt_item:
-			character.inventory.belt_item.use_primary()
-		elif character.inventory.get_offhand_item():
-			character.inventory.get_offhand_item().use_primary()
-		elif character.inventory.get_mainhand_item():
-			character.inventory.get_mainhand_item().use_primary()
 
-
-func previous_item():
-	if Input.is_action_just_pressed("itm|previous_hotbar_item") and character.inventory.current_mainhand_slot != 0 and !Input.is_key_pressed(KEY_SHIFT):
-		character.inventory.drop_bulky_item()
-		character.inventory.current_mainhand_slot -=1
-	
-	elif Input.is_action_just_pressed("itm|previous_hotbar_item") and character.inventory.current_mainhand_slot == 0 and !Input.is_key_pressed(KEY_SHIFT):
-		character.inventory.drop_bulky_item()
-		character.inventory.current_mainhand_slot = 10
-
-
-func next_item():
-	if Input.is_action_just_pressed("itm|next_hotbar_item") and character.inventory.current_mainhand_slot != 10 and !Input.is_key_pressed(KEY_SHIFT):
-		character.inventory.drop_bulky_item()
-		character.inventory.current_mainhand_slot += 1
-	
-	elif Input.is_action_just_pressed("itm|next_hotbar_item") and character.inventory.current_mainhand_slot == 10 and !Input.is_key_pressed(KEY_SHIFT):
-		character.inventory.drop_bulky_item()
-		character.inventory.current_mainhand_slot = 0
 
 
 func drop_grabable():
@@ -647,6 +630,8 @@ func drop_grabable():
 			wants_to_drop = true
 			if grab_object != null:
 				is_grabbing = false
+				grab_press_length = 0.0
+				last_interaction_target = null
 				print("Grab broken by throw")
 				interaction_handled = true
 				
@@ -663,14 +648,7 @@ func drop_grabable():
 		wants_to_drop = false
 
 
-func empty_slot():
-	if character.inventory.hotbar != null and not is_instance_valid(character.inventory.hotbar[10]):
-		var empty_hand = preload("res://scenes/objects/pickable_items/equipment/empty_slot/_empty_hand.tscn").instantiate()
-		character.inventory.hotbar[10] = empty_hand
-
-
 func update_throw_state(throw_item : EquipmentItem, delta : float):
-	
 	if throw_state == ThrowState.PRESSING:
 		# Shows the object blueprint in the world 
 		throw_item = character.inventory.get_mainhand_item() if throw_item_hand == ItemSelection.ITEM_MAINHAND else character.inventory.get_offhand_item()
@@ -821,6 +799,42 @@ func throw_impulse_and_damage(item):
 	item.add_collision_exception_with(character)
 	if item.has_method("play_throw_sound"):
 		item.play_throw_sound()
+
+
+func nightvision():
+	if Input.is_action_just_released("ablty|nightvision_darksight"):
+		if character.inventory.belt_item:
+			character.inventory.belt_item.use_primary()
+		elif character.inventory.get_offhand_item():
+			character.inventory.get_offhand_item().use_primary()
+		elif character.inventory.get_mainhand_item():
+			character.inventory.get_mainhand_item().use_primary()
+
+
+func previous_item():
+	if Input.is_action_just_pressed("itm|previous_hotbar_item") and character.inventory.current_mainhand_slot != 0 and !Input.is_key_pressed(KEY_SHIFT):
+		character.inventory.drop_bulky_item()
+		character.inventory.current_mainhand_slot -=1
+	
+	elif Input.is_action_just_pressed("itm|previous_hotbar_item") and character.inventory.current_mainhand_slot == 0 and !Input.is_key_pressed(KEY_SHIFT):
+		character.inventory.drop_bulky_item()
+		character.inventory.current_mainhand_slot = 10
+
+
+func next_item():
+	if Input.is_action_just_pressed("itm|next_hotbar_item") and character.inventory.current_mainhand_slot != 10 and !Input.is_key_pressed(KEY_SHIFT):
+		character.inventory.drop_bulky_item()
+		character.inventory.current_mainhand_slot += 1
+	
+	elif Input.is_action_just_pressed("itm|next_hotbar_item") and character.inventory.current_mainhand_slot == 10 and !Input.is_key_pressed(KEY_SHIFT):
+		character.inventory.drop_bulky_item()
+		character.inventory.current_mainhand_slot = 0
+
+
+func empty_slot():
+	if character.inventory.hotbar != null and not is_instance_valid(character.inventory.hotbar[10]):
+		var empty_hand = preload("res://scenes/objects/pickable_items/equipment/empty_slot/_empty_hand.tscn").instantiate()
+		character.inventory.hotbar[10] = empty_hand
 
 
 func handle_screen_filters():
