@@ -1,4 +1,4 @@
-extends RigidBody3D
+extends ConsumableItem
 class_name PotionItem
 
 # Should eventually choose a psuedorandom potion bottle, color, effect - and always choose the same for future potions of this type (roguelike ID game)

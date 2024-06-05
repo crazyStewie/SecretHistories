@@ -1,10 +1,11 @@
-[gd_scene load_steps=19 format=3 uid="uid://bvy16cxrdbqm"]
+[gd_scene load_steps=20 format=3 uid="uid://bvy16cxrdbqm"]
 
-[ext_resource type="PackedScene" path="res://scenes/objects/pickable_items/equipment/consumable/medical/_medical_item.tscn" id="1_wtlcp"]
 [ext_resource type="Script" path="res://scenes/objects/pickable_items/equipment/consumable/potions/potion.gd" id="2_bskuj"]
 [ext_resource type="Script" path="res://scenes/effects/mesh_instances.gd" id="3_hi0f8"]
-[ext_resource type="Texture2D" uid="uid://bnukdp13vk03r" path="res://resources/models/items/consumables/potions/exported_gltf/propki.png" id="4_j4bvs"]
+[ext_resource type="Texture2D" uid="uid://cb10o52mwx2e8" path="res://resources/models/items/consumables/potions/exported_gltf/propki.png" id="4_j4bvs"]
+[ext_resource type="AudioStream" uid="uid://dc22jwmsfjssq" path="res://resources/sounds/breathing/sigh/568927__bogenseeberg__sigh_collection-18.ogg" id="5_dvdky"]
 [ext_resource type="AudioStream" uid="uid://dv0bd0pmmgo8f" path="res://resources/sounds/bottles_and_drinking/256568__sjnewton__cork.mp3" id="5_qsdln"]
+[ext_resource type="Script" path="res://scenes/objects/large_objects/placement_anchor.gd" id="6_5ko86"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_iwf55"]
 resource_name = "verevka"
@@ -167,46 +168,68 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_6gnau")
 
-[sub_resource type="BoxShape3D" id="4"]
-size = Vector3(0.058, 0.05, 0.05)
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_hjfs8"]
+points = PackedVector3Array(-3.95092, 2.06883, -0.910872, -3.18338, 2.06831, -0.595105, -3.18257, 1.95598, -0.594722, -3.4195, 1.92714, -1.55367, -3.70013, 1.70914, -0.550362, -3.58785, 2.22461, -0.0815523, -3.49838, 2.33645, -0.908989, -3.68074, 1.83917, -0.0363774, -3.7114, 1.92714, -1.55367, -3.38906, 1.71457, -0.929233, -3.40259, 1.88431, -0.0302976, -3.51685, 2.17029, -1.55367, -3.85486, 2.24592, -0.596747, -3.83391, 1.75495, -0.909054, -3.25142, 2.2253, -0.909395, -3.92271, 1.86715, -0.596247, -3.75132, 2.09345, -0.0311709, -3.42576, 2.1635, -0.0295926, -3.83133, 2.267, -0.907764, -3.18008, 1.93291, -0.910806, -3.38634, 1.70997, -0.595735, -3.7114, 2.09728, -1.55367, -3.6385, 1.85413, -1.55367, -3.29843, 2.26808, -0.619024, -3.61032, 2.33744, -0.595429, -3.65498, 1.6874, -0.9092, -3.94835, 2.04594, -0.594672, -3.4195, 2.09728, -1.55367, -3.2533, 1.8004, -0.596507, -3.94784, 1.93357, -0.909783, -3.51893, 1.81426, -0.0293976, -3.24954, 1.79784, -0.910201)
 
-[node name="PotionTest2" instance=ExtResource("1_wtlcp")]
+[node name="PotionTest2" type="RigidBody3D"]
+collision_layer = 64
+collision_mask = 65
+mass = 0.1
+continuous_cd = true
+max_contacts_reported = 5
+contact_monitor = true
 script = ExtResource("2_bskuj")
 
-[node name="MeshInstance3D" parent="." index="0"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0.357602, -0.0554679, -0.199711)
-mesh = null
-script = null
 
-[node name="BezierCircle_048_BezierCircle_020" type="MeshInstance3D" parent="MeshInstance3D" index="0"]
+[node name="BezierCircle_048_BezierCircle_020" type="MeshInstance3D" parent="MeshInstance3D"]
 transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 0, 0, 0)
 mesh = SubResource("ArrayMesh_ed6ft")
 skeleton = NodePath("")
 script = ExtResource("3_hi0f8")
 
-[node name="Cube_056_Cube_071" type="MeshInstance3D" parent="MeshInstance3D" index="1"]
+[node name="Cube_056_Cube_071" type="MeshInstance3D" parent="MeshInstance3D"]
 transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 0, 0, 0)
 mesh = SubResource("ArrayMesh_87rf5")
 skeleton = NodePath("")
 script = ExtResource("3_hi0f8")
 
-[node name="Cube_057_Cube_096" type="MeshInstance3D" parent="MeshInstance3D" index="2"]
+[node name="Cube_057_Cube_096" type="MeshInstance3D" parent="MeshInstance3D"]
 transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 0, 0, 0)
 mesh = SubResource("ArrayMesh_tk48a")
 skeleton = NodePath("")
 script = ExtResource("3_hi0f8")
 
-[node name="kriska1_008_Cylinder_078" type="MeshInstance3D" parent="MeshInstance3D" index="3"]
+[node name="kriska1_008_Cylinder_078" type="MeshInstance3D" parent="MeshInstance3D"]
 transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 0, 0, 0)
 mesh = SubResource("ArrayMesh_sk052")
 skeleton = NodePath("")
 script = ExtResource("3_hi0f8")
 
-[node name="CollisionShape3D" parent="." index="1"]
-shape = SubResource("4")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(0.1, 0, 0, 0, -4.37114e-09, -0.1, 0, 0.1, -4.37114e-09, 0.358344, -0.0554576, -0.199727)
+shape = SubResource("ConvexPolygonShape3D_hjfs8")
 
-[node name="Use" parent="Sounds" index="2"]
+[node name="HoldPosition" type="Marker3D" parent="."]
+unique_name_in_owner = true
+
+[node name="UseTime" type="Timer" parent="."]
+wait_time = 5.0
+
+[node name="Sounds" type="Node3D" parent="."]
+
+[node name="Equip" type="AudioStreamPlayer3D" parent="Sounds"]
+
+[node name="Prep" type="AudioStreamPlayer3D" parent="Sounds"]
+
+[node name="Use" type="AudioStreamPlayer3D" parent="Sounds"]
 stream = ExtResource("5_qsdln")
 
-[node name="PlacementAnchor" parent="." index="5"]
+[node name="UseComplete" type="AudioStreamPlayer3D" parent="Sounds"]
+stream = ExtResource("5_dvdky")
+
+[node name="PlacementAnchor" type="Marker3D" parent="."]
+unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0764605, 0)
+script = ExtResource("6_5ko86")
