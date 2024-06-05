@@ -473,6 +473,9 @@ shape = SubResource("12")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
 shape = SubResource("13")
 
+[node name="NavigationObstacle3D" type="NavigationObstacle3D" parent="StaticBody3D"]
+radius = 1.0
+
 [node name="RigidBody1" type="RigidBody3D" parent="."]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 1.08558, 0.741729, 0)
 

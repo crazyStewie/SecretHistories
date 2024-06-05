@@ -201,3 +201,6 @@ shape = SubResource("25")
 [node name="Durability" type="Timer" parent="."]
 wait_time = 300.0
 one_shot = true
+
+[node name="NavigationObstacle3D" type="NavigationObstacle3D" parent="."]
+radius = 0.5

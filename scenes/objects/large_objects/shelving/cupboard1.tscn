@@ -871,3 +871,7 @@ shape = SubResource("116")
 [node name="Durability" type="Timer" parent="."]
 wait_time = 300.0
 one_shot = true
+
+[node name="NavigationObstacle3D" type="NavigationObstacle3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, 0.2)
+radius = 1.0
