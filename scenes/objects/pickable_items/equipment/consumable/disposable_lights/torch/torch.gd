@@ -36,6 +36,7 @@ func light():
 		$FireOrigin/EmberDrip.emitting = true
 		$FireOrigin/Smoke.emitting = true
 		firelight.visible = true
+		$FireOrigin.visible = true # related to bugfix #604
 		$MeshInstance3D.cast_shadow = false
 		
 		is_lit = true
@@ -51,6 +52,7 @@ func unlight():
 		$FireOrigin/EmberDrip.emitting = false
 		$FireOrigin/Smoke.emitting = false
 		firelight.visible = false
+		$FireOrigin.visible = false # related to bugfix #604
 		$MeshInstance3D.cast_shadow = true
 		
 		is_lit = false
@@ -65,6 +67,7 @@ func _item_state_changed(previous_state, current_state):
 #			sound.global_transform = $Sounds/BlowOutSound.global_transform
 #			sound.connect("finished", sound, "queue_free")
 #			sound.play()
+		print("calling switch_away_from_light()")
 		owner_character.inventory.switch_away_from_light(self)
 
 

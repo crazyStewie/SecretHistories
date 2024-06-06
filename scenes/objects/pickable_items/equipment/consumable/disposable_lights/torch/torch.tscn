@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://q85k5qw1o81q"]
+[gd_scene load_steps=29 format=3 uid="uid://q85k5qw1o81q"]
 
 [ext_resource type="PackedScene" path="res://scenes/objects/pickable_items/equipment/consumable/disposable_lights/_disposable_light.tscn" id="1"]
 [ext_resource type="Script" path="res://scenes/objects/pickable_items/equipment/consumable/disposable_lights/torch/torch.gd" id="2"]
@@ -69,16 +69,18 @@ point_count = 3
 curve = SubResource("18")
 
 [sub_resource type="ParticleProcessMaterial" id="19"]
+emission_shape_scale = Vector3(0.06, 0.06, 0.06)
 emission_shape = 1
-emission_sphere_radius = 0.2
+emission_sphere_radius = 1.0
 spread = 0.0
-gravity = Vector3(0, 0, 0)
+gravity = Vector3(0, 1, 0)
 scale_curve = SubResource("9")
 color = Color(0.760784, 0.364706, 0.0470588, 1)
 
 [sub_resource type="StandardMaterial3D" id="5"]
 transparency = 1
 blend_mode = 1
+cull_mode = 2
 shading_mode = 0
 vertex_color_use_as_albedo = true
 albedo_texture = ExtResource("5")
@@ -87,14 +89,20 @@ particles_anim_h_frames = 1
 particles_anim_v_frames = 1
 particles_anim_loop = false
 
-[sub_resource type="QuadMesh" id="20"]
+[sub_resource type="QuadMesh" id="QuadMesh_8vbs0"]
 material = SubResource("5")
+size = Vector2(0.1, 0.1)
 
 [sub_resource type="ParticleProcessMaterial" id="21"]
+emission_shape_scale = Vector3(0.1, 0.1, 0.1)
 emission_shape = 1
 emission_sphere_radius = 0.2
 scale_curve = SubResource("9")
 color = Color(0.760784, 0.364706, 0.0470588, 1)
+
+[sub_resource type="QuadMesh" id="20"]
+material = SubResource("5")
+size = Vector2(0.05, 0.05)
 
 [sub_resource type="Gradient" id="22"]
 offsets = PackedFloat32Array(0, 0.524272, 0.995146)
@@ -104,14 +112,16 @@ colors = PackedColorArray(0.00784314, 0.00784314, 0.00784314, 0, 0.52549, 0.5254
 gradient = SubResource("22")
 
 [sub_resource type="ParticleProcessMaterial" id="23"]
+emission_shape_scale = Vector3(0.1, 0.1, 0.1)
 emission_shape = 1
-emission_sphere_radius = 0.2
+emission_sphere_radius = 1.0
 spread = 0.0
-gravity = Vector3(0, 0.001, 0)
+gravity = Vector3(0, 0.3, 0)
 color_ramp = SubResource("11")
 
-[sub_resource type="QuadMesh" id="24"]
+[sub_resource type="QuadMesh" id="QuadMesh_b7qut"]
 material = SubResource("5")
+size = Vector2(0.3, 0.3)
 
 [sub_resource type="Animation" id="25"]
 length = 0.001
@@ -233,11 +243,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.173342, 0)
 script = ExtResource("4")
 
 [node name="Fire" type="GPUParticles3D" parent="FireOrigin" index="0"]
-transform = Transform3D(-0.2, 1.74846e-08, 0, -1.74846e-08, -0.2, 0, 0, 0, 0.2, 0, 0, 0)
-emitting = false
-amount = 64
+transform = Transform3D(-1, 1.50996e-07, 0, -1.50996e-07, -1, 0, 0, 0, 1, 0, 0, 0)
+amount = 128
 process_material = SubResource("19")
-draw_pass_1 = SubResource("20")
+draw_pass_1 = SubResource("QuadMesh_8vbs0")
 script = ExtResource("6")
 
 [node name="Light3D" type="OmniLight3D" parent="FireOrigin/Fire" index="0"]
@@ -249,7 +258,7 @@ shadow_enabled = true
 omni_range = 13.0
 
 [node name="EmberDrip" type="GPUParticles3D" parent="FireOrigin" index="1"]
-transform = Transform3D(0.2, -3.49692e-08, 0, 3.49692e-08, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
+transform = Transform3D(1, -1.74846e-07, 0, 1.74846e-07, 1, 0, 0, 0, 1, 0, 0, 0)
 emitting = false
 amount = 4
 randomness = 1.0
@@ -260,10 +269,10 @@ script = ExtResource("6")
 [node name="Smoke" type="GPUParticles3D" parent="FireOrigin" index="2"]
 transform = Transform3D(-0.2, 1.74846e-08, 0, -1.74846e-08, -0.2, 0, 0, 0, 0.2, 0, 0, 0)
 emitting = false
-amount = 32
+amount = 16
 lifetime = 2.0
 process_material = SubResource("23")
-draw_pass_1 = SubResource("24")
+draw_pass_1 = SubResource("QuadMesh_b7qut")
 script = ExtResource("6")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." index="6"]

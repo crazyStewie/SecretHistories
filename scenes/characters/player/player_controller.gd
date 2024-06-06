@@ -48,6 +48,7 @@ var throw_state : int = ThrowState.IDLE
 var throw_item_hand : int = ItemSelection.ITEM_MAINHAND
 var throw_item : EquipmentItem
 var throw_press_length : float = 0.0
+var _placing_blueprint: RigidBody3D = null # A copy of the player's item that he is trying to drop
 
 @export var crouch_rate = 0.08 # (float, 0.05, 1.0)
 @export var crawl_rate = 0.5 # (float, 0.1, 1.0)
@@ -136,8 +137,6 @@ var current_screen_filter : int = GameManager.ScreenFilter.NONE
 var changed_to_reduce_color = false   # Have we changed to reduce color filter on DLvl5?
 
 @onready var noise_timer = $"../Audio/NoiseTimer"   # Because instant noises sometimes aren't detected
-
-var _placing_blueprint: RigidBody3D = null # A copy of the player's item that he is trying to drop
 
 
 func _ready():
@@ -543,7 +542,7 @@ func _handle_inventory_and_grab_input(delta : float):
 		
 	if Input.is_action_just_pressed("playerhand|offhand_use") and owner.is_reloading == false:
 		if character.inventory.get_offhand_item():
-			# TODO: implement double-tap for use_secondary
+			# TODO: implement hold key for use_secondary (but do not ADS)
 			character.inventory.get_offhand_item().use_primary()
 			if character.inventory.get_offhand_item() is MeleeItem:
 				%AnimationTree.set("parameters/MeleeSpeed/scale", character.inventory.get_offhand_item().melee_attack_speed)
@@ -564,7 +563,7 @@ func _handle_inventory_and_grab_input(delta : float):
 #		# TODO: if on_fire: put out fire
 #		# TODO: elif in_close_eyes_area: close eyes
 #		# TODO: elif in_hold_breath_area: hold breath
-		if last_interaction_target and is_grabbing == false: # TODO: Make it so even if no longer pointing at item, if holding interact, if object still nearby, grab pointed at object
+		if last_interaction_target and is_grabbing == false:
 			grab_press_length += delta
 			if grab_press_length >= 0.2:
 				wanna_grab = true
