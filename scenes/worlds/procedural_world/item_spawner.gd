@@ -92,6 +92,11 @@ func _spawn_item(scene_path: String, position: Vector3, angle := 0.0) -> void:
 		(item as Node3D).rotate_y(angle)
 	
 	owner.add_child(item)
+	
+	# Having this here instead of ready() function of light fixes blueprint SHOULD_PLACE candle emissive material bug	
+	if item is CandleItem or item is CandelabraItem:
+		item.light()
+	
 #	print("item spawned: %s | at: %s | rotated y by: %s"%[scene_path, position, angle])
 
 

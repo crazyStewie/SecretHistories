@@ -161,10 +161,12 @@ autostart = true
 
 [node name="FireOrigin" type="Marker3D" parent="." index="6"]
 transform = Transform3D(0.25, 3.59529e-24, 0, 0, -1.09278e-08, -0.25, 0, 0.25, -1.09278e-08, 5.5722e-23, -4.49081e-09, 0.102737)
+visible = false
 script = ExtResource("6_ipb5y")
 
 [node name="Light3D" type="OmniLight3D" parent="." index="7"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0127657, 0)
+visible = false
 layers = 3
 light_color = Color(0.988235, 0.576471, 0.321569, 1)
 light_energy = 1.5

@@ -90,10 +90,10 @@ seamless = true
 bump_strength = 19.9
 noise = SubResource("9")
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_ysg52"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0wkdv"]
 render_priority = 0
 shader = ExtResource("10")
-shader_parameter/noise_seed = 401.109
+shader_parameter/noise_seed = 829.147
 shader_parameter/top_offset = Vector3(0, 0, 0)
 shader_parameter/model_height_range = Vector2(-1, 1)
 shader_parameter/noise_scale = 0.079
@@ -105,10 +105,10 @@ shader_parameter/noise = SubResource("10")
 shader_parameter/texture_albedo = ExtResource("12")
 shader_parameter/gradient = ExtResource("11")
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_1clpx"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hb7qd"]
 render_priority = 0
 shader = ExtResource("10")
-shader_parameter/noise_seed = 411.413
+shader_parameter/noise_seed = 526.889
 shader_parameter/top_offset = Vector3(0, 0, 0)
 shader_parameter/model_height_range = Vector2(-1, 1)
 shader_parameter/noise_scale = 0.079
@@ -120,10 +120,10 @@ shader_parameter/noise = SubResource("10")
 shader_parameter/texture_albedo = ExtResource("12")
 shader_parameter/gradient = ExtResource("11")
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_hq0xu"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_qnqnr"]
 render_priority = 0
 shader = ExtResource("10")
-shader_parameter/noise_seed = 553.899
+shader_parameter/noise_seed = 147.575
 shader_parameter/top_offset = Vector3(0, 0, 0)
 shader_parameter/model_height_range = Vector2(-1, 1)
 shader_parameter/noise_scale = 0.079
@@ -179,9 +179,9 @@ _data = {
 [node name="Candelabra" instance=ExtResource("56")]
 mass = 1.0
 script = ExtResource("3")
+number_of_candles = 3
 life_percentage_lose = 0.2
 prob_going_out = 0.9
-number_of_candles = 3
 item_name = "Candelabra"
 item_drop_sound = ExtResource("8")
 can_spin = true
@@ -244,13 +244,15 @@ script = ExtResource("5")
 
 [node name="Fire" type="MeshInstance3D" parent="Candle1/FireOrigin" index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, -3.80135e-28, 0, -5.36862e-28, 1, 0, 0, 0)
+visible = false
 cast_shadow = 0
 mesh = SubResource("127")
-surface_material_override/0 = SubResource("ShaderMaterial_ysg52")
+surface_material_override/0 = SubResource("ShaderMaterial_0wkdv")
 script = ExtResource("9")
 
 [node name="Light3D" type="OmniLight3D" parent="Candle1/FireOrigin/Fire" index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.000501111, 0)
+visible = false
 layers = 3
 light_color = Color(0.760784, 0.364706, 0.0470588, 1)
 light_energy = 0.35
@@ -274,9 +276,10 @@ script = ExtResource("5")
 
 [node name="Fire" type="MeshInstance3D" parent="Candle2/FireOrigin" index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, -3.80135e-28, 0, -5.36862e-28, 1, 0, 0, 0)
+visible = false
 cast_shadow = 0
 mesh = SubResource("127")
-surface_material_override/0 = SubResource("ShaderMaterial_1clpx")
+surface_material_override/0 = SubResource("ShaderMaterial_hb7qd")
 script = ExtResource("9")
 
 [node name="Candle3" type="Node3D" parent="." index="12"]
@@ -296,9 +299,10 @@ script = ExtResource("5")
 
 [node name="Fire" type="MeshInstance3D" parent="Candle3/FireOrigin" index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, -3.80135e-28, 0, -5.36862e-28, 1, 0, 0, 0)
+visible = false
 cast_shadow = 0
 mesh = SubResource("127")
-surface_material_override/0 = SubResource("ShaderMaterial_hq0xu")
+surface_material_override/0 = SubResource("ShaderMaterial_qnqnr")
 script = ExtResource("9")
 
 [node name="Ignite" type="Area3D" parent="." index="13" groups=["IGNITE"]]

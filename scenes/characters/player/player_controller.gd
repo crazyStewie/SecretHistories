@@ -353,7 +353,7 @@ func handle_grab(delta : float):
 				object = last_interaction_target
 				print(object)
 			
-			if object is PickableItem:
+			if object:
 				var grab_position = current_control_mode.get_grab_global_position()
 				grab_relative_object_position = object.to_local(grab_position)
 				grab_distance = _camera.global_transform.origin.distance_to(grab_position)
@@ -559,10 +559,13 @@ func _handle_inventory_and_grab_input(delta : float):
 	if Input.is_action_just_pressed("player|interact"): 
 		if interaction_target and is_grabbing == false:
 			last_interaction_target = interaction_target
+	if !Input.is_action_pressed("player|interact"): # This is another way to ensure not grabbing without interact pressed. Fixes bug #564
+		stop_grabbing()
 	if Input.is_action_pressed("player|interact"):   # TODO: when RigidBody doors are back, reinclude:  or Input.is_action_pressed("playerhand|main_use_secondary"):
 #		# TODO: if on_fire: put out fire
 #		# TODO: elif in_close_eyes_area: close eyes
 #		# TODO: elif in_hold_breath_area: hold breath
+		
 		if last_interaction_target and is_grabbing == false:
 			grab_press_length += delta
 			if grab_press_length >= 0.2:
@@ -598,28 +601,33 @@ func _handle_inventory_and_grab_input(delta : float):
 		# TODO: If nothing else covered, interact zooms slightly
 	
 	if Input.is_action_just_released("player|interact"):
-		grab_press_length = 0.0
-		if is_grabbing == true:
-			is_grabbing = false
-			last_interaction_target = null
-			print("Grab broken by letting go of grab key")
-			if grab_object is PickableItem:   # So no plain RigidBodies or large objects
-				grab_object.set_item_state(GlobalConsts.ItemState.DAMAGING)    # This allows dropped items to hit cultists
-			wanna_grab = false
-			interaction_handled = true
-		camera_movement_resistance = 1.0   # In case of a grab-throw, make sure the camera turning still isn't slowed
+		stop_grabbing()
+		
 		if !(wanna_grab or is_grabbing or interaction_handled):
 			if last_interaction_target != null:
 				if last_interaction_target is PickableItem:   # and character.inventory.current_mainhand_slot != 10:
 					character.inventory.add_item(last_interaction_target)
-					last_interaction_target = null
 				elif last_interaction_target is Interactable:
 					last_interaction_target.interact(owner)
+		last_interaction_target = null
+		
 		if GameSettings.ads_hold_enabled:   # ADS hold mode
 			if character.player_animations.is_on_ads:
 				character.player_animations.end_ads()
 		ads_handled = false   # Gets it ready for next press
 
+
+func stop_grabbing():
+	grab_press_length = 0.0
+	if is_grabbing == true:
+		is_grabbing = false
+		last_interaction_target = null
+		print("Grab broken by letting go of grab key")
+		if grab_object is PickableItem:   # So no plain RigidBodies or large objects
+			grab_object.set_item_state(GlobalConsts.ItemState.DAMAGING)    # This allows dropped items to hit cultists
+		wanna_grab = false
+		interaction_handled = true
+	camera_movement_resistance = 1.0   # In case of a grab-throw, make sure the camera turning still isn't slowed
 
 
 func drop_grabable():
@@ -649,39 +657,40 @@ func drop_grabable():
 
 func update_throw_state(throw_item : EquipmentItem, delta : float):
 	if throw_state == ThrowState.PRESSING:
-		# Shows the object blueprint in the world 
 		throw_item = character.inventory.get_mainhand_item() if throw_item_hand == ItemSelection.ITEM_MAINHAND else character.inventory.get_offhand_item()
 		throw_item.set_item_state(GlobalConsts.ItemState.DROPPED)
 		
-		if _placing_blueprint == null:
-			_placing_blueprint = throw_item.duplicate()
-			var _placing_blueprint_mesh: MeshInstance3D = _placing_blueprint.get_node("MeshInstance3D")
-			var shader: ShaderMaterial = load("res://resources/shaders/blueprints/blueprint.tres")
-			_placing_blueprint_mesh.set_surface_override_material(0, shader)
-		
-		if _placing_blueprint:
-			current_control_mode.aimcast.add_exception(_placing_blueprint)
-			for child in _placing_blueprint.get_children():
-				if child is RigidBody3D or child is Area3D or child is StaticBody3D:
-					current_control_mode.aimcast.add_exception(child)
+		# Shows the object blueprint in the world 
+		if throw_press_length > hold_time_to_grab:
+			if _placing_blueprint == null:
+				_placing_blueprint = throw_item.duplicate()
+				var _placing_blueprint_mesh: MeshInstance3D = _placing_blueprint.get_node("MeshInstance3D")
+				var shader: ShaderMaterial = load("res://resources/shaders/blueprints/blueprint.tres")
+				_placing_blueprint_mesh.set_surface_override_material(0, shader)
 			
-			var origin : Vector3 = owner.drop_position_node.global_transform.origin
-			var end : Vector3 = current_control_mode.get_target_placement_position()
-			var dir : Vector3 = end - origin
-			dir = dir.normalized() * min(dir.length(), max_placement_distance)
-			
-			var motion_params = PhysicsTestMotionParameters3D.new()
-			motion_params.from = owner.drop_position_node.global_transform
-			motion_params.motion = dir
-			
-			var result = PhysicsTestMotionResult3D.new()
-			var collision_happened: bool = PhysicsServer3D.body_test_motion(_placing_blueprint.get_rid(), motion_params, result)
-			
-			if _placing_blueprint.get_parent() == null:
-				owner.add_child(_placing_blueprint)
-			var new_position: Vector3 = origin + result.get_travel()
-			_placing_blueprint.global_transform.origin = new_position
-			_placing_blueprint.rotation = owner.drop_position_node.rotation
+			if _placing_blueprint:
+				current_control_mode.aimcast.add_exception(_placing_blueprint)
+				for child in _placing_blueprint.get_children():
+					if child is RigidBody3D or child is Area3D or child is StaticBody3D:
+						current_control_mode.aimcast.add_exception(child)
+				
+				var origin : Vector3 = owner.drop_position_node.global_transform.origin
+				var end : Vector3 = current_control_mode.get_target_placement_position()
+				var dir : Vector3 = end - origin
+				dir = dir.normalized() * min(dir.length(), max_placement_distance)
+				
+				var motion_params = PhysicsTestMotionParameters3D.new()
+				motion_params.from = owner.drop_position_node.global_transform
+				motion_params.motion = dir
+				
+				var result = PhysicsTestMotionResult3D.new()
+				var collision_happened: bool = PhysicsServer3D.body_test_motion(_placing_blueprint.get_rid(), motion_params, result)
+				
+				if _placing_blueprint.get_parent() == null:
+					owner.add_child(_placing_blueprint)
+				var new_position: Vector3 = origin + result.get_travel()
+				_placing_blueprint.global_transform.origin = new_position
+				_placing_blueprint.rotation = owner.drop_position_node.rotation
 	
 	# Place item upright on pointed-at surface or, if no surface in range, simply drop in front of player
 	if throw_state == ThrowState.SHOULD_PLACE:

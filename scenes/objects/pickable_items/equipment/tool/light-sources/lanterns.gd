@@ -16,7 +16,7 @@ var random_number
 @export var life_percentage_lose : float = 0.0 # (float, 0.0, 1.0)
 @export var prob_going_out : float = 0.0 # (float, 0.0, 1.0)
 
-var is_lit = true # starts on
+var is_lit = false
 
 var mesh_instance : Node
 @onready var firelight = $Light3D

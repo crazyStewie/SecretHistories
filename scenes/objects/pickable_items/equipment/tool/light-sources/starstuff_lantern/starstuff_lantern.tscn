@@ -194,6 +194,7 @@ autostart = true
 
 [node name="Light3D" type="OmniLight3D" parent="." index="4"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0895413, 0)
+visible = false
 layers = 3
 light_color = Color(0.835294, 0.0196078, 0.647059, 1)
 light_specular = 16.0

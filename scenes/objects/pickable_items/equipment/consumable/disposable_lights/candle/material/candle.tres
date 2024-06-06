@@ -6,12 +6,12 @@
 [ext_resource type="Texture2D" uid="uid://b6veolw8mdfyf" path="res://resources/models/items/consumables/light_sources/candle/trn_Candle_AlbedoTransparency.png" id="3"]
 
 [resource]
+resource_local_to_scene = true
 resource_name = "trn_Candle"
 albedo_color = Color(0.8, 0.8, 0.8, 1)
 albedo_texture = ExtResource("3")
 metallic = 1.0
 metallic_texture = ExtResource("2")
-emission_enabled = true
 emission_texture = ExtResource("2_4ea6c")
 normal_enabled = true
 normal_texture = ExtResource("1")

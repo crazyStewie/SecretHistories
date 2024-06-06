@@ -38,6 +38,10 @@ func _ready():
 				new_item.set_item_state(GlobalConsts.ItemState.DROPPED)
 				get_parent().get_parent().add_child(new_item)
 				anchors.remove_at(random_num)
+				
+			# Having this here instead of ready() function of light fixes blueprint SHOULD_PLACE candle emissive material bug	
+			if new_item is CandleItem or new_item is CandelabraItem:
+				new_item.light()
 
 
 func filter_list_anchors(anchor_nodes: Array) -> Array:

@@ -244,6 +244,7 @@ script = ExtResource("4")
 
 [node name="Fire" type="GPUParticles3D" parent="FireOrigin" index="0"]
 transform = Transform3D(-1, 1.50996e-07, 0, -1.50996e-07, -1, 0, 0, 0, 1, 0, 0, 0)
+emitting = false
 amount = 128
 process_material = SubResource("19")
 draw_pass_1 = SubResource("QuadMesh_8vbs0")

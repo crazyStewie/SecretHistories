@@ -32,7 +32,7 @@ func _on_StartButton_pressed():
 	$VBoxContainer/StartButton.text = "Loading"   # On slower machines, there's a significant delay before the Start Game Menu 
 	$VBoxContainer/StartButton.disabled = true
 	await get_tree().create_timer(0.1).timeout   # If we don't pause briefly, the engine doesn't have enough time to change the text
-	var _error = get_tree().change_scene_to_file("res://scenes/ui/start_game_menu.tscn")
+	var _error = get_tree().change_scene_to_file("res://scenes/ui/start_game_menu.tscn") # TODO: lags, can this be preloaded during opening_screens?
 
 
 func _on_SettingsButton_pressed():

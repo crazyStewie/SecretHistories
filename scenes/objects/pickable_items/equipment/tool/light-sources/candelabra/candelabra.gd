@@ -7,10 +7,15 @@ extends ToolItem
 
 
 signal item_dropped
-var burn_time : float
+
+@export var number_of_candles : int = 1
+
+var is_lit = false
+
+var burn_time : float = 1000.0
 var is_depleted : bool = false
-var is_dropped: bool = false
-var is_just_dropped: bool = true
+var is_dropped : bool = false
+var is_just_dropped : bool = true
 var light_timer
 var random_number
 @export var life_percentage_lose : float = 0.0 # (float, 0.0, 1.0)
@@ -19,9 +24,6 @@ var random_number
 var material
 var new_material
 
-@onready var firelight = $Candle1/FireOrigin/Fire/Light3D
-
-var is_lit = true
 var burn_time_2 = 0.0
 var burn_time_3 = 0.0
 @onready var light_timer_base : Node = $Timer
@@ -31,26 +33,22 @@ var is_depleted_2 : bool = false
 var is_depleted_3 : bool = false
 var random_number_2_3
 
-@export var number_of_candles : int = 1
+@onready var firelight = $Candle1/FireOrigin/Fire/Light3D
 
 
 func _ready():
 	light_timer = $Timer
-	if light_timer == null:
-		print(self.name)
+	
 	self.connect("item_is_dropped", Callable(self, "light_dropped")) # this current fails, is bugged
 	light_timer.connect("timeout", Callable(self, "light_depleted_copy"))
-	burn_time = 1000.0
-	light_timer.set_wait_time(burn_time)
-	light_timer.start()
 	
 	material = $Candle1/MeshInstance3D.get_surface_override_material(0)
 	new_material = material.duplicate()
-	$Candle1/MeshInstance3D.set_surface_override_material(0,new_material)
+	$Candle1/MeshInstance3D.set_surface_override_material(0, new_material)
 
 	if number_of_candles > 1:   # TODO: Switch other parts of this script to use this to avoid red debug errors
-		$Candle2/MeshInstance3D.set_surface_override_material(0,new_material)
-		$Candle3/MeshInstance3D.set_surface_override_material(0,new_material)
+		$Candle2/MeshInstance3D.set_surface_override_material(0, new_material)
+		$Candle3/MeshInstance3D.set_surface_override_material(0, new_material)
 		var light_timer_2 = $Timer2
 		light_timer_2.connect("timeout", Callable(self, "light_depleted_2"))
 		
@@ -70,11 +68,11 @@ func light():
 	if not is_depleted:
 		$AnimationPlayer.play("flicker")
 		$LightSound.play()
-		$Candle1/FireOrigin/Fire.visible = not $Candle1/FireOrigin/Fire.visible
+		$Candle1/FireOrigin/Fire.visible = true
 		$Candle1/MeshInstance3D.cast_shadow = false
-		$Candle1/MeshInstance3D.get_surface_override_material(0).emission_enabled  = not $Candle1/MeshInstance3D.get_surface_override_material(0).emission_enabled
-		firelight.visible = true
 		$MeshInstance3D.cast_shadow = false
+		$Candle1/MeshInstance3D.get_surface_override_material(0).emission_enabled = true
+		firelight.visible = true
 		
 		is_lit = true
 		light_timer.set_wait_time(burn_time)
@@ -86,12 +84,12 @@ func light():
 			if $Candle2 != null and not is_depleted_2:
 				$Candle2/FireOrigin/Fire.visible = not $Candle2/FireOrigin/Fire.visible
 				$Candle2/MeshInstance3D.cast_shadow = false
-				$Candle2/MeshInstance3D.get_surface_override_material(0).emission_enabled  = not $Candle2/MeshInstance3D.get_surface_override_material(0).emission_enabled
+				$Candle2/MeshInstance3D.get_surface_override_material(0).emission_enabled = true
 			
 			if $Candle3 != null and not is_depleted_3:
 				$Candle3/FireOrigin/Fire.visible = not $Candle3/FireOrigin/Fire.visible
 				$Candle3/MeshInstance3D.cast_shadow = false
-				$Candle3/MeshInstance3D.get_surface_override_material(0).emission_enabled  = not $Candle3/MeshInstance3D.get_surface_override_material(0).emission_enabled
+				$Candle3/MeshInstance3D.get_surface_override_material(0).emission_enabled = true
 			
 			if $Candle3 != null:
 				light_timer_2.set_wait_time(burn_time_2)
@@ -141,7 +139,6 @@ func _item_state_changed(previous_state, current_state):
 #			sound.connect("finished", sound, "queue_free")
 #			sound.play()
 		owner_character.inventory.switch_away_from_light(self)
-		
 
 
 func stop_light_timer_2():

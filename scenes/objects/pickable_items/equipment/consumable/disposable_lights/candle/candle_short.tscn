@@ -63,10 +63,10 @@ seamless = true
 bump_strength = 19.9
 noise = SubResource("9")
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_8ul0b"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_inrvj"]
 render_priority = 0
 shader = ExtResource("12")
-shader_parameter/noise_seed = 784.36
+shader_parameter/noise_seed = 841.657
 shader_parameter/top_offset = Vector3(0, 0, 0)
 shader_parameter/model_height_range = Vector2(-1, 1)
 shader_parameter/noise_scale = 0.079
@@ -152,7 +152,7 @@ script = ExtResource("2")
 visible = false
 cast_shadow = 0
 mesh = SubResource("53")
-surface_material_override/0 = SubResource("ShaderMaterial_8ul0b")
+surface_material_override/0 = SubResource("ShaderMaterial_inrvj")
 script = ExtResource("6")
 
 [node name="Light3D" type="OmniLight3D" parent="FireOrigin/Fire" index="0"]
@@ -189,7 +189,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0629101, 0)
 shape = SubResource("57")
 
 [node name="PlacementAnchor" parent="." index="8"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0128654, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.04, 0)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." index="9"]
 libraries = {

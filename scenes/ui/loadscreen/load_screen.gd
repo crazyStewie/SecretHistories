@@ -22,7 +22,7 @@ func _input(event: InputEvent):
 	if (event is InputEventMouseButton and event.is_pressed() and loading_done):
 		loading_done = false 
 		handle_external_settings()
-		fade_out()
+		fade_in()
 		await clicked
 		LoadScene.clear_data()
 		##For when changing to a different scene, so we spawned the load screen
@@ -134,7 +134,7 @@ func handle_external_settings():
 		GameManager.game.player.player_controller.no_click_after_load_period = false
 
 
-func fade_out():
+func fade_in():
 	#hide the texts to show black screen
 	label.text = ""
 	quote.text = ""

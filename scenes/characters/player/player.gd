@@ -13,6 +13,8 @@ var light_resource = preload("res://scenes/objects/pickable_items/equipment/tool
 var light2_resource = preload("res://scenes/objects/pickable_items/equipment/tool/light-sources/omnidirectional_lantern/omni_lantern.tscn")
 var spyglass_resource = preload("res://scenes/objects/pickable_items/tiny/spyglass/spyglass.tscn")
 
+var initial_light_needed = true
+
 @onready var player_controller = $PlayerController
 @onready var tinnitus = $Tinnitus
 @onready var fps_camera = $FPSCamera
@@ -33,13 +35,18 @@ func _ready():
 	# Add initial equipment to player
 #	inventory.add_item(spyglass_resource.instance())
 #	inventory.add_item(light2_resource.instance())
-#	print("player.gd added oil lantern")
-#	inventory.set_mainhand_slot(2)s
+#	inventory.set_mainhand_slot(2)
 	inventory.add_item(light_resource.instantiate())
-	print("player.gd added candle")
+	initial_light_needed = true
 
 
 func _process(delta: float) -> void:
+	if initial_light_needed == true:
+		await get_tree().create_timer(0.5).timeout
+		print("Initial light of light-source")
+		inventory.get_offhand_item().light()
+		initial_light_needed = false
+	
 	# TODO: This should probably be in character.gd
 	if is_reloading == true:
 		if noise_level < 8:

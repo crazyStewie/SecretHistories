@@ -55,7 +55,6 @@ func _init():
 
 
 func _ready():
-	
 	set_brightness()
 	load_screen.show_message()
 	for floor_index in range(HIGHEST_FLOOR_LEVEL, LOWEST_FLOOR_LEVEL - 1, -1):
@@ -182,10 +181,12 @@ func _handle_floor_change(is_going_downstairs: bool) -> void:
 	load_screen.finish_loading()
 	_set_new_position_for_player(is_going_downstairs)
 
+
 func _show_load_screen() -> void:
 	# Wait a bit so that the load screen is visible
 	load_screen.show_message()
 	await get_tree().create_timer(0.1).timeout
+
 
 func _handle_floor_levels() -> void:
 	world_root.remove_child(level)

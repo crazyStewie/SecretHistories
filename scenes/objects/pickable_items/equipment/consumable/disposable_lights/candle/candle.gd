@@ -28,7 +28,7 @@ func _ready() -> void:
 	if not light_timer.is_connected("timeout", Callable(self, "_light_depleted")):
 		light_timer.connect("timeout", Callable(self, "_light_depleted"))
 	burn_time = 3600.0
-	light()
+	#light()
 
 
 func _process(_delta: float) -> void:
@@ -46,20 +46,21 @@ func _process(_delta: float) -> void:
 		is_just_dropped = false
 		
 	# This ensures it's never emissive while off, also, that candles stay lit on level change
-	if $MeshInstance3D.get_surface_override_material(0).emission_enabled == true and $FireOrigin/Fire.visible == false:
-		light()
+	if is_instance_valid($MeshInstance3D.get_surface_override_material(0).emission_enabled):
+		if $MeshInstance3D.get_surface_override_material(0).emission_enabled == true and $FireOrigin/Fire.visible == false:
+			light()
 
 
 func light() -> void:
 	if not is_depleted:
 		$AnimationPlayer.play("flicker")
 		$Sounds/LightSound.play()
+		$MeshInstance3D.get_surface_override_material(0).emission_enabled = true
 	#	$FireOrigin/Fire.emitting = not $FireOrigin/Fire.emitting
 		$FireOrigin/Fire.visible = not $FireOrigin/Fire.visible
 		firelight.visible = not firelight.visible
 		$FireOrigin.visible = true # related to bugfix #604
 		$MeshInstance3D.cast_shadow = false
-		$MeshInstance3D.get_surface_override_material(0).emission_enabled = true
 		
 		is_lit = true
 		light_timer.set_wait_time(burn_time)

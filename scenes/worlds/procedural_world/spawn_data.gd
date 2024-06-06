@@ -65,6 +65,11 @@ func spawn_item_in(node: Node, should_log := false) -> void:
 			item.set(key, custom_properties[key])
 		
 		node.add_child(item, true)
+		
+		# Having this here instead of ready() function of light fixes blueprint SHOULD_PLACE candle emissive material bug
+		if item is CandleItem or item is CandelabraItem:
+			item.light()
+		
 		if should_log:
 			print("item spawned: %s | at: %s | rotated by: %s"%[
 					scene_path, _transforms[index].origin, _transforms[index].basis.get_euler()

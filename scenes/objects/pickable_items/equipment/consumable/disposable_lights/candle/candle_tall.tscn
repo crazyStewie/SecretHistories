@@ -63,10 +63,10 @@ seamless = true
 bump_strength = 19.9
 noise = SubResource("9")
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_0psxj"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_niai6"]
 render_priority = 0
 shader = ExtResource("12")
-shader_parameter/noise_seed = 138.294
+shader_parameter/noise_seed = 884.428
 shader_parameter/top_offset = Vector3(0, 0, 0)
 shader_parameter/model_height_range = Vector2(-1, 1)
 shader_parameter/noise_scale = 0.079
@@ -152,7 +152,7 @@ script = ExtResource("2")
 visible = false
 cast_shadow = 0
 mesh = SubResource("53")
-surface_material_override/0 = SubResource("ShaderMaterial_0psxj")
+surface_material_override/0 = SubResource("ShaderMaterial_niai6")
 script = ExtResource("6")
 
 [node name="Light3D" type="OmniLight3D" parent="FireOrigin/Fire" index="0"]
@@ -180,10 +180,13 @@ stream = null
 bus = &"Effects"
 
 [node name="Ignite" parent="." index="7" groups=["IGNITE"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0757755, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00894699, 0.123041, 0)
 
 [node name="CollisionShape3D" parent="Ignite" index="0"]
 shape = SubResource("57")
+
+[node name="PlacementAnchor" parent="." index="8"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0896366, 0)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." index="9"]
 libraries = {
