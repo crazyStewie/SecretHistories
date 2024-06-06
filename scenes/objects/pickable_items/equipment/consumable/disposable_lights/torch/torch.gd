@@ -7,6 +7,7 @@ extends DisposableLightItem
 signal item_is_dropped
 
 var is_lit = false
+
 var burn_time : float
 var is_depleted : bool = false
 var is_dropped: bool = false
@@ -23,8 +24,6 @@ func _ready():
 	light_timer = $BurnTime
 	light_timer.connect("timeout", Callable(self, "light_depleted"))
 	burn_time = 600.0
-#	light_timer.set_wait_time(burn_time)
-#	light_timer.start()
 
 
 func light():
@@ -38,6 +37,10 @@ func light():
 		firelight.visible = true
 		$FireOrigin.visible = true # related to bugfix #604
 		$MeshInstance3D.cast_shadow = false
+		
+		if owner_character:
+			if owner_character.noise_level < 5:
+				owner_character.noise_level = 5
 		
 		is_lit = true
 		light_timer.set_wait_time(burn_time)

@@ -75,8 +75,9 @@ func light():
 		else:
 			$SlideOpen.play()
 		
-		if owner_character.noise_level < 5:
-			owner_character.noise_level = 5
+		if owner_character:
+			if owner_character.noise_level < 5:
+				owner_character.noise_level = 5
 		
 		$AnimationPlayer.play("flicker")
 		firelight.visible = true
@@ -117,7 +118,7 @@ func _item_state_changed(previous_state, current_state):
 		owner_character.inventory.switch_away_from_light(self)
 
 
-func light_depleted():
+func _on_light_depleted():
 	burn_time = 0
 	unlight()
 	is_depleted = true

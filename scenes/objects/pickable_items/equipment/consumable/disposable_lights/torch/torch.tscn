@@ -240,6 +240,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.14973, 0)
 
 [node name="FireOrigin" type="Marker3D" parent="." index="5"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.173342, 0)
+visible = false
 script = ExtResource("4")
 
 [node name="Fire" type="GPUParticles3D" parent="FireOrigin" index="0"]

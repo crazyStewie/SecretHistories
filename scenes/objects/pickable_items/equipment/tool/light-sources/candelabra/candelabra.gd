@@ -74,6 +74,10 @@ func light():
 		$Candle1/MeshInstance3D.get_surface_override_material(0).emission_enabled = true
 		firelight.visible = true
 		
+		if owner_character:
+			if owner_character.noise_level < 5:
+				owner_character.noise_level = 5
+		
 		is_lit = true
 		light_timer.set_wait_time(burn_time)
 		light_timer.start()
@@ -119,7 +123,7 @@ func unlight():
 
 
 func light_depleted_copy():
-	light_depleted()
+	_on_light_depleted()
 
 
 func _use_primary():
@@ -179,6 +183,7 @@ func unlight_candle_3():
 	stop_light_timer_3()
 
 
+# This is apparently not called anywhere
 func light_dropped():
 	print("light_dropped called")
 	if number_of_candles > 1:
@@ -202,7 +207,7 @@ func light_dropped():
 			unlight_candle_3()
 
 
-func light_depleted():
+func _on_light_depleted():
 	burn_time = 0
 	unlight()
 	is_depleted = true

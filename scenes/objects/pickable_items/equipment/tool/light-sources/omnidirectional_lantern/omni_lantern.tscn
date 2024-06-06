@@ -205,3 +205,4 @@ volume_db = 30.0
 bus = &"Effects"
 
 [connection signal="timeout" from="Durability" to="." method="_on_Durability_timeout"]
+[connection signal="timeout" from="Timer" to="." method="_on_light_depleted"]

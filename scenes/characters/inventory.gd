@@ -523,7 +523,7 @@ func swap_hands():
 
 func switch_away_from_light(light_source):
 	if not light_source.can_attach:
-		if not are_swapping:
+		if not are_swapping and owner.player_controller.throw_state != owner.player_controller.ThrowState.SHOULD_PLACE:
 			print("unlighting light when putting it away because not swapping hands now")
 			light_source.unlight()
 	elif light_source.can_attach and light_source is LanternItem:

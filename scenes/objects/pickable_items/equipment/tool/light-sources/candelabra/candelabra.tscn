@@ -90,10 +90,10 @@ seamless = true
 bump_strength = 19.9
 noise = SubResource("9")
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_0wkdv"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_aku3l"]
 render_priority = 0
 shader = ExtResource("10")
-shader_parameter/noise_seed = 829.147
+shader_parameter/noise_seed = 820.982
 shader_parameter/top_offset = Vector3(0, 0, 0)
 shader_parameter/model_height_range = Vector2(-1, 1)
 shader_parameter/noise_scale = 0.079
@@ -105,10 +105,10 @@ shader_parameter/noise = SubResource("10")
 shader_parameter/texture_albedo = ExtResource("12")
 shader_parameter/gradient = ExtResource("11")
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_hb7qd"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_bd1ds"]
 render_priority = 0
 shader = ExtResource("10")
-shader_parameter/noise_seed = 526.889
+shader_parameter/noise_seed = 421.606
 shader_parameter/top_offset = Vector3(0, 0, 0)
 shader_parameter/model_height_range = Vector2(-1, 1)
 shader_parameter/noise_scale = 0.079
@@ -120,10 +120,10 @@ shader_parameter/noise = SubResource("10")
 shader_parameter/texture_albedo = ExtResource("12")
 shader_parameter/gradient = ExtResource("11")
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_qnqnr"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3bb15"]
 render_priority = 0
 shader = ExtResource("10")
-shader_parameter/noise_seed = 147.575
+shader_parameter/noise_seed = 448.095
 shader_parameter/top_offset = Vector3(0, 0, 0)
 shader_parameter/model_height_range = Vector2(-1, 1)
 shader_parameter/noise_scale = 0.079
@@ -247,7 +247,7 @@ transform = Transform3D(1, 0, 0, 0, 1, -3.80135e-28, 0, -5.36862e-28, 1, 0, 0, 0
 visible = false
 cast_shadow = 0
 mesh = SubResource("127")
-surface_material_override/0 = SubResource("ShaderMaterial_0wkdv")
+surface_material_override/0 = SubResource("ShaderMaterial_aku3l")
 script = ExtResource("9")
 
 [node name="Light3D" type="OmniLight3D" parent="Candle1/FireOrigin/Fire" index="0"]
@@ -279,7 +279,7 @@ transform = Transform3D(1, 0, 0, 0, 1, -3.80135e-28, 0, -5.36862e-28, 1, 0, 0, 0
 visible = false
 cast_shadow = 0
 mesh = SubResource("127")
-surface_material_override/0 = SubResource("ShaderMaterial_hb7qd")
+surface_material_override/0 = SubResource("ShaderMaterial_bd1ds")
 script = ExtResource("9")
 
 [node name="Candle3" type="Node3D" parent="." index="12"]
@@ -302,7 +302,7 @@ transform = Transform3D(1, 0, 0, 0, 1, -3.80135e-28, 0, -5.36862e-28, 1, 0, 0, 0
 visible = false
 cast_shadow = 0
 mesh = SubResource("127")
-surface_material_override/0 = SubResource("ShaderMaterial_qnqnr")
+surface_material_override/0 = SubResource("ShaderMaterial_3bb15")
 script = ExtResource("9")
 
 [node name="Ignite" type="Area3D" parent="." index="13" groups=["IGNITE"]]
@@ -336,3 +336,4 @@ autoplay = "flicker"
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.179939, 0)
 
 [connection signal="item_state_changed" from="." to="." method="_item_state_changed"]
+[connection signal="timeout" from="Timer" to="." method="_on_light_depleted"]

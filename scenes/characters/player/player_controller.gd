@@ -353,7 +353,7 @@ func handle_grab(delta : float):
 				object = last_interaction_target
 				print(object)
 			
-			if object:
+			if object is RigidBody3D:
 				var grab_position = current_control_mode.get_grab_global_position()
 				grab_relative_object_position = object.to_local(grab_position)
 				grab_distance = _camera.global_transform.origin.distance_to(grab_position)
