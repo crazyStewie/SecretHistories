@@ -658,7 +658,7 @@ func drop_grabable():
 func update_throw_state(throw_item : EquipmentItem, delta : float):
 	if throw_state == ThrowState.PRESSING:
 		throw_item = character.inventory.get_mainhand_item() if throw_item_hand == ItemSelection.ITEM_MAINHAND else character.inventory.get_offhand_item()
-		throw_item.set_item_state(GlobalConsts.ItemState.DROPPED)
+		#throw_item.set_item_state(GlobalConsts.ItemState.DROPPED)
 		
 		# Shows the object blueprint in the world 
 		if throw_press_length > hold_time_to_grab:
@@ -694,9 +694,9 @@ func update_throw_state(throw_item : EquipmentItem, delta : float):
 	
 	# Place item upright on pointed-at surface or, if no surface in range, simply drop in front of player
 	if throw_state == ThrowState.SHOULD_PLACE:
+		print("Should place rather than throw item")
 		_placing_blueprint.queue_free()
 		_placing_blueprint = null
-		print("Should place rather than throw item")
 		throw_item = character.inventory.get_mainhand_item() if throw_item_hand == ItemSelection.ITEM_MAINHAND else character.inventory.get_offhand_item()
 		throw_item.set_item_state(GlobalConsts.ItemState.DROPPED)
 		if throw_item:
@@ -723,7 +723,7 @@ func update_throw_state(throw_item : EquipmentItem, delta : float):
 					character.inventory.drop_mainhand_item()
 				else:
 					character.inventory.drop_offhand_item()
-				throw_item.call_deferred("global_translate", result.get_travel())
+				throw_item.call_deferred("global_translate", result.get_travel()) # TODO: Is this the line causing the hanging delay in air, after placing items sometimes?
 	
 	# Always test Left-Clicking twice with a bomb in main hand after changing anything here. Bomb throws are an edge case of throw as they don't have to happen with the usual throw keys.
 	elif throw_state == ThrowState.SHOULD_THROW:
