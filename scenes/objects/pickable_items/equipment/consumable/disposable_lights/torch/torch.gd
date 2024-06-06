@@ -26,21 +26,6 @@ func _ready():
 	burn_time = 600.0
 
 
-func _process(_delta: float) -> void:
-	if item_state == GlobalConsts.ItemState.DAMAGING:
-		$Ignite/CollisionShape3D.disabled = false
-		is_dropped = true
-		
-		if is_dropped and not is_just_dropped:
-			is_just_dropped = true
-			self.emit_signal("item_is_dropped")
-			item_drop()
-	else:
-		$Ignite/CollisionShape3D.disabled = true
-		is_dropped = false
-		is_just_dropped = false
-
-
 func light():
 	if not is_depleted:
 		$AnimationPlayer.play("flicker")
@@ -87,6 +72,10 @@ func _item_state_changed(previous_state, current_state):
 #			sound.play()
 		print("calling switch_away_from_light()")
 		owner_character.inventory.switch_away_from_light(self)
+	elif current_state == GlobalConsts.ItemState.DAMAGING:
+		#is_just_dropped = true
+		self.emit_signal("item_is_dropped")
+		item_drop()
 
 
 func _use_primary():

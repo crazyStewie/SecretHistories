@@ -40,19 +40,6 @@ func _ready():
 
 
 func _process(delta):
-	if item_state == GlobalConsts.ItemState.DAMAGING:
-		$Ignite/CollisionShape3D.disabled = false
-		is_dropped = true
-		
-		if is_dropped and not is_just_dropped:
-			is_just_dropped = true
-			self.emit_signal("item_is_dropped")
-			item_drop()
-	else:
-		$Ignite/CollisionShape3D.disabled = true
-		is_dropped = false
-		is_just_dropped = false
-	
 	# With Spotlight3D, the light doesn't fall on the holder, but they should still be visible
 	if is_instance_valid(owner_character):
 		if is_lit and owner_character.light_level < 0.01:
@@ -116,6 +103,10 @@ func _item_state_changed(previous_state, current_state):
 #			sound.connect("finished", sound, "queue_free")
 #			sound.play()
 		owner_character.inventory.switch_away_from_light(self)
+	elif current_state == GlobalConsts.ItemState.DAMAGING:
+		#is_just_dropped = true
+		self.emit_signal("item_is_dropped")
+		item_drop()
 
 
 func _on_light_depleted():

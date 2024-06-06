@@ -9,8 +9,8 @@ signal item_is_dropped
 var is_lit = false
 var burn_time : float
 var is_depleted : bool = false
-var is_dropped: bool = false
-var is_just_dropped: bool = true
+#var is_dropped: bool = false
+#var is_just_dropped: bool = true
 var light_timer
 var random_number
 @export var life_percentage_lose : float = 0.0 # (float, 0.0, 1.0)
@@ -28,26 +28,6 @@ func _ready() -> void:
 	if not light_timer.is_connected("timeout", Callable(self, "_light_depleted")):
 		light_timer.connect("timeout", Callable(self, "_light_depleted"))
 	burn_time = 3600.0
-	#light()
-
-
-func _process(_delta: float) -> void:
-	if item_state == GlobalConsts.ItemState.DAMAGING:
-		$Ignite/CollisionShape3D.disabled = false
-		is_dropped = true
-		
-		if is_dropped and not is_just_dropped:
-			is_just_dropped = true
-			self.emit_signal("item_is_dropped")
-			item_drop()
-	else:
-		$Ignite/CollisionShape3D.disabled = true
-		is_dropped = false
-		is_just_dropped = false
-		
-	# This ensures it's never emissive while off, also, that candles stay lit on level change
-	if $MeshInstance3D.get_surface_override_material(0).emission_enabled == true and $FireOrigin/Fire.visible == false:
-		light()
 
 
 func light() -> void:
@@ -102,6 +82,10 @@ func _item_state_changed(previous_state, current_state):
 #			sound.connect("finished", sound, "queue_free")
 #			sound.play()
 		owner_character.inventory.switch_away_from_light(self)
+	elif current_state == GlobalConsts.ItemState.DAMAGING:
+		#is_just_dropped = true
+		self.emit_signal("item_is_dropped")
+		item_drop()
 
 
 func _on_light_depleted():
@@ -126,8 +110,7 @@ func item_drop():
 	light_timer.start()
 	
 	print("Linear velocity of candle: ", linear_velocity.length())
-	if linear_velocity.length() > 0.01:
+	if linear_velocity.length() > 0.001:
 		if random_number < prob_going_out:
 			unlight()
 			print("Light went out due to being thrown")
-			
