@@ -43,8 +43,10 @@ var is_soundplayer_ready = false
 
 
 func _enter_tree():
-	await get_tree().create_timer(2).timeout
-	can_play_sound = true
+	# This was put here to try to stop sounds early in level load, but it bugs throwing.
+	#await get_tree().create_timer(2).timeout
+	#can_play_sound = true
+	
 	if not audio_player:
 		var drop_sound = AudioStreamPlayer3D.new()
 		drop_sound.name = "DropSound"
