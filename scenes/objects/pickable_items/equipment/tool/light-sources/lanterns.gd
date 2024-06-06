@@ -80,6 +80,8 @@ func light():
 		
 		$AnimationPlayer.play("flicker")
 		firelight.visible = true
+		if $FireOrigin:
+			$FireOrigin.visible = true # related to bugfix #604
 		$MeshInstance3D.cast_shadow = false
 		
 		is_lit = true
@@ -96,6 +98,8 @@ func unlight():
 		
 		$AnimationPlayer.stop()
 		firelight.visible = false
+		if $FireOrigin:
+			$FireOrigin.visible = false # related to bugfix #604
 		$MeshInstance3D.cast_shadow = true
 		
 		is_lit = false

@@ -57,6 +57,7 @@ func light() -> void:
 	#	$FireOrigin/Fire.emitting = not $FireOrigin/Fire.emitting
 		$FireOrigin/Fire.visible = not $FireOrigin/Fire.visible
 		firelight.visible = not firelight.visible
+		$FireOrigin.visible = true # related to bugfix #604
 		$MeshInstance3D.cast_shadow = false
 		$MeshInstance3D.get_surface_override_material(0).emission_enabled = true
 		
@@ -72,6 +73,7 @@ func unlight() -> void:
 	#	$FireOrigin/Fire.emitting = false
 		$FireOrigin/Fire.visible = false
 		firelight.visible = false
+		$FireOrigin.visible = false # related to bugfix #604
 		$MeshInstance3D.cast_shadow = true
 		
 		is_lit = false
