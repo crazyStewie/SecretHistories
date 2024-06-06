@@ -204,5 +204,8 @@ stream = ExtResource("5")
 volume_db = 30.0
 bus = &"Effects"
 
+[node name="PlacementAnchor" parent="." index="13"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.130572, 0)
+
 [connection signal="timeout" from="Durability" to="." method="_on_Durability_timeout"]
 [connection signal="timeout" from="Timer" to="." method="_on_light_depleted"]

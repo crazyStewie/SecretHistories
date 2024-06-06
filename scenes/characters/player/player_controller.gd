@@ -353,7 +353,7 @@ func handle_grab(delta : float):
 				object = last_interaction_target
 				print(object)
 			
-			if object is RigidBody3D:
+			if object is RigidBody3D or is_in_group("IGNITE"):
 				var grab_position = current_control_mode.get_grab_global_position()
 				grab_relative_object_position = object.to_local(grab_position)
 				grab_distance = _camera.global_transform.origin.distance_to(grab_position)
@@ -789,12 +789,13 @@ func update_throw_state(throw_item : EquipmentItem, delta : float):
 func throw_impulse_and_damage(item):
 	var impulse = current_control_mode.get_aim_direction() * throw_strength
 	
-	if item is MeleeItem:
+	#if item is MeleeItem:
+		#item.set_item_state(GlobalConsts.ItemState.DAMAGING)
+		#item.apply_throw_logic()
+		#item.apply_central_impulse(impulse)
+	if item is EquipmentItem:   # Non-Melee equipment item
 		item.set_item_state(GlobalConsts.ItemState.DAMAGING)
 		item.apply_throw_logic()
-		item.apply_central_impulse(impulse)
-	elif item is EquipmentItem:   # Non-Melee equipment item
-		item.set_item_state(GlobalConsts.ItemState.DAMAGING)
 		item.apply_central_impulse(impulse)
 	elif item is PickableItem:   # It's a tiny item
 		item.set_item_state(GlobalConsts.ItemState.DAMAGING)

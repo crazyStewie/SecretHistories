@@ -64,6 +64,21 @@ func _ready():
 		light_timer_3.start()
 
 
+func _process(_delta: float) -> void:
+	if item_state == GlobalConsts.ItemState.DAMAGING:
+		$Ignite/CollisionShape3D.disabled = false
+		is_dropped = true
+		
+		if is_dropped and not is_just_dropped:
+			is_just_dropped = true
+			self.emit_signal("item_is_dropped")
+			item_drop()
+	else:
+		$Ignite/CollisionShape3D.disabled = true
+		is_dropped = false
+		is_just_dropped = false
+
+
 func light():
 	if not is_depleted:
 		$AnimationPlayer.play("flicker")
@@ -228,7 +243,9 @@ func item_drop():
 	light_timer.set_wait_time(burn_time)
 	light_timer.start()
 	
-	print("Linear velocity of candle: ", linear_velocity.length())
-	if linear_velocity.length() > 0.1:
+	print("Linear velocity of candelabra: ", linear_velocity.length())
+	if linear_velocity.length() > 0.01:
 		if random_number < prob_going_out:
 			unlight()
+			print("Light went out due to being thrown")
+			

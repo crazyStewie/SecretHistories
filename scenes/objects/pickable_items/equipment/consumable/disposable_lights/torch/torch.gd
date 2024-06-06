@@ -26,6 +26,21 @@ func _ready():
 	burn_time = 600.0
 
 
+func _process(_delta: float) -> void:
+	if item_state == GlobalConsts.ItemState.DAMAGING:
+		$Ignite/CollisionShape3D.disabled = false
+		is_dropped = true
+		
+		if is_dropped and not is_just_dropped:
+			is_just_dropped = true
+			self.emit_signal("item_is_dropped")
+			item_drop()
+	else:
+		$Ignite/CollisionShape3D.disabled = true
+		is_dropped = false
+		is_just_dropped = false
+
+
 func light():
 	if not is_depleted:
 		$AnimationPlayer.play("flicker")
@@ -95,6 +110,7 @@ func stop_light_timer():
 
 
 func item_drop():
+	print("item_drop() in light-source called")
 	stop_light_timer()
 	burn_time -= (burn_time * life_percentage_lose)
 	print("reduced burn time " + str(burn_time))
@@ -103,7 +119,9 @@ func item_drop():
 	light_timer.set_wait_time(burn_time)
 	light_timer.start()
 	
-	print("Linear velocity of candle: ", linear_velocity.length())
-	if linear_velocity.length() > 0.1:
+	print("Angular velocity of torch: ", angular_velocity.length())
+	if angular_velocity.length() > 5:
 		if random_number < prob_going_out:
 			unlight()
+			print("Light went out due to being thrown")
+			

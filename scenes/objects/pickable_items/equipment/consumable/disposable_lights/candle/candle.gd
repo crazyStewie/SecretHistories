@@ -32,7 +32,7 @@ func _ready() -> void:
 
 
 func _process(_delta: float) -> void:
-	if item_state == GlobalConsts.ItemState.DROPPED:
+	if item_state == GlobalConsts.ItemState.DAMAGING:
 		$Ignite/CollisionShape3D.disabled = false
 		is_dropped = true
 		
@@ -126,6 +126,8 @@ func item_drop():
 	light_timer.start()
 	
 	print("Linear velocity of candle: ", linear_velocity.length())
-	if linear_velocity.length() > 0.1:
+	if linear_velocity.length() > 0.01:
 		if random_number < prob_going_out:
 			unlight()
+			print("Light went out due to being thrown")
+			

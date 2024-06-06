@@ -119,7 +119,6 @@ func melee_throw_damage():
 	var item_damage
 	
 	if can_spin:
-		print("Item thrown can spin")
 		item_damage = secondary_damage1 + secondary_damage2
 		print(item_damage, " damage calculated")
 	elif thrown_point_first:
