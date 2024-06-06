@@ -664,9 +664,9 @@ func update_throw_state(throw_item : EquipmentItem, delta : float):
 		if throw_press_length > hold_time_to_grab:
 			if _placing_blueprint == null:
 				_placing_blueprint = throw_item.duplicate()
-				var _placing_blueprint_mesh: MeshInstance3D = _placing_blueprint.get_node("MeshInstance3D")
+				var _placing_blueprint_mesh: MeshInstance3D = _placing_blueprint.get_node("MeshInstance3D") # TODO: this is not going to be reliable
 				var shader: ShaderMaterial = load("res://resources/shaders/blueprints/blueprint.tres")
-				_placing_blueprint_mesh.set_surface_override_material(0, shader)
+				_placing_blueprint_mesh.set_material_override(shader)
 			
 			if _placing_blueprint:
 				current_control_mode.aimcast.add_exception(_placing_blueprint)

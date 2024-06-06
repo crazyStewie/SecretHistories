@@ -46,9 +46,8 @@ func _process(_delta: float) -> void:
 		is_just_dropped = false
 		
 	# This ensures it's never emissive while off, also, that candles stay lit on level change
-	if is_instance_valid($MeshInstance3D.get_surface_override_material(0).emission_enabled):
-		if $MeshInstance3D.get_surface_override_material(0).emission_enabled == true and $FireOrigin/Fire.visible == false:
-			light()
+	if $MeshInstance3D.get_surface_override_material(0).emission_enabled == true and $FireOrigin/Fire.visible == false:
+		light()
 
 
 func light() -> void:
