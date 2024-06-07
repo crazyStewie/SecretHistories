@@ -21,6 +21,29 @@ var is_equippable_offhand : bool = false
 @onready var fadeanimations = $"../../FadeAnim"
 
 
+func _ready():
+	fadeanimations.play("Fade_in")
+	$"../..".show()
+	if self.name == "10":
+		$SlotNumber.text = str(index+1)
+	else:
+		$SlotNumber/HBoxContainer/SlotNumber.text=str(index+1)
+	var game = GameManager.game
+	var player = game.player
+	if player == null:
+		await game.player_spawned
+		player = game.player
+	if player.inventory == null:
+		await player.ready
+		inventory = player.inventory
+	self.inventory = player.inventory
+
+
+func _physics_process(delta):
+	if is_equipped_mainhand or is_equipped_offhand:
+		update_container_data()
+
+
 func update_mainhand_indicator():
 	var final_color = can_equip_modulate if is_equippable_mainhand else can_not_equip_modulate
 	final_color = equipped_modulate if is_equipped_mainhand else final_color
@@ -44,24 +67,6 @@ func set_item(value : EquipmentItem):
 	if item != value:
 		item = value
 		update_item_data()
-
-
-func _ready():
-	fadeanimations.play("Fade_in")
-	$"../..".show()
-	if self.name == "10":
-		$SlotNumber.text = str(index+1)
-	else:
-		$SlotNumber/HBoxContainer/SlotNumber.text=str(index+1)
-	var game = GameManager.game
-	var player = game.player
-	if player == null:
-		await game.player_spawned
-		player = game.player
-	if player.inventory == null:
-		await player.ready
-		inventory = player.inventory
-	self.inventory = player.inventory
 
 
 func set_inventory(value : Node):
@@ -137,11 +142,6 @@ func update_item_data():
 	update_name()
 	update_container_data()
 	update_equipped_status()
-
-
-func _physics_process(delta):
-	if is_equipped_mainhand or is_equipped_offhand:
-		update_container_data()
 
 
 func update_name():

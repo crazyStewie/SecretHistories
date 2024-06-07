@@ -211,7 +211,7 @@ func do_ads(value):
 						"parameters/MediumAds/blend_amount",
 						%AnimationTree.get("parameters/MediumAds/blend_amount"), 0.0, 0.1)
 						adjust_arm(Vector3(0.008, -1.364, 0.175))
-				$"../FPSCamera".fov = lerp($"../FPSCamera".fov, 70, 0.1)
+				$"../FPSCamera".fov = lerp($"../FPSCamera".fov, 70.0, 0.1)
 
 
 func get_equipped_weapon() -> EquipmentItem:

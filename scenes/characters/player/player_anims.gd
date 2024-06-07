@@ -157,7 +157,7 @@ func ads():
 		operation_tween(animation_tree, 
 		"parameters/SmallAds/blend_amount", 
 		animation_tree.get("parameters/SmallAds/blend_amount"),1.0, 0.1)
-		_camera.fov = lerp(_camera.fov, 65, 0.1)
+		_camera.fov = lerp(_camera.fov, 65.0, 0.1)
 		adjust_arm(Vector3(-0.086, -1.558, 0.294), 0.1)
 		
 	else:
@@ -169,7 +169,7 @@ func ads():
 			operation_tween(animation_tree,
 			"parameters/MediumAds/blend_amount",
 			animation_tree.get("parameters/MediumAds/blend_amount"), 1.0, 0.05)
-		_camera.fov = lerp(_camera.fov, 60, 0.04)
+		_camera.fov = lerp(_camera.fov, 60.0, 0.04)
 		adjust_arm(Vector3(-0.054, -1.571, 0.257), 0.04)
 
 
@@ -204,7 +204,7 @@ func end_ads():
 			"parameters/MediumAds/blend_amount",
 			animation_tree.get("parameters/MediumAds/blend_amount"), 0.0, 0.05)
 		adjust_arm(Vector3(0.008, -1.364, 0.175), 0.1)
-	_camera.fov = lerp(_camera.fov, 70, 0.1)
+	_camera.fov = lerp(_camera.fov, 70.0, 0.1)
 
 
 func reload_weapons():

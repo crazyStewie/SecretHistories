@@ -64,7 +64,7 @@ func _on_Countdown_timeout():
 		# If it blows up in hand
 		if owner_character.is_in_group("CHARACTER") and item_state == GlobalConsts.ItemState.EQUIPPED:
 	#		print("Bomb blew up in ", owner_character, "'s hand for ", fragments / 4 * bomb_damage, " damage.")
-			owner_character.damage(bomb_damage, damage_type, owner_character)
+			owner_character.damage(bomb_damage, damage_type, owner_character) # TODO: fix bomb blowinog up in character's hand
 			throwing = true
 		
 		# Camera shake, untested

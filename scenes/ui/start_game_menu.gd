@@ -40,7 +40,8 @@ func _on_StartGame_pressed() -> void:
 
 
 func _on_Timer_timeout():
-	$GameIntro.show_intro()
+	if $GameIntro: # stops crash when canceling intro sometimes
+		$GameIntro.show_intro()
 
 
 func _on_GameIntro_intro_done():

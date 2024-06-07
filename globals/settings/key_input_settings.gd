@@ -80,7 +80,7 @@ func _ready():
 								set_keys(x)
 							elif "previous_hotbar_item" in actions_copy[x] and counter == 1:
 								set_keys(x)
-							elif "holster_offhand" in actions_copy[x] and counter == 2:
+							elif "holster_weapons" in actions_copy[x] and counter == 2:
 								set_keys(x)
 					5:
 						if "hotbar_" in actions_copy[x]:

@@ -93,6 +93,11 @@ var _click_timer : float = 0.0
 var _throw_wait_time : float = 400
 var drag_object : RigidBody3D = null
 
+var last_holstered_mainhand_item : EquipmentItem = null
+var last_holstered_offhand_item : EquipmentItem = null
+var last_holstered_mainhand_slotnum: int = 10 # empty hands slot
+var last_holstered_offhand_slotnum : int = 10 # empty hands slot
+
 var ads_handled = false
 
 var is_movement_key1_held = false
@@ -440,7 +445,6 @@ func handle_grab(delta : float):
 func _handle_inventory_and_grab_input(delta : float):
 	# Main-hand slot selection
 	for i in range(character.inventory.HOTBAR_SIZE - 1):
-		# hotbar_%d is a nasty hack which prevents renaming hotbar_11 to holster_offhand in Input Map
 		if Input.is_action_just_pressed("hotbar_%d" % [i + 1]) and owner.is_reloading == false:
 			# Don't select current offhand slot and don't select 10 because it's hotbar_11, used for holstering offhand item, below
 			if i != character.inventory.current_offhand_slot and i != 10:
@@ -485,9 +489,47 @@ func _handle_inventory_and_grab_input(delta : float):
 			print("Offhand slot cycled to ", new_slot)
 			throw_state = ThrowState.IDLE
 	
-	if Input.is_action_just_pressed("itm|holster_offhand"):
-		if character.inventory.current_offhand_slot != 10:
-			character.inventory.current_offhand_slot = 10
+	if Input.is_action_just_pressed("itm|holster_weapons"):
+		# For readability
+		var cicme = character.inventory.current_mainhand_equipment
+		var cicoe = character.inventory.current_offhand_equipment
+		var cicme_wep = cicme is MeleeItem or cicme is GunItem or cicme is BombItem
+		var cicoe_wep = cicoe is MeleeItem or cicoe is GunItem or cicoe is BombItem
+		var main_slotnum = character.inventory.current_mainhand_slot
+		var off_slotnum = character.inventory.current_offhand_slot
+		
+		# If a weapon is in either hand
+		if cicme_wep or cicoe_wep:
+			#last_holstered_mainhand_item = null
+			#last_holstered_mainhand_slot = null
+			#last_holstered_offhand_item = null
+			#last_holstered_offhand_slot = null
+			if cicme_wep:
+				last_holstered_mainhand_item = character.inventory.current_mainhand_equipment
+				#last_holstered_mainhand_slot = character.inventory.hotbar[main_slotnum]
+				last_holstered_mainhand_slotnum = character.inventory.current_mainhand_slot
+				character.inventory.unequip_mainhand_item()
+			if cicoe_wep:
+				last_holstered_offhand_item = character.inventory.current_offhand_equipment
+				#last_holstered_offhand_slot = character.inventory.hotbar[off_slotnum]
+				last_holstered_offhand_slotnum = character.inventory.current_offhand_slot
+				character.inventory.unequip_offhand_item()
+		
+		# If either hand is empty (elif to ensure we don't put one weapon away and take another out)
+		elif cicme == null or cicoe == null:
+			print("Both hands free")
+			if cicme == null:
+				if character.inventory.hotbar[last_holstered_mainhand_slotnum] == last_holstered_mainhand_item: # is the same weapon in the same slot as when we last pressed holster_weapons?
+					character.inventory.set_mainhand_slot(last_holstered_mainhand_slotnum)
+					character.inventory.equip_mainhand_item()
+			if cicoe == null:
+				if character.inventory.hotbar[last_holstered_offhand_slotnum] == last_holstered_offhand_item: # is the same weapon in the same slot as when we last pressed holster_weapons?
+					character.inventory.set_offhand_slot(last_holstered_offhand_slotnum)
+					character.inventory.equip_offhand_item()
+			last_holstered_mainhand_item = null
+			last_holstered_offhand_item = null
+			last_holstered_mainhand_slotnum = 10
+			last_holstered_offhand_slotnum = 10
 	
 	# Item Usage
 	# temporary hack (issue #409)
