@@ -43,7 +43,7 @@ func _ready():
 func _process(delta: float) -> void:
 	if initial_light_needed == true:
 		await get_tree().create_timer(0.5).timeout
-		print("Initial light of light-source")
+		#print("Initial light of light-source")
 		inventory.get_offhand_item().light()
 		initial_light_needed = false
 	

@@ -36,6 +36,7 @@ func _process(delta):
 func _use_primary():
 	if countdown_timer.is_stopped():
 		countdown_timer.start()
+		countdown_started = true
 		$Fuse.emitting = true
 		if fuse_sound:
 			fuse_sound.play()
@@ -58,7 +59,6 @@ func _on_Countdown_timeout():
 	$Fuse.emitting = false
 	$MeshInstance3D.visible = false
 	$Explosion._on_Bomb_explosion()
-	countdown_started = true
 	
 	if is_instance_valid(owner_character):
 		# If it blows up in hand

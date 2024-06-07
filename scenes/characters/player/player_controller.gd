@@ -118,6 +118,9 @@ var camera_movement_resistance : float = 1.0
 var _cycle_offhand_timer : float = 0.0
 var _swap_hands_wait_time : float = 500
 
+var slot_pressed : int = -1 # invalid slot
+var number_of_hotbar_buttons_pressed : int = 0
+
 # For tracking whether to reload or unload mainhand item
 var _reload_press_timer : float = 0.0
 var _unload_wait_time : float = 500
@@ -443,14 +446,7 @@ func handle_grab(delta : float):
 
 
 func _handle_inventory_and_grab_input(delta : float):
-	# Main-hand slot selection
-	for i in range(character.inventory.HOTBAR_SIZE - 1):
-		if Input.is_action_just_pressed("hotbar_%d" % [i + 1]) and owner.is_reloading == false:
-			# Don't select current offhand slot and don't select 10 because it's hotbar_11, used for holstering offhand item, below
-			if i != character.inventory.current_offhand_slot and i != 10:
-				character.inventory.drop_bulky_item()
-				character.inventory.current_mainhand_slot = i
-				throw_state = ThrowState.IDLE
+	_handle_hotbar_buttons()
 	
 	# Off-hand slot selection or swap items in hands based on length of press of cycle_offhand_slot
 	if Input.is_action_just_pressed("playerhand|cycle_offhand_slot") and owner.is_reloading == false:
@@ -500,24 +496,17 @@ func _handle_inventory_and_grab_input(delta : float):
 		
 		# If a weapon is in either hand
 		if cicme_wep or cicoe_wep:
-			#last_holstered_mainhand_item = null
-			#last_holstered_mainhand_slot = null
-			#last_holstered_offhand_item = null
-			#last_holstered_offhand_slot = null
 			if cicme_wep:
 				last_holstered_mainhand_item = character.inventory.current_mainhand_equipment
-				#last_holstered_mainhand_slot = character.inventory.hotbar[main_slotnum]
 				last_holstered_mainhand_slotnum = character.inventory.current_mainhand_slot
 				character.inventory.unequip_mainhand_item()
 			if cicoe_wep:
 				last_holstered_offhand_item = character.inventory.current_offhand_equipment
-				#last_holstered_offhand_slot = character.inventory.hotbar[off_slotnum]
 				last_holstered_offhand_slotnum = character.inventory.current_offhand_slot
 				character.inventory.unequip_offhand_item()
 		
-		# If either hand is empty (elif to ensure we don't put one weapon away and take another out)
+		# If neither hand has a weapon (it's elif to ensure we don't put one weapon away and take another out)
 		elif cicme == null or cicoe == null:
-			print("Both hands free")
 			if cicme == null:
 				if character.inventory.hotbar[last_holstered_mainhand_slotnum] == last_holstered_mainhand_item: # is the same weapon in the same slot as when we last pressed holster_weapons?
 					character.inventory.set_mainhand_slot(last_holstered_mainhand_slotnum)
@@ -528,8 +517,8 @@ func _handle_inventory_and_grab_input(delta : float):
 					character.inventory.equip_offhand_item()
 			last_holstered_mainhand_item = null
 			last_holstered_offhand_item = null
-			last_holstered_mainhand_slotnum = 10
-			last_holstered_offhand_slotnum = 10
+			last_holstered_mainhand_slotnum = 10 # empty hands slot
+			last_holstered_offhand_slotnum = 10 # empty hands slot
 	
 	# Item Usage
 	# temporary hack (issue #409)
@@ -657,6 +646,53 @@ func _handle_inventory_and_grab_input(delta : float):
 			if character.player_animations.is_on_ads:
 				character.player_animations.end_ads()
 		ads_handled = false   # Gets it ready for next press
+
+
+func _handle_hotbar_buttons():
+	#printt(slot_pressed, number_of_hotbar_buttons_pressed)
+	
+	# if just pressed:
+	for i in range(character.inventory.HOTBAR_SIZE - 1):
+		if Input.is_action_just_pressed("hotbar_%d" % [i + 1]) and owner.is_reloading == false:
+			# track number of buttons pressed to make sure we don't switch items after swapping, while still holding first button
+			number_of_hotbar_buttons_pressed += 1
+			# is another hotbar button currently held?
+			if number_of_hotbar_buttons_pressed == 2:
+				character.inventory.swap_slots(slot_pressed, i)
+				#return
+	
+	# if released 
+	for i in range(character.inventory.HOTBAR_SIZE - 1):
+		if Input.is_action_just_released("hotbar_%d" % [i + 1]) and owner.is_reloading == false:
+			# did we swap slots?
+			number_of_hotbar_buttons_pressed -= 1
+			# implies no other hotbar button pressed in the meantime
+			if number_of_hotbar_buttons_pressed == 0:
+				# slot that was pressed -> normal logic
+				# Don't select current offhand slot and don't select 10 because it's hotbar_11, used for holstering offhand item, below
+				if i != character.inventory.current_offhand_slot and i != 10:
+					character.inventory.drop_bulky_item()
+					character.inventory.current_mainhand_slot = i
+					throw_state = ThrowState.IDLE
+				# clear which slot was pressed (could do double-duty as are we swapping?)
+				slot_pressed = -1 # invalid slot
+	
+	# if pressed
+	for i in range(character.inventory.HOTBAR_SIZE - 1):
+		if Input.is_action_pressed("hotbar_%d" % [i + 1]) and owner.is_reloading == false:
+			# if didn't just swap:
+			if slot_pressed == -1:
+				# record which slot was pressed
+				slot_pressed = i
+	
+	## Main-hand slot selection
+	#for i in range(character.inventory.HOTBAR_SIZE - 1):
+		#if Input.is_action_just_pressed("hotbar_%d" % [i + 1]) and owner.is_reloading == false:
+			## Don't select current offhand slot and don't select 10 because it's hotbar_11, used for holstering offhand item, below
+			#if i != character.inventory.current_offhand_slot and i != 10:
+				#character.inventory.drop_bulky_item()
+				#character.inventory.current_mainhand_slot = i
+				#throw_state = ThrowState.IDLE
 
 
 func stop_grabbing():

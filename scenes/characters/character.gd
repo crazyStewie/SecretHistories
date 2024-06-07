@@ -800,8 +800,8 @@ func check_current_item_animation():
 		var offhand_object = inventory.current_offhand_slot
 		
 		# temporary hack (issue #409) - not sure it's necessary
-#		if not is_instance_valid(inventory.hotbar[mainhand_object]):
-#			inventory.hotbar[mainhand_object] = null
+		if not is_instance_valid(inventory.hotbar[mainhand_object]):
+			inventory.hotbar[mainhand_object] = null
 		
 		if inventory.hotbar[mainhand_object] is GunItem:
 			if inventory.hotbar[mainhand_object].item_size == 0:

@@ -487,8 +487,38 @@ func set_offhand_slot(value : int):
 		emit_signal("inventory_changed")
 
 
+# Equipment in each slot goes to other slot
+func swap_slots(first_slot, second_slot):
+	prints("Swapping slots ", first_slot, second_slot)
+	# store both items in temp
+	var first_temp = hotbar[first_slot]
+	print(first_temp)
+	var second_temp = hotbar[second_slot]
+	print(second_temp)
+	# place first item in final slot
+	hotbar[second_slot] = first_temp
+	print(hotbar[second_slot])
+	# place second item in initial slot
+	hotbar[first_slot] = second_temp
+	print(hotbar[first_slot])
+	
+	# TODO: equip as appropriate or change current slot numbers for each hand
+		# if each item is currently in a hand, swap_hands()?
+	
+	# null out the temp - not needed and breaks code
+	#if is_instance_valid(first_temp):
+		#first_temp.queue_free()
+	#if is_instance_valid(second_temp):
+		#second_temp.queue_free()
+	
+	emit_signal("inventory_changed") # this do anything?
+	emit_signal("hotbar_changed", first_slot)
+	emit_signal("hotbar_changed", second_slot)
+
+
+# Equipment in each hand goes to other hand
 func swap_hands():
-	print("swap hands attempt")
+	print("Swapping hands")
 	# If bulky, don't do anything
 	if bulky_equipment:
 		return

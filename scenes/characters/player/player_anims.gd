@@ -45,7 +45,12 @@ func _ready():
 
 
 func check_player_animation():
-	
+	# Bug fix during swap_slots()
+	if not is_instance_valid(inventory.current_mainhand_equipment):
+		inventory.current_mainhand_equipment = null
+	if not is_instance_valid(inventory.current_offhand_equipment):
+		inventory.current_offhand_equipment = null
+
 	for bulky_item in owner.mainhand_equipment_root.get_children():
 		if bulky_item.item_size == 2:
 			animation_tree.set("parameters/Hand_Transition/current", 0)
