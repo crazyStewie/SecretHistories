@@ -147,7 +147,7 @@ func _on_Hitbox_hit(other):
 
 
 func _on_Hitbox_body_entered(body):
-	print(body, " hit by", self)
+	prints(body, "hit by", self)
 	# This is so slashing damage doesn't impulse objects as much
 	if primary_damage_type1 == 0:
 		primary_damage1 /= 2

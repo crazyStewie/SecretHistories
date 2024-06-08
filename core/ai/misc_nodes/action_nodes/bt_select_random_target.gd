@@ -5,7 +5,7 @@ class_name BTSelectRandomTarget extends BTAction
 
 
 @export var minimum_radius := 1.0
-@export var maximum_radius := 6.0
+@export var maximum_radius := 15.0
 
 
 func _tick(state : CharacterState) -> int:

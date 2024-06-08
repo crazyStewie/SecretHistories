@@ -83,7 +83,13 @@ item_name = "Webley revolver"
 item_drop_sound = ExtResource("12")
 
 [node name="Webley" parent="." index="0" instance=ExtResource("5_78i6t")]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, -0.117501, 0)
+transform = Transform3D(-0.996521, 0, 0.0833473, 0, 1, 0, -0.0833473, 0, -0.996521, -0.157248, -1.24888, 0.553996)
+
+[node name="Webley_Arm" parent="Webley" index="0"]
+transform = Transform3D(0.0934741, 0.0195869, -0.995429, -0.0307337, 0.999387, 0.0167788, 0.995147, 0.0290248, 0.0940188, -0.111472, 1.23861, 0.570856)
+
+[node name="Skeleton3D" parent="Webley/Webley_Arm" index="0"]
+bones/4/rotation = Quaternion(-4.65661e-10, -5.41007e-10, -3.25963e-09, 1)
 
 [node name="Webley2" parent="Webley/Webley_Arm/Skeleton3D" index="0"]
 script = ExtResource("4")
@@ -128,7 +134,7 @@ sound_effect = ExtResource("8")
 hit_effect = ExtResource("7")
 
 [node name="Flash" type="OmniLight3D" parent="Effects" index="0"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.381674)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0123254, -0.132322)
 visible = false
 light_color = Color(0.760784, 0.364706, 0.0470588, 1)
 light_energy = 5.0
@@ -140,15 +146,15 @@ omni_attenuation = 7.0
 one_shot = true
 
 [node name="SmokeOrigin" type="Marker3D" parent="Effects" index="1"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0535101, -0.150913)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0127416, -0.139536)
 visible = false
 
 [node name="SoundOrigin" type="Marker3D" parent="Effects" index="2"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0460132, -0.0354128)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0137776, -0.0354128)
 visible = false
 
 [node name="RayCast3D" parent="." index="7"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0281493, -0.0297382)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.015, -0.03)
 visible = true
 
 [node name="Sounds" type="Node3D" parent="." index="8"]
@@ -176,7 +182,7 @@ transform = Transform3D(0.990265, -0.138034, -0.0179346, 0.139175, 0.984048, 0.1
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." index="10"]
 unique_name_in_owner = true
-root_node = NodePath("")
+root_node = NodePath("../Webley")
 libraries = {
 "": SubResource("AnimationLibrary_ireru")
 }

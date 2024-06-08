@@ -4,19 +4,21 @@ extends GenerationStep
 @export var floor_tile : int = -1
 @export var wall_tile : int = -1
 @export var alternative_wall_tiles : Array = [] # (Array, int)
-@export var alternative_wall_tile_chance : float = 0.05
+@export var alternative_wall_tile_chance : float = 0.1
 @export var double_wall_tile : int = -1
 @export var alternative_double_wall_tiles : Array = [] # (Array, int)
-@export var alternative_double_wall_tile_chance : float = 0.05
+@export var alternative_double_wall_tile_chance : float = 0.1
 @export var door_tile : int = -1
 @export var door_width : float = 0.0
 @export var double_door_tile : int = -1
-@export var double_door_width : float = 0.0
+@export var double_door_width : float = 1.5
 @export var ceiling_tile : int = -1
+@export var alternative_ceiling_tiles : Array = [] # (Array, int)
+@export var alternative_ceiling_tile_chance : float = 0.05
 
 @export var pillar_room_double_wall_tile : int = -1
 @export var pillar_room_double_door_tile : int = -1
-@export var pillar_room_double_door_width : float = 0.0
+@export var pillar_room_double_door_width : float = 1.7
 @export var pillar_room_double_ceiling_tile : int = -1
 @export var pillar_room_double_floor_tile : int = -1
 @export var pillar_room_pillar_tile : int = -1
@@ -32,7 +34,7 @@ func _execute_step(data : WorldData, gen_data : Dictionary, generation_seed : in
 	var rng : RandomNumberGenerator = RandomNumberGenerator.new()
 	rng.seed = generation_seed
 	select_floor_tiles(data, pillar_rooms)
-	select_ceiling_tiles(data, pillar_rooms)
+	select_ceiling_tiles(data, pillar_rooms, rng)
 	select_wall_tiles(data, rng)
 	select_pillar_room_walls(data, pillar_rooms)
 	place_pillars(data)
@@ -48,8 +50,9 @@ func select_floor_tiles(data : WorldData, pillar_rooms : Array):
 			if cell_type == data.CellType.ROOM:
 				data.set_cell_surfacetype(i, data.SurfaceType.STONE)
 			elif cell_type == data.CellType.CORRIDOR:
-				data.set_cell_surfacetype(i, data.SurfaceType.CARPET)
+				data.set_cell_surfacetype(i, data.SurfaceType.CARPET) # TODO: actually have carpeted corridors rarely, usually stone
 			data.set_ground_tile_index(i, floor_tile)
+			
 	for _room in pillar_rooms:
 		var room : Rect2 = _room as Rect2
 		print("pillar_room: %s" % [room])
@@ -59,12 +62,19 @@ func select_floor_tiles(data : WorldData, pillar_rooms : Array):
 				data.set_ground_tile_index(cell, pillar_room_double_floor_tile)
 
 
-func select_ceiling_tiles(data : WorldData, pillar_rooms : Array):
+func select_ceiling_tiles(data : WorldData, pillar_rooms : Array, rng : RandomNumberGenerator):
 	for i in data.cell_count:
 		if data.get_cell_type(i) != data.CellType.EMPTY:
 			var is_pillar_room = data.get_cell_meta(i, data.CellMetaKeys.META_PILLAR_ROOM, false)
 			if not is_pillar_room:
-				data.set_ceiling_tile_index(i, ceiling_tile)
+				var rnd = fposmod(rng.randf(), 1.0)
+				var selected_ceiling_tile : int = ceiling_tile
+				if rnd < alternative_ceiling_tile_chance and alternative_ceiling_tiles.size() > 0:
+					var index : int = rng.randi() % alternative_ceiling_tiles.size()
+					selected_ceiling_tile = alternative_ceiling_tiles[index]
+					print("Selected ceiling ", index)
+				data.set_ceiling_tile_index(i, selected_ceiling_tile)
+				
 	for _room in pillar_rooms:
 		var room : Rect2 = _room as Rect2
 		for i in room.size.x / 2:
@@ -123,7 +133,7 @@ func select_wall_tiles(data : WorldData, rng : RandomNumberGenerator):
 								var rnd = fposmod(rng.randf(), 1.0)
 								var selected_wall_tile : int = double_wall_tile
 								if rnd < alternative_double_wall_tile_chance and alternative_double_wall_tiles.size() > 0:
-									var index : int = rng.randi()%alternative_double_wall_tiles.size()
+									var index : int = rng.randi() % alternative_double_wall_tiles.size()
 									selected_wall_tile = alternative_double_wall_tiles[index]
 									print("Selected wall ", index)
 								data.set_wall_tile_index(cell_left, dir, selected_wall_tile)
@@ -137,7 +147,9 @@ func select_wall_tiles(data : WorldData, rng : RandomNumberGenerator):
 							var rnd = fposmod(rng.randf(), 1.0)
 							var selected_wall_tile : int = wall_tile
 							if rnd < alternative_wall_tile_chance and alternative_wall_tiles.size() > 0:
-									var index : int = rng.randi() % alternative_wall_tiles.size()
+								var index : int = rng.randi() % alternative_wall_tiles.size()
+								selected_wall_tile = alternative_wall_tiles[index]
+								print("Selected wall ", index)
 							data.set_wall_tile_index(i, dir, selected_wall_tile)
 					data.EdgeType.DOOR:
 						data.set_wall_tile_index(i, dir, door_tile)
