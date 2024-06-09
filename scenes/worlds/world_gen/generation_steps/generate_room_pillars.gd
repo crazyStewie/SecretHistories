@@ -1,3 +1,4 @@
+@tool
 extends GenerationStep
 
 
@@ -9,8 +10,29 @@ const PILLAR_ROOMS_KEY = "pillar_rooms"
 # a pillar room is any rectangular room that has all dimensins as a multiple of 2
 # these rooms will be populated with pillars and use 2-wide tiles
 
-@export var pillar_tile : int = -1
+var pillar_tile : int = -1
 @export var min_room_dimension : int = 4 # changing to 4 puts pillars in any room with 4+ on a side
+
+
+func _get_property_list() -> Array[Dictionary]:
+	var result : Array[Dictionary] = []
+	var meshlib_items : PackedStringArray = PackedStringArray(["None:-1"])
+	var meshlib : MeshLibrary = $"../../Gridmaps".mesh_library as MeshLibrary
+	for item_idx : int in meshlib.get_item_list():
+		var item_name : String = meshlib.get_item_name(item_idx)
+		meshlib_items.push_back("%s:%d" % [item_name, item_idx])
+	var enum_hint : String = ",".join(meshlib_items)
+	print(enum_hint)
+	
+	result.append({
+		"name" : "pillar_tile",
+		"usage" : PROPERTY_USAGE_DEFAULT,
+		"type" : TYPE_INT,
+		"hint" : PROPERTY_HINT_ENUM,
+		"hint_string" : enum_hint,
+	})
+	
+	return result
 
 
 # Override this function
@@ -99,7 +121,7 @@ func _execute_step(data : WorldData, gen_data : Dictionary, generation_seed : in
 		if not walls_even_aligned:
 			continue
 		
-		#Room has passed all checks, consider it a pillar room
+		# Room has passed all checks, consider it a pillar room
 		room_data.has_pillars = true
 		for cell in room_data.cell_indexes:
 			data.set_cell_meta(cell, data.CellMetaKeys.META_PILLAR_ROOM, true)

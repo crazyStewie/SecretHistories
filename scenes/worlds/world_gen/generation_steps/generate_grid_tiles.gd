@@ -1,30 +1,151 @@
+@tool
 extends GenerationStep
 
 
-@export var floor_tile : int = -1
-@export var wall_tile : int = -1
-@export var alternative_wall_tiles : Array = [] # (Array, int)
+var floor_tile : int = -1
+var wall_tile : int = -1
+var alternative_wall_tiles : Array[int] = []
 @export var alternative_wall_tile_chance : float = 0.1
-@export var double_wall_tile : int = -1
-@export var alternative_double_wall_tiles : Array = [] # (Array, int)
+var double_wall_tile : int = -1
+var alternative_double_wall_tiles : Array[int] = []
 @export var alternative_double_wall_tile_chance : float = 0.1
-@export var door_tile : int = -1
-@export var door_width : float = 0.0
-@export var double_door_tile : int = -1
+var door_tile : int = -1
+@export var door_width : float = 1.5
+var double_door_tile : int = -1
 @export var double_door_width : float = 1.5
-@export var ceiling_tile : int = -1
-@export var alternative_ceiling_tiles : Array = [] # (Array, int)
+var ceiling_tile : int = -1
+var alternative_ceiling_tiles : Array[int] = []
 @export var alternative_ceiling_tile_chance : float = 0.05
 
-@export var pillar_room_double_wall_tile : int = -1
-@export var pillar_room_double_door_tile : int = -1
+var pillar_room_double_wall_tile : int = -1
+var pillar_room_double_door_tile : int = -1
 @export var pillar_room_double_door_width : float = 1.7
-@export var pillar_room_double_ceiling_tile : int = -1
-@export var pillar_room_double_floor_tile : int = -1
-@export var pillar_room_pillar_tile : int = -1
-@export var pillar_tile : int = -1
+var pillar_room_double_ceiling_tile : int = -1
+var pillar_room_double_floor_tile : int = -1
+var pillar_room_pillar_tile : int = -1
+var pillar_tile : int = -1
 
 const PillarRoomGenerator = preload("res://scenes/worlds/world_gen/generation_steps/generate_room_pillars.gd")
+
+
+func _get_property_list() -> Array[Dictionary]:
+	var result : Array[Dictionary] = []
+	var meshlib_items : PackedStringArray = PackedStringArray(["None:-1"])
+	var meshlib : MeshLibrary = $"../../Gridmaps".mesh_library as MeshLibrary
+	for item_idx : int in meshlib.get_item_list():
+		var item_name : String = meshlib.get_item_name(item_idx)
+		meshlib_items.push_back("%s:%d" % [item_name, item_idx])
+	var enum_hint : String = ",".join(meshlib_items)
+	print(enum_hint)
+	
+	result.append({
+		"name" : "floor_tile",
+		"usage" : PROPERTY_USAGE_DEFAULT,
+		"type" : TYPE_INT,
+		"hint" : PROPERTY_HINT_ENUM,
+		"hint_string" : enum_hint,
+	})
+	result.append({
+		"name" : "wall_tile",
+		"usage" : PROPERTY_USAGE_DEFAULT,
+		"type" : TYPE_INT,
+		"hint" : PROPERTY_HINT_ENUM,
+		"hint_string" : enum_hint,
+	})
+	result.append({
+		"name" : "double_wall_tile",
+		"usage" : PROPERTY_USAGE_DEFAULT,
+		"type" : TYPE_INT,
+		"hint" : PROPERTY_HINT_ENUM,
+		"hint_string" : enum_hint,
+	})
+	result.append({
+		"name" : "door_tile",
+		"usage" : PROPERTY_USAGE_DEFAULT,
+		"type" : TYPE_INT,
+		"hint" : PROPERTY_HINT_ENUM,
+		"hint_string" : enum_hint,
+	})
+	result.append({
+		"name" : "double_door_tile",
+		"usage" : PROPERTY_USAGE_DEFAULT,
+		"type" : TYPE_INT,
+		"hint" : PROPERTY_HINT_ENUM,
+		"hint_string" : enum_hint,
+	})
+	result.append({
+		"name" : "ceiling_tile",
+		"usage" : PROPERTY_USAGE_DEFAULT,
+		"type" : TYPE_INT,
+		"hint" : PROPERTY_HINT_ENUM,
+		"hint_string" : enum_hint,
+	})
+	result.append({
+		"name" : "pillar_room_double_wall_tile",
+		"usage" : PROPERTY_USAGE_DEFAULT,
+		"type" : TYPE_INT,
+		"hint" : PROPERTY_HINT_ENUM,
+		"hint_string" : enum_hint,
+	})
+	result.append({
+		"name" : "pillar_room_double_door_tile",
+		"usage" : PROPERTY_USAGE_DEFAULT,
+		"type" : TYPE_INT,
+		"hint" : PROPERTY_HINT_ENUM,
+		"hint_string" : enum_hint,
+	})
+	result.append({
+		"name" : "pillar_room_double_ceiling_tile",
+		"usage" : PROPERTY_USAGE_DEFAULT,
+		"type" : TYPE_INT,
+		"hint" : PROPERTY_HINT_ENUM,
+		"hint_string" : enum_hint,
+	})
+	result.append({
+		"name" : "pillar_room_double_floor_tile",
+		"usage" : PROPERTY_USAGE_DEFAULT,
+		"type" : TYPE_INT,
+		"hint" : PROPERTY_HINT_ENUM,
+		"hint_string" : enum_hint,
+	})
+	result.append({
+		"name" : "pillar_room_pillar_tile",
+		"usage" : PROPERTY_USAGE_DEFAULT,
+		"type" : TYPE_INT,
+		"hint" : PROPERTY_HINT_ENUM,
+		"hint_string" : enum_hint,
+	})
+	result.append({
+		"name" : "pillar_tile",
+		"usage" : PROPERTY_USAGE_DEFAULT,
+		"type" : TYPE_INT,
+		"hint" : PROPERTY_HINT_ENUM,
+		"hint_string" : enum_hint,
+	})
+	
+	result.append({
+		"name" : "alternative_wall_tiles",
+		"type" : TYPE_ARRAY,
+		"usage" : PROPERTY_USAGE_DEFAULT,
+		"hint" : PROPERTY_HINT_TYPE_STRING,
+		"hint_string" : "%d/%d:%s" % [TYPE_INT, PROPERTY_HINT_ENUM, enum_hint],
+	})
+	result.append({
+		"name" : "alternative_double_wall_tiles",
+		"type" : TYPE_ARRAY,
+		"usage" : PROPERTY_USAGE_DEFAULT,
+		"hint" : PROPERTY_HINT_TYPE_STRING,
+		"hint_string" : "%d/%d:%s" % [TYPE_INT, PROPERTY_HINT_ENUM, enum_hint],
+	})
+	result.append({
+		"name" : "alternative_ceiling_tiles",
+		"type" : TYPE_ARRAY,
+		"usage" : PROPERTY_USAGE_DEFAULT,
+		"hint" : PROPERTY_HINT_TYPE_STRING,
+		"hint_string" : "%d/%d:%s" % [TYPE_INT, PROPERTY_HINT_ENUM, enum_hint],
+	})
+	
+	return result
 
 
 # Override this function
