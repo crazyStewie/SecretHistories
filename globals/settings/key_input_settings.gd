@@ -62,17 +62,17 @@ func _ready():
 								set_keys(x)
 					3:
 						if "playerhand|" in actions_copy[x]:
-							if "main_use_primary" in actions_copy[x] and counter == 0:
+							if "mainhand_use" in actions_copy[x] and counter == 0:
 								set_keys(x)
-							elif "main_use_secondary" in actions_copy[x] and counter == 1:
+							#elif "main_use_secondary" in actions_copy[x] and counter == 1:
+								#set_keys(x)
+							elif "mainhand_throw" in actions_copy[x] and counter == 1:
 								set_keys(x)
-							elif "main_throw" in actions_copy[x] and counter == 2:
+							elif "offhand_use" in actions_copy[x] and counter == 2:
 								set_keys(x)
-							elif "offhand_use" in actions_copy[x] and counter == 3:
+							elif "offhand_throw" in actions_copy[x] and counter == 3:
 								set_keys(x)
-							elif "offhand_throw" in actions_copy[x] and counter == 4:
-								set_keys(x)
-							elif "cycle_offhand_slot" in actions_copy[x] and counter == 5:
+							elif "cycle_offhand_slot" in actions_copy[x] and counter == 4:
 								set_keys(x)
 					4:
 						if "itm|" in actions_copy[x]:

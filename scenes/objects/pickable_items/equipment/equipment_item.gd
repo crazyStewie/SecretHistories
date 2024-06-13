@@ -13,14 +13,12 @@ signal used_unload()
 
 @export var item_name : String = "Equipment"
 @export var horizontal_holding : bool = false
-@export var normal_pos_path : NodePath
 @export var throw_pos_path : NodePath
 
 var is_in_belt = false
 
 @onready var hold_position = %HoldPosition
-@onready var normal_pos = get_node(normal_pos_path)   # this still used?
-@onready var throw_pos = get_node(throw_pos_path)   # this still used?
+@onready var throw_pos = get_node(throw_pos_path)
 
 
 func _ready():

@@ -123,7 +123,7 @@ func check_word():
 
 	elif "[Main-hand throw key]" in temp:
 		keys = ""
-		for actionKey in InputMap.action_get_events("playerhand|main_throw"):
+		for actionKey in InputMap.action_get_events("playerhand|mainhand_throw"):
 			if actionKey is InputEventKey:
 				if not keys.is_empty():
 					keys += " or "
@@ -133,7 +133,7 @@ func check_word():
 
 	elif "[Main-hand use key]" in temp:
 		keys = ""
-		for actionKey in InputMap.action_get_events("playerhand|main_use_primary"):
+		for actionKey in InputMap.action_get_events("playerhand|mainhand_use"):
 			if actionKey is InputEventKey:
 				if not keys.is_empty():
 					keys += " or "
@@ -141,16 +141,16 @@ func check_word():
 		temp = temp.replace("[Main-hand use key]", keys)
 		check_word()
 		return
-
-	elif "[Main-hand secondary key]" in temp:
-		keys = ""
-		for actionKey in InputMap.action_get_events("playerhand|main_use_secondary"):
-			if actionKey is InputEventKey:
-				if not keys.is_empty():
-					keys += " or "
-				keys += OS.get_keycode_string(actionKey.keycode)
-		temp = temp.replace("[Main-hand secondary key]", keys)
-		return true
+#
+	#elif "[Main-hand secondary key]" in temp:
+		#keys = ""
+		#for actionKey in InputMap.action_get_events("playerhand|main_use_secondary"):
+			#if actionKey is InputEventKey:
+				#if not keys.is_empty():
+					#keys += " or "
+				#keys += OS.get_keycode_string(actionKey.keycode)
+		#temp = temp.replace("[Main-hand secondary key]", keys)
+		#return true
 
 	elif "[Map key]" in temp:
 		keys = ""
