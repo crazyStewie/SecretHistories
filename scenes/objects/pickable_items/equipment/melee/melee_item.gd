@@ -159,9 +159,9 @@ func _on_Hitbox_body_entered(body):
 		secondary_damage2 /= 2
 	
 	# This pushes the hit object if it's a RigidBody
-	if body is RigidBody3D and can_hit == true:
-		# TODO: fix this, it's always pointing one direction possible because base character scene doesn't rotate?
-		body.apply_central_impulse(-owner_character.global_transform.basis.z * primary_damage1)
-		body.apply_central_impulse(-owner_character.global_transform.basis.z * primary_damage2)
-		body.apply_central_impulse(-owner_character.global_transform.basis.z * secondary_damage1)
-		body.apply_central_impulse(-owner_character.global_transform.basis.z * secondary_damage2)
+	#if body is RigidBody3D and can_hit == true:
+		## TODO: fix this, it's always pointing one direction possible because base character scene doesn't rotate?
+		#body.apply_central_impulse(-owner_character.global_transform.basis.z * primary_damage1)
+		#body.apply_central_impulse(-owner_character.global_transform.basis.z * primary_damage2)
+		#body.apply_central_impulse(-owner_character.global_transform.basis.z * secondary_damage1)
+		#body.apply_central_impulse(-owner_character.global_transform.basis.z * secondary_damage2)

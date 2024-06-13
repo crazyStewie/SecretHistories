@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://1smfh3npjal5" path="res://resources/models/items/components/bones_and_bodies/human_skeleton/human_skeleton_Skeleton_baseColor.png" id="4_c5fpv"]
 [ext_resource type="Texture2D" uid="uid://61o0r4p3rcse" path="res://resources/models/items/components/bones_and_bodies/human_skeleton/human_skeleton_Skeleton_metallicRoughness.png" id="5_duygj"]
 [ext_resource type="Texture2D" uid="uid://c4wavgkchkdt5" path="res://resources/models/items/components/bones_and_bodies/human_skeleton/human_skeleton_Skeleton_normal.png" id="6_fp30f"]
-[ext_resource type="PackedScene" path="res://scenes/objects/pickable_items/equipment/_equipment_item.tscn" id="9"]
+[ext_resource type="PackedScene" uid="uid://ckkrq7mwcamt0" path="res://scenes/objects/pickable_items/equipment/_equipment_item.tscn" id="9"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5oovw"]
 resource_name = "Skeleton"
@@ -65,6 +65,7 @@ radius = 0.03
 radius = 0.101082
 
 [node name="LLowerLeg1" instance=ExtResource("9")]
+mass = 0.5
 item_size = 0
 item_name = "Tibia"
 item_drop_sound = ExtResource("4")
