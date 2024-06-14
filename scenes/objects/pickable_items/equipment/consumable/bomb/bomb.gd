@@ -9,23 +9,16 @@ extends ConsumableItem
 
 var countdown_started = false
 
-@onready var countdown_timer = $Countdown
-@onready var flash = $Flash
-var fuse_sound
+var fuse_sound : Node
 
 var throwing = false
 
-
-func _ready():
-	print($Explosion.lifetime)
+@onready var countdown_timer : Timer = $Countdown
+@onready var flash = $Flash
 
 
 func _process(delta):
-	if countdown_started == true:
-		$Explosion.lifetime -= delta
-	if $Explosion.lifetime < 1.2:
-		queue_free()
-		
+	# This is here instead of directly under throw() just due to requiring delta
 	if throwing == true:
 		owner_character.player_controller.throw_state = owner_character.player_controller.ThrowState.SHOULD_THROW
 		print("Throw state set to 3, so this should say 3: ", owner_character.player_controller.throw_state)
@@ -34,18 +27,39 @@ func _process(delta):
 
 
 func _use_primary():
-	if countdown_timer.is_stopped():
+	if countdown_timer.is_stopped() or countdown_timer.is_paused():
+		light()
+	else:
+		throw()
+
+
+func light():
+	if !countdown_started:
+		print("Starting countdown")
 		countdown_timer.start()
 		countdown_started = true
-		$Fuse.emitting = true
-		if fuse_sound:
-			fuse_sound.play()
-	else:
-		print("Trying to throw bomb")
-#		owner_character.drop_consumable(self)   # TODO: just replace this with standard throw logic for simplificy? Any reason to have this?
-		if owner_character is Player:
-			throwing = true
-			print("Player is the one trying to throw")
+	elif countdown_timer.is_paused():
+		countdown_timer.set_paused(false)
+		print("Fuse burn time left: ", countdown_timer.time_left)
+	
+	$Fuse.emitting = true
+	if fuse_sound:
+		fuse_sound.play()
+
+
+func unlight():
+	countdown_timer.set_paused(true)
+	print("Countdown timer paused: ", countdown_timer.is_paused())
+	$Fuse.emitting = false
+	if fuse_sound:
+		fuse_sound.stop()
+
+
+func throw():
+	print("Trying to throw bomb")
+	if owner_character is Player:
+		throwing = true
+		print("Player is the one trying to throw")
 
 
 func _on_Countdown_timeout():
@@ -70,7 +84,19 @@ func _on_Countdown_timeout():
 		# Camera shake, untested
 		if owner_character.is_in_group("PLAYER") and $Explosion/BlastRadius.get_overlapping_bodies().has(owner_character):
 			owner_character.fps_camera.add_stress(0.5)   # Eventually maybe based on distance from explosion
+	
+	print("Bomb boomed")
 
 
-func _on_FlashTimer_timeout():
+func _on_flash_timer_timeout():
 	flash.visible = false
+
+
+func _on_item_state_changed(previous_state, current_state):
+	print("reached on item state changed, current state is: ", current_state)
+	if current_state == GlobalConsts.ItemState.INVENTORY:
+		print("trying to unlight")
+		unlight()
+	if current_state == GlobalConsts.ItemState.EQUIPPED: # because inv may remove from tree before we can unlight, make sure to unlight it here
+		print("trying to unlight")
+		unlight()

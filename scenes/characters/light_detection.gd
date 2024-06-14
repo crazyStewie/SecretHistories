@@ -1,11 +1,12 @@
 extends Node3D
 
-
 # TODO: Needs commenting
-var light_level_bottom : float
-var light_level_top : float
+
 
 @export var light_detect_interval : float = 0.25   # For performance, only check about 4 times a second
+
+var light_level_bottom : float
+var light_level_top : float
 var _last_time_since_detect : float = 0.00
 
 
@@ -69,11 +70,12 @@ func _build_pixel_array(image):
 
 
 func _modify_by_mainhand_equipment():
-	if owner.inventory.current_mainhand_equipment is GunItem or owner.inventory.current_mainhand_equipment is MeleeItem:
-		light_level_top *= 1.1
-	if owner.inventory.current_mainhand_equipment:
-		if owner.inventory.current_mainhand_equipment.item_size == GlobalConsts.ItemSize.SIZE_MEDIUM or owner.inventory.current_mainhand_equipment.item_size == GlobalConsts.ItemSize.SIZE_BULKY:
+	if is_instance_valid(owner.inventory.current_mainhand_equipment):
+		if owner.inventory.current_mainhand_equipment is GunItem or owner.inventory.current_mainhand_equipment is MeleeItem:
 			light_level_top *= 1.1
+		if owner.inventory.current_mainhand_equipment:
+			if owner.inventory.current_mainhand_equipment.item_size == GlobalConsts.ItemSize.SIZE_MEDIUM or owner.inventory.current_mainhand_equipment.item_size == GlobalConsts.ItemSize.SIZE_BULKY:
+				light_level_top *= 1.1
 
 
 func _modify_by_encumbrance():

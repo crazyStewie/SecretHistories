@@ -771,8 +771,7 @@ func update_throw_state(throw_item : EquipmentItem, delta : float):
 				wanna_grab = false
 	if Input.is_action_just_released("playerhand|mainhand_throw") or Input.is_action_just_released("playerhand|offhand_throw"):
 		wants_to_drop = false
-
-
+	
 	if throw_state == ThrowState.PRESSING:
 		throw_item = character.inventory.get_mainhand_item() if throw_item_hand == ItemSelection.ITEM_MAINHAND else character.inventory.get_offhand_item()
 		#throw_item.set_item_state(GlobalConsts.ItemState.DROPPED)

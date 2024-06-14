@@ -1,14 +1,16 @@
 extends GPUParticles3D
 
 
-@onready var blastradius = %BlastRadius
+const IMPULSE_MULTIPLIER = 1.0
 
 var trigger = false
 
-const IMPULSE_MULTIPLIER = 1.0
+@onready var blastradius = %BlastRadius
+@onready var timer = $Timer
 
 
 func _on_Bomb_explosion():
+	timer.start()
 	var collisions = blastradius.get_overlapping_bodies()
 	collisions.append_array(blastradius.get_overlapping_areas())
 	
@@ -52,3 +54,7 @@ func _on_Bomb_explosion():
 			if is_instance_valid(object) and object.has_method("damage"):
 				object.damage(floor(scaled_damage), owner.damage_type, intersection.collider)
 				print("Bomb exploded and detected a character, ",object, " with damage() method for ", scaled_damage)
+
+
+func _on_timer_timeout():
+	owner.queue_free()

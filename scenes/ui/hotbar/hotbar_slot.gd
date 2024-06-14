@@ -39,9 +39,9 @@ func _ready():
 	self.inventory = player.inventory
 
 
-func _physics_process(delta):
-	if is_equipped_mainhand or is_equipped_offhand:
-		update_container_data()
+#func _physics_process(delta):
+	#if is_equipped_mainhand or is_equipped_offhand:
+		#update_container_data()
 
 
 func update_mainhand_indicator():

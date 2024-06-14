@@ -1,7 +1,7 @@
 [gd_scene load_steps=28 format=3 uid="uid://baim2jxfs75kg"]
 
 [ext_resource type="Script" path="res://scenes/objects/pickable_items/equipment/consumable/bomb/dynamite/dynamite.gd" id="1"]
-[ext_resource type="PackedScene" path="res://scenes/objects/pickable_items/equipment/consumable/bomb/_bomb.tscn" id="2"]
+[ext_resource type="PackedScene" uid="uid://dihle2hwbplxu" path="res://scenes/objects/pickable_items/equipment/consumable/bomb/_bomb.tscn" id="2"]
 [ext_resource type="Shader" uid="uid://bmq4tysjb7cyu" path="res://scenes/effects/explosion/smokeshader.tres" id="4"]
 [ext_resource type="Texture2D" uid="uid://dp88ims2ftxiw" path="res://resources/models/items/consumables/bombs/dynamite/SM_Dynamite_T_DynamiteDiffuse.png" id="4_1f2vb"]
 [ext_resource type="Material" uid="uid://67a0nyjvrode" path="res://scenes/effects/explosion/material.tres" id="5"]
@@ -160,19 +160,7 @@ stream = ExtResource("8")
 volume_db = 5.0
 bus = &"Effects"
 
-[node name="Flash" type="OmniLight3D" parent="." index="8"]
-visible = false
-light_color = Color(0.760784, 0.364706, 0.0470588, 1)
-light_energy = 5.0
-shadow_enabled = true
-omni_range = 10.0
-omni_attenuation = 7.0
-
-[node name="FlashTimer" type="Timer" parent="Flash" index="0"]
-wait_time = 0.05
-one_shot = true
-
-[node name="Effect" type="Node3D" parent="." index="9"]
+[node name="Effect" type="Node3D" parent="." index="8"]
 script = ExtResource("6")
 sound_effect = ExtResource("7")
 

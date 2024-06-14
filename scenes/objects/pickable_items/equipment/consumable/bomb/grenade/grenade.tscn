@@ -7,7 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://cdlupewhmh4c7" path="res://resources/models/items/consumables/bombs/grenade/Textures/Material_Metallic.png" id="5"]
 [ext_resource type="Texture2D" uid="uid://cb3jf8gx0tstx" path="res://resources/models/items/consumables/bombs/grenade/Textures/Material_Normal.png" id="6"]
 [ext_resource type="Texture2D" uid="uid://cqjafugwxibno" path="res://resources/models/items/consumables/bombs/grenade/Textures/Material_Roughness.png" id="7"]
-[ext_resource type="PackedScene" path="res://scenes/objects/pickable_items/equipment/consumable/bomb/_bomb.tscn" id="8"]
+[ext_resource type="PackedScene" uid="uid://dihle2hwbplxu" path="res://scenes/objects/pickable_items/equipment/consumable/bomb/_bomb.tscn" id="8"]
 [ext_resource type="AudioStream" uid="uid://1in5p2wmlo5e" path="res://resources/sounds/explosion/fuse/102264__rytmenpinnen__onesparkler.ogg" id="9"]
 [ext_resource type="Material" uid="uid://67a0nyjvrode" path="res://scenes/effects/explosion/material.tres" id="10"]
 [ext_resource type="Shader" uid="uid://bmq4tysjb7cyu" path="res://scenes/effects/explosion/smokeshader.tres" id="11"]

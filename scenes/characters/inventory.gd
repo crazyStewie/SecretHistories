@@ -271,7 +271,7 @@ func unequip_mainhand_item():
 	if current_mainhand_equipment == null:   # No item equipped
 		return
 	
-	current_mainhand_equipment.set_item_state(GlobalConsts.ItemState.INVENTORY)
+	#current_mainhand_equipment.set_item_state(GlobalConsts.ItemState.INVENTORY)
 	emit_signal("unequip_mainhand")
 	var item = current_mainhand_equipment
 	current_mainhand_equipment = null
@@ -352,7 +352,8 @@ func equip_offhand_item():
 func unequip_offhand_item():
 	if current_offhand_equipment == null: # No item equipped
 		return
-	current_offhand_equipment.set_item_state(GlobalConsts.ItemState.INVENTORY)
+	
+	#current_offhand_equipment.set_item_state(GlobalConsts.ItemState.INVENTORY)
 	# If the item was just equipped, waits for it to enter the tree before removing
 	var item = current_offhand_equipment
 	current_offhand_equipment = null
