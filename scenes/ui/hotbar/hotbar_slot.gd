@@ -13,7 +13,7 @@ var inventory = null: set = set_inventory
 @export var index : int = -1
 @export var is_bulky : bool  = false
 
-var is_equipped_mainhand : bool = false 
+var is_equipped_mainhand : bool = false
 var is_equipped_offhand : bool = false
 var is_equippable_mainhand : bool = false
 var is_equippable_offhand : bool = false
@@ -24,6 +24,8 @@ var is_equippable_offhand : bool = false
 
 
 func _ready():
+	#TODO: fix this when inventory is updated
+	return
 	fadeanimations.play("Fade_in")
 	$"../..".show()
 	if self.name == "10":
@@ -162,7 +164,7 @@ func update_container_data():   # Things like gun ammo, charges in medical bags,
 	# temporary hack (issue #409)
 	if not is_instance_valid(item):
 		item = null
-	
+
 	if item is GunItem:
 		var current_ammo = item.current_ammo
 		var ammo_type = item.current_ammo_type if item.current_ammo_type != null else item.ammo_types.front()

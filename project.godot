@@ -297,6 +297,7 @@ debug_noclip={
 [layer_names]
 
 3d_render/layer_2="GunCam on Player"
+3d_render/layer_3="PlayerBody"
 3d_render/layer_8="ScreenFilter on Player"
 3d_render/layer_10="KinestheticSense on Player"
 3d_physics/layer_1="World"

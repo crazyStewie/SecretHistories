@@ -89,12 +89,12 @@ func _input(event):
 		# Vertical
 		pitch_yaw.x -= (event.relative.y * InputSettings.setting_mouse_sensitivity * 0.01 * _camera.mod) * get_parent().camera_movement_resistance   # if this is anything than 0.01, even if same as below, vertical speed is diff than horizontal - why?
 		# Horizontal
-		pitch_yaw.y -= (event.relative.x * InputSettings.setting_mouse_sensitivity * 0.01 * _camera.mod) * get_parent().camera_movement_resistance   # From before fps_camera days 
-		
+		pitch_yaw.y -= (event.relative.x * InputSettings.setting_mouse_sensitivity * 0.01 * _camera.mod) * get_parent().camera_movement_resistance   # From before fps_camera days
+
 		pitch_yaw.x = clamp(pitch_yaw.x, -PI * 0.5, PI * 0.5)
 		pitch_yaw.y = wrapf(pitch_yaw.y, -PI, PI)
-		
-		
+
+
 	#		if owner.movement_state != owner.MovementState.STATE_CRAWLING:
 	#			_camera.rotation_degrees.x -= event.relative.y * InputSettings.setting_mouse_sensitivity * m
 	#			_camera.rotation_degrees.x = clamp(_camera.rotation_degrees.x, -90, 90)
@@ -107,9 +107,9 @@ func crosshair_indicators():
 	else :
 		dot_indicator.show()
 		# TODO: broken it's self-colliding with stuff in player's hands
-	
+
 	var grabable_object = grabcast.get_collider()
-	
+
 	if grabable_object != null:
 		if grabcast.is_colliding() and grabable_object is PickableItem and player_controller.is_grabbing == false:
 			grab_indicator.show()
@@ -127,7 +127,7 @@ func crosshair_indicators():
 	else:
 		grab_indicator.hide()
 		ignite_indicator.hide()
-	
+
 	# This notifies the "pointing nearby" dot if the player is currently grabbing something
 	if player_controller.is_grabbing == true:
 		dot_indicator.hide()
@@ -138,7 +138,7 @@ func recoil(item, damage, handling):
 #	side_recoil = rand_range(-5, 5)
 #    var recoil = rand_range(250 - item.handling, 500 - item.handling)
 #    up_recoil += recoil * delta
-#    up_recoil += 1 
+#    up_recoil += 1
 	#compensate for delta application
 	up_recoil += 60 * damage / (handling)
 #	_camera.add_stress(0.5)
@@ -146,13 +146,13 @@ func recoil(item, damage, handling):
 
 func update(delta):
 	_camera.rotation_degrees = _camera_orig_rotation
-	
+
 	if up_recoil > 0:
 		### Recoil
 		# Horizontal recoil
 #		pitch_yaw.y = lerp(pitch_yaw.y, deg2rad(side_recoil), delta)   # TODO: fix this, currently based on global rotation for some reason
 		# Vertical recoil
-	
+
 #        if up_recoil >= 35:
 #            up_recoil = 35
 		up_recoil = min(up_recoil, MAX_RECOIL)
@@ -161,7 +161,7 @@ func update(delta):
 			pitch_yaw.x = min(pitch_yaw.x, PI * 0.5)
 #            pitch_yaw.x = lerp(pitch_yaw.x, deg2rad(pitch_yaw.x + up_recoil), delta)
 		up_recoil -= DAMPENING_FACTOR * pow(up_recoil, DAMPENING_POWER) * delta
-	
+
 	# Finally, apply rotations
 #	owner.character_body.rotation.y = pitch_yaw.y   # Horizontal (back before fps_camera)
 	_camera.rotation.x = pitch_yaw.x   # Vertical, you don't want to rotate the whole player scene, just camera
@@ -209,12 +209,12 @@ func head_bob(delta : float) -> void:
 	if owner.velocity.length() == 0.0:
 		var br = Vector3(0, _bob_reset, 0)
 		_camera.global_transform.origin = owner.global_transform.origin + br
-	
+
 	_bob_time += delta
 	var y_bob = sin(_bob_time * (2 * PI)) * owner.velocity.length() * (0.5 / 1000.0)
 	_camera.global_transform.origin.y += y_bob
-	
-	# Removed since it's not good to do head rotation unless take camera control away from player 
+
+	# Removed since it's not good to do head rotation unless take camera control away from player
 	# because of risk of simulation sickness
 #	var z_bob = sin(_bob_time * (PI)) * owner.velocity.length() * 0.2
 #	_camera.rotation_degrees.z = z_bob

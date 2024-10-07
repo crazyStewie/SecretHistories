@@ -38,7 +38,7 @@ func _ready():
 func _physics_process(_delta):
 	if stress == 0.0:
 		_camera_rotation_reset = rotation_degrees
-		
+
 	if state == CameraState.STATE_ZOOM:
 		mod = zoom_camera_sens_mod
 		fov = lerp(fov, zoom_fov, 0.25)
@@ -47,28 +47,28 @@ func _physics_process(_delta):
 		mod = 1.0
 		fov = lerp(fov, normal_fov, 0.1)
 #		zoom_overlay.visible = false
-		
+
 	# Should be optional since can bug some people
 	rotation_degrees = _process_shake(_camera_rotation_reset, _delta)
 
 
 func _process_shake(angle_center : Vector3, delta : float) -> Vector3:
 	shake = stress * stress
-	
+
 	stress -= (shake_reduction / 100.0)
 	stress = clamp(stress, 0.0, 1.0)
-	
+
 	var new_rotate = Vector3()
 	new_rotate.x = max_yaw * mod * shake * _get_noise(randi(), delta)
 	new_rotate.y = max_pitch * mod * shake * _get_noise(randi(), delta + 1.0)
 	new_rotate.z = max_roll * mod * shake * _get_noise(randi(), delta + 2.0)
-	
+
 	return angle_center + new_rotate
 
 
 func _get_noise(noise_seed : float, time : float) -> float:
 	n.seed = noise_seed
-	
+
 	return n.get_noise_1d(time)
 
 

@@ -59,7 +59,7 @@ func _ready():
 	load_screen.show_message()
 	for floor_index in range(HIGHEST_FLOOR_LEVEL, LOWEST_FLOOR_LEVEL - 1, -1):
 		_loaded_levels[floor_index] = null
-	
+
 	await get_tree().create_timer(1).timeout
 	var _error = connect("level_loaded", Callable(self, "_on_first_level_loaded").bind(), CONNECT_ONE_SHOT)
 	load_level(start_level_scn)
@@ -88,11 +88,11 @@ func load_level(packed : PackedScene):
 	if _loaded_levels[current_floor_level] == null:
 		level = packed.instantiate() as GameWorld
 		world_root.add_child(level)
-		
+
 		var is_lowest_level := current_floor_level == LOWEST_FLOOR_LEVEL
 		var current_floor_size: int = floor_sizes[current_floor_level]
 		level.create_world(is_lowest_level, current_floor_size)
-		
+
 		_loaded_levels[current_floor_level] = FloorLevelHandler.new(level, current_floor_level)
 		await level.spawning_world_scenes_finished
 	else:
@@ -101,7 +101,7 @@ func load_level(packed : PackedScene):
 		world_root.add_child(level)
 		# this needs a yield because this function is called from within another yield
 		await get_tree().process_frame
-	
+
 	# Ambient music controllerprint("Current floor level: ", current_floor_level)
 	match current_floor_level:
 		-1:
@@ -123,7 +123,7 @@ func load_level(packed : PackedScene):
 		-5:
 			BackgroundMusic.stop()   # Music will be the gregorian chanting from the shard
 			print("Level 5, stop music")
-	
+
 	emit_signal("level_loaded", level)
 
 
@@ -145,7 +145,7 @@ func _connect_staircase_events() -> void:
 	if not Events.is_connected("up_staircase_used", Callable(self, "_on_Events_up_staircase_used")):
 		# warning-ignore:return_value_discarded
 		Events.connect("up_staircase_used", Callable(self, "_on_Events_up_staircase_used"))
-	
+
 	if not Events.is_connected("down_staircase_used", Callable(self, "_on_Events_down_staircase_used")):
 		# warning-ignore:return_value_discarded
 		Events.connect("down_staircase_used", Callable(self, "_on_Events_down_staircase_used"))
@@ -155,7 +155,7 @@ func disconnect_staircase_events() -> void:
 	if Events.is_connected("up_staircase_used", Callable(self, "_on_Events_up_staircase_used")):
 		# warning-ignore:return_value_discarded
 		Events.disconnect("up_staircase_used", Callable(self, "_on_Events_up_staircase_used"))
-	
+
 	if Events.is_connected("down_staircase_used", Callable(self, "_on_Events_down_staircase_used")):
 		# warning-ignore:return_value_discarded
 		Events.disconnect("down_staircase_used", Callable(self, "_on_Events_down_staircase_used"))
@@ -211,7 +211,7 @@ func _on_Events_up_staircase_used() -> void:
 		var old_value := current_floor_level
 		current_floor_level = int(min(HIGHEST_FLOOR_LEVEL, current_floor_level + 1))
 		var has_changed := old_value != current_floor_level
-		
+
 		if has_changed:
 			print("Floor level changed from: %s to: %s" % [old_value, current_floor_level])
 			await _handle_floor_change(false)
@@ -228,7 +228,7 @@ func _on_Events_down_staircase_used() -> void:
 		var old_value := current_floor_level
 		current_floor_level = int(max(LOWEST_FLOOR_LEVEL, current_floor_level - 1))
 		var has_changed := old_value != current_floor_level
-		
+
 		if has_changed:
 			print("Went down from: %s to: %s" % [old_value, current_floor_level])
 			await _handle_floor_change(true)

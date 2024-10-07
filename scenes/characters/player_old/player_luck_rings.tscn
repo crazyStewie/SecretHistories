@@ -1,7 +1,7 @@
 [gd_scene load_steps=12 format=2]
 
-[ext_resource path="res://scenes/characters/player/hp_display.gd" type="Script" id=1]
-[ext_resource path="res://resources/art/health/health.png" type="Texture2D" id=2]
+[ext_resource type="Script" path="res://scenes/characters/player_old/hp_display.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://dgwjflepkaatm" path="res://resources/art/health/health.png" id="2"]
 
 [sub_resource type="Animation" id=32]
 length = 0.001

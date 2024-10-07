@@ -38,14 +38,14 @@ func _ready():
 # Temp hacky version
 func choose_loadout_package():
 	var loadout_package = randi() % LoadoutPackage.size()
-	
+
 	match loadout_package:
 		LoadoutPackage.DBLSHOTTY:
 			inventory.add_item(dblshotty_resource.instantiate())   # Auto-equips it
 			print("cultist.gd added dblshotgun")
 			inventory.insert_tiny_item(shottyammo_resource, 555)
 			print("cultist.gd added shotgun ammo")
-			
+
 		LoadoutPackage.SAWEDSHOTTY_OILLANTERN:
 			inventory.add_item(sawedshotty_resource.instantiate())   # Auto-equips it
 			print("cultist.gd added sawed-off shotgun")
@@ -54,7 +54,7 @@ func choose_loadout_package():
 			inventory.add_item(oillantern_resource.instantiate())   # Auto-equips it
 			inventory.equip_offhand_item()
 			print("cultist.gd added oil lantern")
-			
+
 		LoadoutPackage.SAWEDSHOTTY_CANDLELANTERN:
 			inventory.add_item(sawedshotty_resource.instantiate())   # Auto-equips it
 			print("cultist.gd added sawed-off shotty")
@@ -63,7 +63,7 @@ func choose_loadout_package():
 			inventory.add_item(candlelantern_resource.instantiate())   # Auto-equips it
 			inventory.equip_offhand_item()
 			print("cultist.gd added candle lantern")
-			
+
 		LoadoutPackage.WEBLEY_OILLANTERN:
 			inventory.add_item(webley_resource.instantiate())   # Auto-equips it
 			print("cultist.gd added dblshotgun")
@@ -72,7 +72,7 @@ func choose_loadout_package():
 			inventory.add_item(oillantern_resource.instantiate())   # Auto-equips it
 			inventory.equip_offhand_item()
 			print("cultist.gd added oil lantern")
-			
+
 		LoadoutPackage.WEBLEY_CANDLELANTERN:
 			inventory.add_item(webley_resource.instantiate())   # Auto-equips it
 			print("cultist.gd added dblshotgun")

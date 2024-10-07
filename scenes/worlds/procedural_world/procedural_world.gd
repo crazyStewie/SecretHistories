@@ -15,10 +15,11 @@ func set_player_on_spawn_position(player: Player, is_going_downstairs: bool) -> 
 					* world_data.CELL_SIZE * 0.5,
 			"y_rotation": 0.0,
 		}
-	
+
 	player.position = spawn_data.position
-	player.rotation.y = spawn_data.y_rotation
-	player.velocity = Vector3.ZERO
+	#TODO: implementt player spawn rotation
+	#player.rotation.y = spawn_data.y_rotation
+	player.linear_velocity = Vector3.ZERO
 
 
 # May lag everything for some reason
