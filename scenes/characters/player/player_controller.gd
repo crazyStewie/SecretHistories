@@ -9,6 +9,8 @@ const CAMERA_CROUCHING_HEIGHT = 1.1
 
 var camera_pitch : float = 0.0
 
+@onready var interaction_cast: RayCast3D = $"../ModelRoot/MainCamera/InteractionCast"
+
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
@@ -17,13 +19,14 @@ func _unhandled_input(event: InputEvent) -> void:
 		camera_pitch = clamp(camera_pitch, - PI*0.5, PI*0.5)
 		state.facing = state.facing.rotated(Vector3.UP, -sens*event.relative.x)
 
-func _process(delta: float) -> void:
+func _process(_delta : float) -> void:
+	main_camera.rotation.x = camera_pitch
+	main_camera.position.y = lerp(CAMERA_STANDING_HEIGHT, CAMERA_CROUCHING_HEIGHT, state.current_crouch_ratio)
+
+func _physics_process(delta: float) -> void:
 	var input_vector_2d := Input.get_vector(&"movement|move_right", &"movement|move_left", &"movement|move_down", &"movement|move_up")
 	var input_vector = Vector3(input_vector_2d.x, 0.0, input_vector_2d.y)
 	input.movement_vector = state.facing * input_vector
 	input.jump = Input.is_action_just_pressed(&"player|jump")
 	input.crouch = Input.is_action_pressed(&"player|crouch")
 	input.sprint = Input.is_action_pressed(&"player|sprint")
-
-	main_camera.rotation.x = camera_pitch
-	main_camera.position.y = lerp(CAMERA_STANDING_HEIGHT, CAMERA_CROUCHING_HEIGHT, state.current_crouch_ratio)

@@ -148,7 +148,7 @@ _max_loot = 5
 
 [node name="GenerationCultists" type="Node" parent="GenerationManager/PopulateRooms" index="5"]
 script = ExtResource("15")
-_character_scene_path = "res://scenes/characters/cultists/neophyte.tscn"
+_character_scene_path = "res://scenes/characters/cultist/neophyte.tscn"
 _density_by_type = {
 1: 0.05,
 2: 0.0,

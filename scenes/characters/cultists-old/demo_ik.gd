@@ -88,5 +88,5 @@ func handle_demo_ik_state():
 			tween = get_tree().create_tween()
 			tween.tween_property(always_on_skeleton_ik, "interpolation", 1.0, tween_duration)
 			tween.parallel().tween_property(self, "tween_value", 1.0, tween_duration).from(0.0)
-	
+
 	print("Demo IK look-at state : ", demo_state)

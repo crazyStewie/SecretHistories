@@ -26,13 +26,13 @@ func _tick(state : CharacterState) -> int:
 		agent.set_target_position(state.target_position)
 		queued_velocity = Vector3.ZERO
 		velocity_computed = true
-	
+
 	if agent.is_target_reached():
 		return BTResult.OK
-	
+
 	if agent.is_navigation_finished():
 		return BTResult.FAILED
-	
+
 	if velocity_computed:
 		velocity_computed = false
 		state.move_direction = queued_velocity.normalized()
@@ -42,7 +42,6 @@ func _tick(state : CharacterState) -> int:
 		var velocity = (next_position - character.global_position).normalized()*character.move_speed
 		agent.connect("velocity_computed", Callable(self, "on_agent_velocity_computed").bind(), CONNECT_ONE_SHOT)
 		agent.set_velocity(velocity)
-		
-	
-	return BTResult.RUNNING
 
+
+	return BTResult.RUNNING

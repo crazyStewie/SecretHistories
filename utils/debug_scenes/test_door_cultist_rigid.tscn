@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://b8fhjqun0honf" path="res://scenes/objects/large_objects/doors/base_kinematic_door.tscn" id="1"]
 [ext_resource type="PackedScene" uid="uid://bg7aeaviu8ftd" path="res://scenes/characters/player_old/player.tscn" id="2"]
-[ext_resource type="PackedScene" uid="uid://ca82u62hadcb5" path="res://scenes/characters/cultists/neophyte.tscn" id="3"]
+[ext_resource type="PackedScene" uid="uid://ca82u62hadcb5" path="res://scenes/characters/cultists-old/neophyte.tscn" id="3"]
 [ext_resource type="PackedScene" uid="uid://nge4qayw0wob" path="res://scenes/objects/pickable_items/equipment/tool/light-sources/belt_clip_dark_lantern/dark_lantern.tscn" id="4"]
 [ext_resource type="PackedScene" uid="uid://h1ppl7ypl187" path="res://scenes/objects/pickable_items/equipment/tool/light-sources/bullseye_lantern/bullseye_lantern.tscn" id="5"]
 [ext_resource type="PackedScene" uid="uid://bnhyyl34mjvmd" path="res://scenes/objects/pickable_items/equipment/melee/cavalry_sabre/cavalry_sabre_item.tscn" id="6"]

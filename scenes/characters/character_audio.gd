@@ -1,9 +1,9 @@
 class_name CharacterAudio
 extends Node3D
 
-# TODO: Overhaul the entire system so as not to have multiple objects with the same streams in-memory, 
+# TODO: Overhaul the entire system so as not to have multiple objects with the same streams in-memory,
 #       support multiple materials (ie for walking).
-#       Also, save the Audio node with the child nodes as a scene, so as to avoid the possibility 
+#       Also, save the Audio node with the child nodes as a scene, so as to avoid the possibility
 #       of human error when creating new characters
 # TODO: Eventually get working or ensure working different footstep sounds
 @onready var _footstep_sounds : Array = _stone_footstep_sounds   # Unsure if onready needed ##Does not help to assign it an empty array
@@ -80,7 +80,7 @@ var last_speech_type   # Tracked to avoid interrupting self to say same type of 
 
 
 func _ready():
-	# Movement audio	
+	# Movement audio
 	#load_sounds("resources/sounds/footsteps/stone_footsteps", 3)
 	#load_sounds("resources/sounds/footsteps/wood_footsteps", 4)
 	#load_sounds("resources/sounds/footsteps/water_footsteps", 5)
@@ -110,14 +110,14 @@ func load_sounds(sound_dir, type : int) -> void:
 
 	if !sound_dir.begins_with("res://"):
 		sound_dir = "res://" + sound_dir
-	
-	
+
+
 	var snd_dir = DirAccess.open(sound_dir)
-	
+
 	if not is_instance_valid(snd_dir):
 		push_error("Unable to open sound directory :", sound_dir)
 		return
-	
+
 	snd_dir.include_hidden = false
 	snd_dir.include_navigational = false
 	snd_dir.list_dir_begin() # TODOConverter3To4 fill missing arguments https://github.com/godotengine/godot/pull/40547
@@ -150,7 +150,7 @@ func load_sounds(sound_dir, type : int) -> void:
 					_metal_footstep_sounds.append(load(sound_dir + "/" + sound))
 				9:
 					_tile_footstep_sounds.append(load(sound_dir + "/" + sound))
-					
+
 				# Speech
 				13:
 					_idle_sounds.append(load(sound_dir + "/" + sound))
@@ -186,7 +186,7 @@ func load_sounds(sound_dir, type : int) -> void:
 					_bomb_sounds.append(load(sound_dir + "/" + sound))
 				29:
 					_comet_sounds.append(load(sound_dir + "/" + sound))
-					
+
 		sound = snd_dir.get_next()
 
 
@@ -195,14 +195,14 @@ func load_sounds(sound_dir, type : int) -> void:
 # Once per character, randomly choose an appropriate voice for this character
 func choose_voice():
 	if owner is Cultist:   # Later: Neophyte, later more types
-	
+
 		var choose = randi() % 2
 		match choose:
 			0:
 				character_voice_path = "res://resources/sounds/voices/cultists/neophyte/dylanb_vo/"
 			1:
 				character_voice_path = "res://resources/sounds/voices/cultists/neophyte/deanbrignell/"
-		
+
 		# Speech audio - these should eventually be moved to each enemy's script or character audio
 		# and the paths adjusted to the correct voice
 		load_sounds(character_voice_path + "idle", 13)
@@ -254,12 +254,12 @@ func play_alert_sound():
 	_alert_sounds.shuffle()
 	speech_audio.stream = _alert_sounds.front()
 	if last_speech_line == speech_audio.stream:   # This is not working to stop duplicate lines =/
-		return 
+		return
 	last_speech_line = speech_audio.stream   # Tracked to avoid repeating the same line
 	last_speech_type = SpeechType.ALERT
 	speech_audio.play()
 	print("Played alert sound")
-	
+
 
 func get_player() -> Player:
 	var players := get_tree().get_nodes_in_group("Player")
@@ -279,7 +279,7 @@ func play_detection_sound() -> void:
 		_detection_sounds.shuffle()
 		speech_audio.stream = _detection_sounds.front()
 	if last_speech_line == speech_audio.stream:
-		return 
+		return
 	last_speech_line = speech_audio.stream   # Tracked to avoid repeating the same line
 	last_speech_type = SpeechType.DETECTION
 	speech_audio.play()
@@ -290,7 +290,7 @@ func play_ambush_sound():
 	_ambush_sounds.shuffle()
 	speech_audio.stream = _ambush_sounds.front()
 	if last_speech_line == speech_audio.stream:
-		return 
+		return
 	last_speech_line = speech_audio.stream   # Tracked to avoid repeating the same line
 	last_speech_type = SpeechType.AMBUSH
 	speech_audio.play()
@@ -300,7 +300,7 @@ func play_chase_sound():
 	_chase_sounds.shuffle()
 	speech_audio.stream = _chase_sounds.front()
 	if last_speech_line == speech_audio.stream:
-		return 
+		return
 	last_speech_line = speech_audio.stream   # Tracked to avoid repeating the same line
 	last_speech_type = SpeechType.CHASE
 	speech_audio.play()
@@ -314,7 +314,7 @@ func play_fight_sound():
 	_fight_sounds.shuffle()
 	speech_audio.stream = _fight_sounds.front()
 	if last_speech_line == speech_audio.stream:
-		return 
+		return
 	last_speech_line = speech_audio.stream   # Tracked to avoid repeating the same line
 	last_speech_type = SpeechType.FIGHT
 	speech_audio.play()
@@ -328,7 +328,7 @@ func play_reload_sound():
 	_reload_sounds.shuffle()
 	speech_audio.stream = _reload_sounds.front()
 	if last_speech_line == speech_audio.stream:
-		return 
+		return
 	last_speech_line = speech_audio.stream   # Tracked to avoid repeating the same line
 	last_speech_type = SpeechType.RELOAD
 	speech_audio.play()
@@ -338,7 +338,7 @@ func play_flee_sound():
 	_flee_sounds.shuffle()
 	speech_audio.stream = _flee_sounds.front()
 	if last_speech_line == speech_audio.stream:
-		return 
+		return
 	last_speech_line = speech_audio.stream   # Tracked to avoid repeating the same line
 	last_speech_type = SpeechType.FLEE
 	speech_audio.play()
@@ -349,7 +349,7 @@ func play_dialog_q_sound():
 	_dialog_q_sounds.shuffle()
 	speech_audio.stream = _dialog_q_sounds.front()
 	if last_speech_line == speech_audio.stream:
-		return 
+		return
 	last_speech_line = speech_audio.stream   # Tracked to avoid repeating the same line
 	last_speech_type = SpeechType.DIALOG_Q
 	speech_audio.play()
@@ -360,7 +360,7 @@ func play_dialog_a_sound():
 	_dialog_a_sounds.shuffle()
 	speech_audio.stream = _dialog_a_sounds.front()
 	if last_speech_line == speech_audio.stream:
-		return 
+		return
 	last_speech_line = speech_audio.stream   # Tracked to avoid repeating the same line
 	last_speech_type = SpeechType.DIALOG_A
 	speech_audio.play()
@@ -371,7 +371,7 @@ func play_dialog_sequence_sound():
 	_dialog_sequence_sounds.shuffle()
 	speech_audio.stream = _dialog_sequence_sounds.front()
 	if last_speech_line == speech_audio.stream:
-		return 
+		return
 	last_speech_line = speech_audio.stream   # Tracked to avoid repeating the same line
 	last_speech_type = SpeechType.DIALOG_SEQUENCE
 	speech_audio.play()
@@ -381,7 +381,7 @@ func play_surprised_sound():
 	_surprised_sounds.shuffle()
 	speech_audio.stream = _surprised_sounds.front()
 	if last_speech_line == speech_audio.stream:
-		return 
+		return
 	last_speech_line = speech_audio.stream   # Tracked to avoid repeating the same line
 	last_speech_type = SpeechType.SURPRISED
 	speech_audio.play()
@@ -391,7 +391,7 @@ func play_fire_sound():
 	_fire_sounds.shuffle()
 	speech_audio.stream = _fire_sounds.front()
 	if last_speech_line == speech_audio.stream:
-		return 
+		return
 	last_speech_line = speech_audio.stream   # Tracked to avoid repeating the same line
 	last_speech_type = SpeechType.FIRE
 	speech_audio.play()
@@ -401,7 +401,7 @@ func play_snake_sound():
 	_snake_sounds.shuffle()
 	speech_audio.stream = _snake_sounds.front()
 	if last_speech_line == speech_audio.stream:
-		return 
+		return
 	last_speech_line = speech_audio.stream   # Tracked to avoid repeating the same line
 	last_speech_type = SpeechType.SNAKE
 	speech_audio.play()
@@ -411,7 +411,7 @@ func play_bomb_sound():
 	_bomb_sounds.shuffle()
 	speech_audio.stream = _bomb_sounds.front()
 	if last_speech_line == speech_audio.stream:
-		return 
+		return
 	last_speech_line = speech_audio.stream   # Tracked to avoid repeating the same line
 	last_speech_type = SpeechType.BOMB
 	speech_audio.play()
@@ -421,7 +421,7 @@ func play_comet_sound():
 	_comet_sounds.shuffle()
 	speech_audio.stream = _comet_sounds.front()
 	if last_speech_line == speech_audio.stream:
-		return 
+		return
 	last_speech_line = speech_audio.stream   # Tracked to avoid repeating the same line
 	last_speech_type = SpeechType.COMET
 	speech_audio.play()
@@ -457,7 +457,7 @@ func play_footstep_sound(rate : float = 0.0, pitch : float = 1.0, volume : float
 	movement_audio.pitch_scale = pitch
 	## Why is there a volume AND a rate? TODO: fix during overhaul
 	#movement_audio.volume_db = volume
-	## During the overhaul, have a proper way to give the material and 
+	## During the overhaul, have a proper way to give the material and
 	#  select the audio stream array with a match statement
 	#if _footstep_sounds.size() > 0:
 		#_footstep_sounds.shuffle()

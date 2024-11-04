@@ -45,12 +45,12 @@ func _ready():
 
 func _execute_step(data : WorldData, gen_data : Dictionary, generation_seed : int):
 	_rng.seed = generation_seed
-	
+
 	# More cultists per DLvl as you go down
 	match GameManager.game.current_floor_level:
 		-1:
 			pass   # set _density_by_type?
-			_max_count = 0
+			_max_count = 1
 		-2:
 			pass   # set _density_by_type?
 			_max_count = 2
@@ -63,14 +63,14 @@ func _execute_step(data : WorldData, gen_data : Dictionary, generation_seed : in
 		-5:
 			pass   # set _density_by_type?
 			_max_count = 5   # The final level spawns cultists up to a certain number as they die
-	
+
 	var valid_cells := _get_valid_cells(data)
-	
+
 	var count = 0
 	for cell_index in valid_cells:
 		if count >= _max_count:
 			break
-		
+
 		var cell_type = data.get_cell_type(cell_index)
 		if _rng.randf() < _density_by_type[cell_type]:
 			count += 1
@@ -86,7 +86,7 @@ func _get_valid_cells(data: WorldData) -> Array:
 	for type in _density_by_type.keys():
 		valid_cells.append_array(data.get_cells_for(type))
 	valid_cells.sort()
-	
+
 	_remove_used_cells_from(valid_cells, data)
 	return valid_cells
 
@@ -95,7 +95,7 @@ func _get_valid_cells(data: WorldData) -> Array:
 func _remove_used_cells_from(p_array: Array, data: WorldData) -> Array:
 	for cell_index in data._objects_to_spawn.keys():
 		p_array.erase(cell_index)
-	
+
 	if data.is_spawn_position_valid():
 		var player_cells := [
 				data.get_player_spawn_position_as_index(RoomData.OriginalPurpose.UP_STAIRCASE),
@@ -103,7 +103,7 @@ func _remove_used_cells_from(p_array: Array, data: WorldData) -> Array:
 		]
 		for player_cell in player_cells:
 			p_array.erase(player_cell)
-	
+
 	return p_array
 
 ### -----------------------------------------------------------------------------------------------
@@ -135,7 +135,7 @@ func _get_property_list() -> Array:
 			hint_string = GROUP_PREFIX_DENSITY
 		},
 	]
-	
+
 	for type in ["room", "corridor", "hall"]:
 		properties.append({
 			name = GROUP_PREFIX_DENSITY + type,
@@ -144,13 +144,13 @@ func _get_property_list() -> Array:
 			hint = PROPERTY_HINT_RANGE,
 			hint_string = "0.0,100.0,0.05"
 		})
-	
+
 	return properties
 
 
 func _get(property: StringName):
 	var value
-	
+
 	if property.begins_with(GROUP_PREFIX_DENSITY):
 		var type := property.replace(GROUP_PREFIX_DENSITY, "")
 		match type:
@@ -162,13 +162,13 @@ func _get(property: StringName):
 				value = _density_by_type[WorldData.CellType.HALL] * PERCENT_CONVERSION
 			_:
 				push_error("Unindentified density type: %s"%[type])
-	
+
 	return value
 
 
 func _set(property: StringName, value) -> bool:
 	var has_handled = false
-	
+
 	if property.begins_with(GROUP_PREFIX_DENSITY):
 		var type := property.replace(GROUP_PREFIX_DENSITY, "")
 		var index := -1
@@ -181,12 +181,12 @@ func _set(property: StringName, value) -> bool:
 				index = WorldData.CellType.HALL
 			_:
 				push_error("Unindentified density type: %s"%[type])
-		
+
 		if index > -1:
 			var final_value = value / PERCENT_CONVERSION
 			_density_by_type[index] = final_value
 			has_handled = true
-	
+
 	return has_handled
 
 ### END of Editor Code ############################################################################

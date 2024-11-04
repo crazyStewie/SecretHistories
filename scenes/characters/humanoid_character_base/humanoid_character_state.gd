@@ -16,6 +16,9 @@ enum CurrentState {
 @onready var input: HumanoidCharacterInput = $"../Input"
 
 
+func set_facing_vector(forward : Vector3) -> void:
+	facing = Basis.looking_at(forward, Vector3.UP, true)
+
 func should_jump():
 	return is_on_ground and input.jump
 func get_target_speed() -> float:

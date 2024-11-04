@@ -26,7 +26,7 @@ var is_in_belt = false
 func _ready():
 	if horizontal_holding == true:
 		hold_position.rotation_degrees.z = 90
-		
+
 	connect("body_entered", Callable(self, "play_drop_sound"))
 
 

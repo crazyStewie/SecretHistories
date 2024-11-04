@@ -17,8 +17,8 @@ func set_player_on_spawn_position(player: Player, is_going_downstairs: bool) -> 
 		}
 
 	player.position = spawn_data.position
-	#TODO: implementt player spawn rotation
-	#player.rotation.y = spawn_data.y_rotation
+	#TODO: implement player spawn rotation
+	player.rotation.y = spawn_data.y_rotation
 	player.linear_velocity = Vector3.ZERO
 
 

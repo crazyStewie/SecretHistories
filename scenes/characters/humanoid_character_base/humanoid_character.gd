@@ -14,7 +14,11 @@ var ground_ray_parameters := PhysicsRayQueryParameters3D.new()
 var ground_detection_test_parameters := PhysicsTestMotionParameters3D.new()
 var ceiling_detection_test_parameters := PhysicsTestMotionParameters3D.new()
 
+
 func _ready() -> void:
+	character_state.facing = global_basis
+	global_basis = Basis.IDENTITY
+
 	character_collision.height = parameters.standing_height
 	ground_detection_test_parameters.collide_separation_ray = false
 	ground_detection_test_parameters.motion = Vector3.DOWN*0.3
