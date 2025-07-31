@@ -1,11 +1,16 @@
 extends RigidBody3D
 class_name HumanoidCharacter
 
+
 #TODO: figure out parameters (position, direction/force vector)
 signal recoiled()
 
 const MAX_NORMAL_Y = cos(deg_to_rad(55))
 const COLLISIONS_REPORTED = 4
+
+var ground_ray_parameters := PhysicsRayQueryParameters3D.new()
+var ground_detection_test_parameters := PhysicsTestMotionParameters3D.new()
+var ceiling_detection_test_parameters := PhysicsTestMotionParameters3D.new()
 
 @onready var parameters : HumanoidCharacterParameters = $Parameters
 @onready var state : HumanoidCharacterState = $State
@@ -18,11 +23,6 @@ const COLLISIONS_REPORTED = 4
 @onready var throw_origin: Marker3D = $ModelRoot/ThrowOrigin
 @onready var place_origin: Marker3D = $ModelRoot/PlaceOrigin
 @onready var kick_cast: KickCast = $ModelRoot/KickCast
-
-
-var ground_ray_parameters := PhysicsRayQueryParameters3D.new()
-var ground_detection_test_parameters := PhysicsTestMotionParameters3D.new()
-var ceiling_detection_test_parameters := PhysicsTestMotionParameters3D.new()
 
 
 func _ready() -> void:
